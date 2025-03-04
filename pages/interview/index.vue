@@ -169,7 +169,7 @@ const show_answer_pane = ref(true);
 
 const intro_questions = ref(true);
 
-const current_question_slide = ref(0);
+const current_question_slide = ref(2);
 const questions = reactive({
     fullname: 'Odii chibuikem daniel',
     nationality: 'Nigeria',
@@ -178,8 +178,8 @@ const questions = reactive({
     ever_travelled_before: 'no',
     ever_had_visa_refusal: 'no',
     how_fund_trip: '',
-    occupation: '',
-    have_all_documents: ''
+    occupation: 'Software Engineering',
+    have_all_documents: 'yes'
 });
 
 const visaTypes = [
