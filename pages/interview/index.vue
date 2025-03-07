@@ -91,10 +91,12 @@
       <div class="flex border-green-500 w-full justify-center">
 
         <ClientOnly>
+          <div class=" mb-[80px]">
           <Vue3Lottie
           ref="lottieRef"
           :animationData="robotAnimation" :height="200" :width="200" :autoplay="false"
             :speed="1" />
+          </div>
         </ClientOnly>
 
         <!-- <img src="../../assets/images/robot.webm" alt="vo_robot_image"/> -->
@@ -103,7 +105,7 @@
           class="h-[400px] w-full md:size-[400px] !bg-contain !bg-no-repeat !bg-center"></div> -->
 
         <!-- Answer Area -->
-        <div v-if="show_answer_pane" class="absolute w-full border-t h-[40%] bottom-0 left-0 bg-white dark:bg-gray-800">
+        <div v-if="show_answer_pane" class="absolute w-full border-t h-[40%] bottom-0 left-0 bg-white dark:bg-transparent">
           <div class="flex flex-col gap-3 md:w-[50%] w-full mx-auto p-5">
             <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
             <div class="flex gap-3 items-start">
@@ -129,12 +131,12 @@
 
                     <UTextarea v-model="userAnswer" class=" !w-full" placeholder="Type your answer here..." />
 
-                    <div class=" flex justify-end items-center gap-1 py-3">
+                    <div class=" flex justify-end items-center gap-3 py-3">
                       <UButton :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
-                        variant="soft" @click="toggleSpeech" class="w-fit" />
+                        variant="ghost" @click="toggleSpeech" class="w-fit" />
 
                       <UButton class="w-fit" icon="iconoir:arrow-up" type="submit"
-                        :variant="userAnswer.trim() == '' ? 'soft' : 'solid'"
+                        :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
                         :disabled="loading_q || userAnswer.trim() == ''"
                         loading-icon="svg-spinners:12-dots-scale-rotate" />
                     </div>
@@ -142,7 +144,7 @@
 
 
                 </form>
-                <UButton v-else @click="resetInterview" label="Start New Interview" class="w-fit" />
+                <UButton color="blue" v-else @click="resetInterview" label="Start New Interview" class="w-fit" />
               </div>
             </div>
           </div>

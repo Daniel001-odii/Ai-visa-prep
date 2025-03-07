@@ -84,7 +84,7 @@ const isDark = computed({
   },
 });
 
-const select_vo_modal = ref(true);
+const select_vo_modal = ref(false);
 
 const vo = ref({
   name: "John Doe",
