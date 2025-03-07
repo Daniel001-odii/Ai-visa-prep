@@ -344,6 +344,10 @@ const toggleSpeech = () => {
 };
 
 onMounted(() => {
+  if(useRoute().query.modal){
+    intro_questions.value = true;
+  }
+
   // Initialize SpeechRecognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SpeechRecognition) {

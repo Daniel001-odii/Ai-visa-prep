@@ -67,7 +67,7 @@
         color="blue"
         class="rounded-3xl !text-white px-6"
         label="Try Now"
-        @click="useRouter().push('/Interview')"
+        @click="useRouter().push('/Interview?modal=true')"
       />
     </div>
   </div>
