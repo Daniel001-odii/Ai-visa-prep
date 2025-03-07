@@ -67,7 +67,7 @@
         color="blue"
         class="rounded-3xl !text-white px-6"
         label="Try Now"
-        @click="select_vo_modal = true"
+        @click="useRouter().push('/Interview')"
       />
     </div>
   </div>
