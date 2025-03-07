@@ -298,6 +298,9 @@ const getNextQuestion2 = async () => {
       decision.value = data.value.decision;
       rec_answer.value = data.value.recommendedReply;
 
+      if(data.value.isFinal){
+        visa_status_modal.value = true;
+      }
       // Autoplay handled by <audio> tag with autoplay attribute
       if (audio.value && audioSrc.value) {
         audio.value.load();
