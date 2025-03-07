@@ -1,4 +1,3 @@
-// server/api/answer.ts
 import { ofetch } from 'ofetch';
 
 export default defineEventHandler(async (event) => {
@@ -46,7 +45,7 @@ export default defineEventHandler(async (event) => {
 
   const maxQuestions = 5;
   if (questionCount < maxQuestions) {
-    prompt += `Ask question ${questionCount + 1} of 5. Return only the question text, nothing else.`;
+    prompt += `Ask question ${questionCount + 1} of 5, and provide a recommended reply that would be a correct and appropriate answer to that question. Return the question and the recommended reply separated by ' || '. For example: 'What is your purpose of travel? || I am traveling for a business conference.'`;
   } else {
     prompt += `You have asked 5 questions. Now evaluate all data and answers, and return only the final decision in this format: "[APPROVED or DENIED]: [Brief reason]."`;
   }
@@ -69,6 +68,7 @@ export default defineEventHandler(async (event) => {
   // Parse response
   let question = '';
   let decision = null;
+  let recommendedReply = '';
   const isFinal = questionCount >= maxQuestions;
 
   if (isFinal) {
@@ -79,61 +79,16 @@ export default defineEventHandler(async (event) => {
       decision = { status: 'DENIED', reason: 'Unable to process final decision due to unexpected response format.' };
     }
   } else {
-    question = responseText;
+    const parts = responseText.split(' || ');
+    if (parts.length === 2) {
+      question = parts[0].trim();
+      recommendedReply = parts[1].trim();
+    } else {
+      question = responseText;
+      recommendedReply = 'Unable to generate recommended reply.';
+    }
   }
 
-  // Generate audio URL with PlayHT
-  /* let audioUrl = '';
-  try {
-    const voiceId = "s3://voice-cloning-zero-shot/e5df2eb3-5153-40fa-9f6e-6e27bbb7a38e/original/manifest.json";
-    const audioText = isFinal ? `${decision.status}: ${decision.reason}` : question;
-    console.log('PlayHT Request Text:', audioText);
-
-    // Request TTS generation and get SSE stream
-    const ttsResponse = await fetch('https://api.play.ht/api/v2/tts', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${playhtApiKey}`,
-        'X-USER-ID': playhtUserId,
-        'Content-Type': 'application/json',
-        'Accept': 'text/event-stream',
-      },
-      body: JSON.stringify({
-        text: audioText,
-        voice: voiceId,
-        output_format: 'mp3',
-        speed: 1.0,
-        quality: 'medium',
-      }),
-    });
-
-    if (!ttsResponse.ok) {
-      const errorText = await ttsResponse.text();
-      console.error('PlayHT Initial Error:', errorText);
-      throw new Error(`PlayHT TTS request failed: ${errorText}`);
-    }
-
-    // Parse SSE stream to get the audio URL
-    const text = await ttsResponse.text();
-    console.log('PlayHT SSE Response:', text);
-    const lines = text.split('\n');
-    for (const line of lines) {
-      if (line.startsWith('data:') && line.includes('"url"')) {
-        const data = JSON.parse(line.replace('data: ', ''));
-        audioUrl = data.url;
-        break;
-      }
-    }
-
-    if (!audioUrl) {
-      throw new Error('No audio URL found in PlayHT SSE response');
-    }
-    console.log('PlayHT Audio URL:', audioUrl);
-  } catch (error) {
-    console.error('TTS Error:', error.message);
-    audioUrl = ''; // Fallback to empty string if TTS fails
-  }
- */
   // Update state
   const updatedQuestionCount = questionCount + 1;
   const updatedPreviousQuestions = isFinal ? previousQuestions : [...previousQuestions, question];
@@ -142,7 +97,8 @@ export default defineEventHandler(async (event) => {
   return {
     question: isFinal ? '' : question,
     decision: isFinal ? decision : null,
-    // audio: audioUrl, // Return URL directly
+    recommendedReply: isFinal ? '' : recommendedReply,
+    // audio: audioUrl, // Remains commented out as per user's note
     questionCount: updatedQuestionCount,
     previousQuestions: updatedPreviousQuestions,
     previousAnswers: updatedPreviousAnswers,

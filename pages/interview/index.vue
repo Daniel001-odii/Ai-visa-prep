@@ -78,6 +78,33 @@
   </UModal>
 
   <!-- VISA STATUS -->
+  <UModal v-model="visa_status_modal" prevent-close>
+    <UCard>
+      <template #header>
+        <h2 class="font-bold text-2xl text-left">
+          <span v-if="decision.status == 'APPROVED'">Congratulations!</span>
+          <spoan v-else>You can try again next time</spoan>
+          Congratulations!
+        </h2>
+      </template>
+
+      <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
+        <img src="../../assets/images/ok.png" class=" size-[200px]" />
+        <div v-if="decision.status == 'APPROVED'">
+          <span class="font-bold text-md text-green-500">VISA APPROVED</span>
+          <span class="text-gray-500">Your visa application has been approved. You will receive an email with further
+            instructions.</span>
+        </div>
+        <div>
+          <span class="font-bold text-md text-red-500">VISA DENIED</span>
+          <span class="text-gray-500">Your visa application has been denied. Please review the reason below and try again
+            later.</span>
+        </div>
+        <span>{{ decision.reason }}</span>
+        <UButton color="green" @click="resetInterview" label="Start New Interview" class="w-fit" />
+      </div>
+    </UCard>
+  </UModal>
 
   <!-- Main interview interface -->
   <div class="flex flex-col min-h-screen h-screen">
@@ -92,10 +119,8 @@
 
         <ClientOnly>
           <div class=" mb-[80px]">
-          <Vue3Lottie
-          ref="lottieRef"
-          :animationData="robotAnimation" :height="200" :width="200" :autoplay="false"
-            :speed="1" />
+            <Vue3Lottie ref="lottieRef" :animationData="robotAnimation" :height="200" :width="200" :autoplay="false"
+              :speed="1" />
           </div>
         </ClientOnly>
 
@@ -105,7 +130,8 @@
           class="h-[400px] w-full md:size-[400px] !bg-contain !bg-no-repeat !bg-center"></div> -->
 
         <!-- Answer Area -->
-        <div v-if="show_answer_pane" class="absolute w-full border-t h-[40%] bottom-0 left-0 bg-white dark:bg-transparent">
+        <div v-if="show_answer_pane"
+          class="absolute w-full border-t h-[40%] bottom-0 left-0 bg-white dark:bg-transparent">
           <div class="flex flex-col gap-3 md:w-[50%] w-full mx-auto p-5">
             <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
             <div class="flex gap-3 items-start">
@@ -117,20 +143,28 @@
                     <UIcon name="svg-spinners:3-dots-bounce" />
                     <span class="italic font-bold">VO is thinking...</span>
                   </div>
-                  <span v-else-if="isFinal" class="font-bold text-md" :class="decision.status == 'DENIED' ? 'text-red-500':'text-green-500'">VISA {{ decision.status }}: {{ decision.reason
-                  }}</span>
+                  <span v-else-if="isFinal" class="font-bold text-md"
+                    :class="decision.status == 'DENIED' ? 'text-red-500' : 'text-green-500'">VISA {{ decision.status }}:
+                    {{
+                      decision.reason
+                    }}</span>
                   <div v-else class="font-bold text-md flex items-start gap-3">
-                    <UButton icon="heroicons:speaker-wave-solid" color="blue" variant="soft" size="lg" @click="playAudio" />
+                    <UButton icon="heroicons:speaker-wave-solid" color="blue" variant="soft" size="lg"
+                      @click="playAudio" />
                     <span>{{ currentQuestion }}</span>
                   </div>
                 </div>
 
-                <form v-if="!isFinal" @submit.prevent="getNextQuestion2" class="flex gap-2 w-full items-start">
+                <form v-if="!isFinal" @submit.prevent="getNextQuestion2" class="flex flex-col gap-2 w-full items-start">
 
+                  <!-- RECOMMENDED ANSWER -->
+                  <div @click="userAnswer = rec_answer"
+                    class=" text-sm rounded-lg text-green-500 bg-green-500 bg-opacity-5 border cursor-pointer border-transparent  p-3 hover:border-green-500">
+                    <UIcon name="iconoir:double-check" class="text-green-500" />
+                    {{ rec_answer }}
+                  </div>
                   <div class="flex flex-col w-full">
-
                     <UTextarea v-model="userAnswer" class=" !w-full" placeholder="Type your answer here..." />
-
                     <div class=" flex justify-end items-center gap-3 py-3">
                       <UButton :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
                         variant="ghost" @click="toggleSpeech" class="w-fit" />
@@ -164,6 +198,8 @@ import robotAnimation from '../../assets/lottie/robot.json'
 // Create a ref to access the Lottie component
 const lottieRef = ref(null);
 
+const visa_status_modal = ref(false);
+
 // Method to play the animation
 const playAnimation = () => {
   if (lottieRef.value) {
@@ -181,7 +217,7 @@ const pauseAnimation = () => {
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
 
 const show_answer_pane = ref(true);
-const intro_questions = ref(true);
+const intro_questions = ref(false);
 const current_question_slide = ref(0);
 const loading_q = ref(false);
 const currentQuestion = ref('');
@@ -230,7 +266,7 @@ const yes_no_options = ["Yes", "No"];
 const audio = ref(null);
 const isListening = ref(false);
 const recognition = ref(null);
-
+const rec_answer = ref('');
 const getNextQuestion2 = async () => {
   loading_q.value = true;
   // playAnimation()
@@ -260,6 +296,7 @@ const getNextQuestion2 = async () => {
       previousAnswers.value = data.value.previousAnswers;
       isFinal.value = data.value.isFinal;
       decision.value = data.value.decision;
+      rec_answer.value = data.value.recommendedReply;
 
       // Autoplay handled by <audio> tag with autoplay attribute
       if (audio.value && audioSrc.value) {
