@@ -88,17 +88,26 @@
       </template>
 
       <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
-        
+
         <div v-if="decision.status == 'APPROVED'" class=" flex flex-col justify-center items-center">
-          <img src="../../assets/images/ok.png" class=" size-[200px]" />
+          <ClientOnly>
+            <Vue3Lottie ref="lottieRef" :animationData="approvedAnimation" :height="200" :width="200" :autoplay="false"
+              :speed="1" />
+          </ClientOnly>
+          <!-- <img src="../../assets/images/ok.png" class=" size-[200px]" /> -->
           <span class="font-bold text-md text-green-500">VISA APPROVED</span>
           <span class="text-gray-500">Your visa application has been approved. You will receive an email with further
             instructions.</span>
         </div>
         <div v-else class=" flex flex-col justify-center items-center">
-          <img src="../../assets/images/cancel.png" class=" size-[200px]" />
+          <ClientOnly>
+            <Vue3Lottie ref="lottieRef" :animationData="deniedAnimation" :height="200" :width="200" :autoplay="false"
+              :speed="1" />
+          </ClientOnly>
+          <!-- <img src="../../assets/images/cancel.png" class=" size-[200px]" /> -->
           <span class="font-bold text-md text-red-500">VISA DENIED</span>
-          <span class="text-gray-500">Your visa application has been denied. Please review the reason below and try again
+          <span class="text-gray-500">Your visa application has been denied. Please review the reason below and try
+            again
             later.</span>
         </div>
         <span>{{ decision.reason }}</span>
@@ -109,7 +118,7 @@
 
   <!-- Main interview interface -->
   <div class="flex flex-col min-h-screen h-screen">
-    <div class="flex flex-col p-5">
+    <div class="flex flex-col p-5 text-center">
       <span class="font-bold">{{ questions.visa_type }} Interview</span>
       <span class="text-gray-500">Please provide detailed answers to all questions.</span>
     </div>
@@ -160,21 +169,23 @@
 
                   <!-- RECOMMENDED ANSWER -->
                   <div @click="userAnswer = rec_answer"
-                    class=" text-sm rounded-lg text-green-500 bg-green-500 bg-opacity-5 border cursor-pointer border-transparent  p-3 hover:border-green-500">
-                    <UIcon name="iconoir:double-check" class="text-green-500" />
-                    {{ rec_answer }}
+                    class="  flex flex-col text-[10px] w-full rounded-lg text-green-500 bg-green-500 bg-opacity-5 border cursor-pointer border-transparent  p-3 hover:border-green-500">
+                    <div>
+                      <UIcon name="iconoir:chat-lines-solid" class="text-green-500" />
+                      <span class=" font-bold ml-1">Recommended Answer</span>
+                    </div>
+                    <span class="blur-[1.8px]">{{ rec_answer }}</span>
                   </div>
+
+
                   <div class="flex flex-col w-full">
                     <UTextarea v-model="userAnswer" class=" !w-full" placeholder="Type your answer here..." />
                     <div class=" flex justify-end items-center gap-3 py-3">
-                      <UButton 
-                      color="blue"
-                      :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
-                        variant="ghost" @click="toggleSpeech" class="w-fit" />
+                      <UButton color="blue"
+                        :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'" variant="ghost"
+                        @click="toggleSpeech" class="w-fit" />
 
-                      <UButton 
-                      color="blue"
-                      class="w-fit" icon="iconoir:arrow-up" type="submit"
+                      <UButton color="blue" class="w-fit" icon="iconoir:arrow-up" type="submit"
                         :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
                         :disabled="loading_q || userAnswer.trim() == ''"
                         loading-icon="svg-spinners:12-dots-scale-rotate" />
@@ -200,13 +211,16 @@ import { Vue3Lottie } from 'vue3-lottie';
 import { countries } from 'countries-list';
 import robotAnimation from '../../assets/lottie/robot.json'
 
+import approvedAnimation from '../../assets/lottie/approved.json'
+import deniedAnimation from '../../assets/lottie/denied.json'
+
 // Create a ref to access the Lottie component
 const lottieRef = ref(null);
 
 const visa_status_modal = ref(false);
 
 
-const retryInterView =()=>{
+const retryInterView = () => {
   window?.location?.reload()
 };
 
@@ -279,6 +293,7 @@ const recognition = ref(null);
 const rec_answer = ref('');
 const getNextQuestion2 = async () => {
   loading_q.value = true;
+  rec_answer.value = '';
   // playAnimation()
   try {
     const { data, error } = await useFetch('/api/answer', {
@@ -308,7 +323,7 @@ const getNextQuestion2 = async () => {
       decision.value = data.value.decision;
       rec_answer.value = data.value.recommendedReply;
 
-      if(data.value.isFinal){
+      if (data.value.isFinal) {
         visa_status_modal.value = true;
       }
       // Autoplay handled by <audio> tag with autoplay attribute
@@ -358,7 +373,7 @@ const toggleSpeech = () => {
 };
 
 onMounted(() => {
-  if(useRoute().query.modal){
+  if (useRoute().query.modal) {
     intro_questions.value = true;
   }
 
