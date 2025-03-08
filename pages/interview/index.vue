@@ -83,25 +83,26 @@
       <template #header>
         <h2 class="font-bold text-2xl text-left">
           <span v-if="decision.status == 'APPROVED'">Congratulations!</span>
-          <spoan v-else>You can try again next time</spoan>
-          Congratulations!
+          <span v-else>You can try again</span>
         </h2>
       </template>
 
       <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
-        <img src="../../assets/images/ok.png" class=" size-[200px]" />
-        <div v-if="decision.status == 'APPROVED'">
+        
+        <div v-if="decision.status == 'APPROVED'" class=" flex flex-col justify-center items-center">
+          <img src="../../assets/images/ok.png" class=" size-[200px]" />
           <span class="font-bold text-md text-green-500">VISA APPROVED</span>
           <span class="text-gray-500">Your visa application has been approved. You will receive an email with further
             instructions.</span>
         </div>
-        <div>
+        <div v-else class=" flex flex-col justify-center items-center">
+          <img src="../../assets/images/cancel.png" class=" size-[200px]" />
           <span class="font-bold text-md text-red-500">VISA DENIED</span>
           <span class="text-gray-500">Your visa application has been denied. Please review the reason below and try again
             later.</span>
         </div>
         <span>{{ decision.reason }}</span>
-        <UButton color="green" @click="resetInterview" label="Start New Interview" class="w-fit" />
+        <UButton color="green" @click="retryInterView()" label="Start New Interview" class="w-fit" />
       </div>
     </UCard>
   </UModal>
@@ -166,10 +167,14 @@
                   <div class="flex flex-col w-full">
                     <UTextarea v-model="userAnswer" class=" !w-full" placeholder="Type your answer here..." />
                     <div class=" flex justify-end items-center gap-3 py-3">
-                      <UButton :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
+                      <UButton 
+                      color="blue"
+                      :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
                         variant="ghost" @click="toggleSpeech" class="w-fit" />
 
-                      <UButton class="w-fit" icon="iconoir:arrow-up" type="submit"
+                      <UButton 
+                      color="blue"
+                      class="w-fit" icon="iconoir:arrow-up" type="submit"
                         :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
                         :disabled="loading_q || userAnswer.trim() == ''"
                         loading-icon="svg-spinners:12-dots-scale-rotate" />
@@ -199,6 +204,11 @@ import robotAnimation from '../../assets/lottie/robot.json'
 const lottieRef = ref(null);
 
 const visa_status_modal = ref(false);
+
+
+const retryInterView =()=>{
+  window?.location?.reload()
+};
 
 // Method to play the animation
 const playAnimation = () => {
@@ -321,6 +331,7 @@ const playAudio = () => {
 };
 
 const resetInterview = () => {
+  visa_status_modal.value = false;
   questionCount.value = 0;
   previousQuestions.value = [];
   previousAnswers.value = [];
