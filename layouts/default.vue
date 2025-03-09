@@ -1,20 +1,18 @@
 <template>
-    <TheNavbar/>
-    <div class=" container mx-auto">
-        <slot/>
+  <div class="min-h-screen">
+    <TheNavbar />
+    <div class="container mx-auto h-full">
+      <slot />
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    setup () {
-        
-
-        return {}
-    }
-}
+  setup() {
+    return {};
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

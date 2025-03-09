@@ -49,16 +49,7 @@
       Your smart assistant for a seamless visa application process
     </p>
     <div class="mt-6 flex items-center gap-3">
-    <!--   <UButton
-        :icon="
-          isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
-        "
-        color="gray"
-        variant="ghost"
-        label="Toggle Theme"
-        aria-label="Theme"
-        @click="isDark = !isDark"
-      /> -->
+    <!--  -->
       <UButton
         icon="heroicons:arrow-long-right"
         trailing="true"

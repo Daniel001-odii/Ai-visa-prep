@@ -3,7 +3,7 @@
     <NuxtPage/>
   </div> -->
 
-  <div >
+  <div class="dark:bg-slate-900" >
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
