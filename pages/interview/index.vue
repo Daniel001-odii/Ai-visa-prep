@@ -118,17 +118,19 @@
 
 
 
-  <div class="flex flex-col h-full justify-end md:justify-center items-center">
+  <!-- CHAT AREA -->
+  <div class="flex flex-col h-full justify-start md:justify-center items-center overflow-y-auto relative">
+
+    <!-- INTERVIEW TITLE -->
     <div class="flex flex-col p-5 text-center">
       <span class="font-bold">{{ questions.visa_type }} Interview</span>
       <span class="text-gray-500">Please provide detailed answers to all questions.</span>
     </div>
 
-    <!-- VO Officer Area -->
     <!-- VO AREA -->
     <div>
       <ClientOnly>
-        <div class=" mb-12">
+        <div class=" mb-3">
           <Vue3Lottie ref="lottieRef" :animationData="robotAnimation" :height="150" :width="150" :autoplay="false"
             :speed="1" />
         </div>
@@ -136,29 +138,13 @@
     </div>
 
     <!-- Q&A AREA -->
-    <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] relative align-bottom p-5">
-
-      <!-- RECOMMENDED ANSWER -->
-      <Transition name="fade-up">
-        <div v-if="rec_answer" @click="userAnswer = rec_answer"
-          class=" relative flex flex-col text-[10px]  rounded-lg text-white bg-green-500 cursor-pointer border-green-500 p-3 ">
-          <div class=" absolute -top-[15px]">
-            <UIcon name="iconoir:chat-lines-solid" class="text-green-500" />
-            <span class=" font-bold ml-1">Expert Suggestion (tap to select)</span>
-          </div>
-          <!-- <span class="blur-[1.8px]">{{ rec_answer }}</span> -->
-          <span>"{{ rec_answer }}"</span>
-        </div>
-      </Transition>
-
-
+    <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] align-bottom p-5 !border-red-500 absolute bottom-5">
       <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl">
         <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
         <div class="flex gap-3 items-start">
 
           <div class="flex flex-col gap-3 items-start w-full">
             <div class="flex">
-
               <div v-if="loading_q" class="flex items-center gap-2 w-full">
                 <UIcon name="svg-spinners:3-dots-bounce" />
                 <span class="italic font-bold">VO is typing...</span>
@@ -170,6 +156,20 @@
                 </span>
               </div>
             </div>
+
+            <!-- RECOMMENDED ANSWER -->
+            <Transition name="fade-up">
+              <div v-if="rec_answer" @click="userAnswer = rec_answer"
+                class="w-full relative flex flex-col text-[10px] rounded-lg text-white bg-green-500 cursor-pointer border-green-500 p-3 ">
+                <!-- <div class=" absolute -top-[15px]"> -->
+                <div class="flex items-center">
+                  <UIcon name="iconoir:chat-lines-solid" />
+                  <span class=" font-bold ml-1">Expert Suggestion (tap to select)</span>
+                </div>
+                <!-- <span class="blur-[1.8px]">{{ rec_answer }}</span> -->
+                <span>"{{ rec_answer }}"</span>
+              </div>
+            </Transition>
 
             <form v-if="!isFinal" @submit.prevent="getNextQuestion2" class="flex flex-col gap-2 w-full items-start">
               <div class="flex flex-col w-full">
