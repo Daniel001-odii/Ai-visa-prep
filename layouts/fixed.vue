@@ -1,7 +1,9 @@
 <template>
-    <div class=" fixed bg-purple-500 top-0 bottom-10 left-0 w-full h-full border !border-yellow-500 flex flex-col">
+    <div class=" fixed top-0 bottom-10 left-0 w-full h-full !border-yellow-500 flex flex-col dark:bg-slate-900">
         <TheNavbar/>
-        <slot/>
+        <div class=" h-full">
+            <slot/>
+        </div>
     </div>
 </template>
 

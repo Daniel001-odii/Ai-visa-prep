@@ -119,10 +119,11 @@
 
 
   <!-- CONTAINer -->
-  <div class="flex flex-col h-full bg-red-500 pb-12">
+  <div class="flex flex-col !h-full pb-12">
 
     <!-- CHAT AREA -->
-    <div class="h-fit bg-blue-500 overflow-y-auto flex flex-col gap-3 pb-6">
+    <div class="h-full overflow-y-auto flex flex-col gap-3 p-5">
+
       <div class="flex flex-col p-5 text-center">
         <span class="font-bold">{{ questions.visa_type }} Interview</span>
         <span class="text-gray-500">Please provide detailed answers to all questions.</span>
@@ -139,21 +140,18 @@
       </div>
 
       <!-- RECOMMENDED ANSWER -->
-      <!-- <div class=" flex flex-col overflow-y-auto h-full gap-3 pb-3 border !border-red-500"> -->
-        <Transition name="fade-up" v-for="item in 10">
-          <!-- <div class=" p-3 w-full max-w-[400px]"> -->
-          <UAlert color="green" variant="solid" :description="rec_answer"
-            :avatar="{ src: 'https://avatars.githubusercontent.com/u/739984?v=4' }" title="Expert Suggestion" />
-          <!-- </div> -->
-        </Transition>
-      <!-- </div> -->
-
+      <Transition name="fade">
+        <div class="">
+          <UAlert v-if="rec_answer" icon="iconoir:chat-lines" color="green" variant="solid" :description="rec_answer"
+            title="Expert Suggetion" />
+        </div>
+      </Transition>
     </div>
 
     <!-- TYPING AREA/BOX -->
-    <div class=" bg-yellow-500 p-5">
+    <div class=" p-5">
       <!-- Q&A AREA -->
-      <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] border !border-red-500">
+      <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] !border-red-500">
         <!-- <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] align-bottom bg-inherit border !border-red-500 absolute bottom-5"> -->
         <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl">
           <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>

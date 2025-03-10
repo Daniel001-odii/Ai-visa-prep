@@ -1,11 +1,11 @@
 <template>
-    <nav class="border-b border dark:border-gray-800 dark:bg-inherit">
+    <nav class="border-b  dark:border-gray-800 dark:bg-inherit">
 
         <!-- NON AUTH NABAR -->
         <div v-if="false" class=" flex p-3 container mx-auto items-center justify-between relative">
 
             <!-- LOGO -->
-             <NuxtLink to="/">
+            <NuxtLink to="/">
                 <span class=" font-bold">AiVisaPrep</span>
             </NuxtLink>
 
@@ -132,7 +132,7 @@ const items = [
         label: 'ben@example.com',
         slot: 'account',
         disabled: true,
-        
+
     }], [{
         label: 'Account',
         icon: 'heroicons:user-circle',
