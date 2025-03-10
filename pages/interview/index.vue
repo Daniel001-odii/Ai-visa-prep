@@ -122,7 +122,7 @@
   <div class="flex flex-col h-full bg-red-500 pb-12">
 
     <!-- CHAT AREA -->
-    <div class="h-fit bg-blue-500 overflow-y-auto">
+    <div class="h-fit bg-blue-500 overflow-y-auto flex flex-col gap-3 pb-6">
       <div class="flex flex-col p-5 text-center">
         <span class="font-bold">{{ questions.visa_type }} Interview</span>
         <span class="text-gray-500">Please provide detailed answers to all questions.</span>
@@ -139,14 +139,14 @@
       </div>
 
       <!-- RECOMMENDED ANSWER -->
-      <div class=" flex flex-col overflow-y-auto h-full gap-3 pb-3 border !border-red-500">
+      <!-- <div class=" flex flex-col overflow-y-auto h-full gap-3 pb-3 border !border-red-500"> -->
         <Transition name="fade-up" v-for="item in 10">
           <!-- <div class=" p-3 w-full max-w-[400px]"> -->
           <UAlert color="green" variant="solid" :description="rec_answer"
             :avatar="{ src: 'https://avatars.githubusercontent.com/u/739984?v=4' }" title="Expert Suggestion" />
           <!-- </div> -->
         </Transition>
-      </div>
+      <!-- </div> -->
 
     </div>
 
