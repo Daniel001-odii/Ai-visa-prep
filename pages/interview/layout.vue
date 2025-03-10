@@ -1,8 +1,8 @@
 <template>
-    <div class=" min-h-screen flex flex-col justify-between">
+    <div class=" relative w-full flex flex-col justify-between h-[100dvh]">
         <div class=" bg-red-500 w-full p-5">navbar</div>
         <div class=" bg-green-500 w-full p-12">
-            <div class=" bg-blue-500 p-5">chat box</div>
+            <input type="text">
         </div>
     </div>
 </template>
