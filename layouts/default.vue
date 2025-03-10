@@ -1,10 +1,9 @@
 <template>
-  <div class="min-h-screen">
-    <TheNavbar />
-    <div class="container mx-auto h-full">
+  <!-- <div class="min-h-screen"> -->
+    <!-- <div class="container mx-auto h-full"> -->
       <slot />
-    </div>
-  </div>
+    <!-- </div> -->
+  <!-- </div> -->
 </template>
 
 <script>
