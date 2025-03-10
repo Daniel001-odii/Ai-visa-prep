@@ -117,92 +117,84 @@
   </UModal>
 
 
-  <!-- Main interview interface -->
-  <div class=" flex flex-col fixed top-0 bottom-0 w-full h-full">
-    <TheNavbar />
-    <div class=" container mx-auto h-full mb-12 border border-red-500">
 
+  <div class="flex flex-col h-full justify-end md:justify-center items-center">
+    <div class="flex flex-col p-5 text-center">
+      <span class="font-bold">{{ questions.visa_type }} Interview</span>
+      <span class="text-gray-500">Please provide detailed answers to all questions.</span>
+    </div>
 
-      <div class="flex flex-col min-h-screen justify-end md:justify-center items-center">
-        <div class="flex flex-col p-5 text-center">
-          <span class="font-bold">{{ questions.visa_type }} Interview</span>
-          <span class="text-gray-500">Please provide detailed answers to all questions.</span>
+    <!-- VO Officer Area -->
+    <!-- VO AREA -->
+    <div>
+      <ClientOnly>
+        <div class=" mb-12">
+          <Vue3Lottie ref="lottieRef" :animationData="robotAnimation" :height="150" :width="150" :autoplay="false"
+            :speed="1" />
         </div>
+      </ClientOnly>
+    </div>
 
-        <!-- VO Officer Area -->
-        <!-- VO AREA -->
-        <div>
-          <ClientOnly>
-            <div class=" mb-12">
-              <Vue3Lottie ref="lottieRef" :animationData="robotAnimation" :height="150" :width="150" :autoplay="false"
-                :speed="1" />
-            </div>
-          </ClientOnly>
+    <!-- Q&A AREA -->
+    <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] relative align-bottom p-5">
+
+      <!-- RECOMMENDED ANSWER -->
+      <Transition name="fade-up">
+        <div v-if="rec_answer" @click="userAnswer = rec_answer"
+          class=" relative flex flex-col text-[10px]  rounded-lg text-white bg-green-500 cursor-pointer border-green-500 p-3 ">
+          <div class=" absolute -top-[15px]">
+            <UIcon name="iconoir:chat-lines-solid" class="text-green-500" />
+            <span class=" font-bold ml-1">Expert Suggestion (tap to select)</span>
+          </div>
+          <!-- <span class="blur-[1.8px]">{{ rec_answer }}</span> -->
+          <span>"{{ rec_answer }}"</span>
         </div>
+      </Transition>
 
-        <!-- Q&A AREA -->
-        <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] relative align-bottom p-5 mb-12">
 
-          <!-- RECOMMENDED ANSWER -->
-          <Transition name="fade-up">
-            <div v-if="rec_answer" @click="userAnswer = rec_answer"
-              class=" relative flex flex-col text-[10px]  rounded-lg text-white bg-green-500 cursor-pointer border-green-500 p-3 ">
-              <div class=" absolute -top-[15px]">
-                <UIcon name="iconoir:chat-lines-solid" class="text-green-500" />
-                <span class=" font-bold ml-1">Expert Suggestion (tap to select)</span>
+      <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl">
+        <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
+        <div class="flex gap-3 items-start">
+
+          <div class="flex flex-col gap-3 items-start w-full">
+            <div class="flex">
+
+              <div v-if="loading_q" class="flex items-center gap-2 w-full">
+                <UIcon name="svg-spinners:3-dots-bounce" />
+                <span class="italic font-bold">VO is typing...</span>
               </div>
-              <!-- <span class="blur-[1.8px]">{{ rec_answer }}</span> -->
-              <span>"{{ rec_answer }}"</span>
+              <div v-else class="font-bold text-md flex items-start gap-3">
+                <span>
+                  <UButton icon="heroicons:speaker-wave-solid" color="blue" variant="soft" size="[10px]"
+                    @click="playAudio" /> {{ currentQuestion }}
+                </span>
+              </div>
             </div>
-          </Transition>
 
-
-          <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl mb-4">
-            <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
-            <div class="flex gap-3 items-start">
-
-              <div class="flex flex-col gap-3 items-start w-full">
-                <div class="flex">
-
-                  <div v-if="loading_q" class="flex items-center gap-2 w-full">
-                    <UIcon name="svg-spinners:3-dots-bounce" />
-                    <span class="italic font-bold">VO is typing...</span>
-                  </div>
-                  <div v-else class="font-bold text-md flex items-start gap-3">
-                    <span>
-                      <UButton icon="heroicons:speaker-wave-solid" color="blue" variant="soft" size="[10px]"
-                        @click="playAudio" /> {{ currentQuestion }}
-                    </span>
-                  </div>
+            <form v-if="!isFinal" @submit.prevent="getNextQuestion2" class="flex flex-col gap-2 w-full items-start">
+              <div class="flex flex-col w-full">
+                <textarea v-model="userAnswer" placeholder="Your answer here..."
+                  class=" outline-none bg-transparent max-h-[200px]"></textarea>
+                <!-- <UTextarea v-model="userAnswer" class=" !w-full outline-none" placeholder="Type your answer here..." /> -->
+                <div class=" flex justify-end items-center gap-3 py-3">
+                  <UButton color="blue" :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
+                    variant="ghost" @click="toggleSpeech" class="w-fit" />
+                  <UButton color="blue" class="w-fit" icon="iconoir:arrow-up" type="submit"
+                    :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
+                    :disabled="loading_q || userAnswer.trim() == ''" loading-icon="svg-spinners:12-dots-scale-rotate" />
                 </div>
-
-                <form v-if="!isFinal" @submit.prevent="getNextQuestion2" class="flex flex-col gap-2 w-full items-start">
-                  <div class="flex flex-col w-full">
-                    <textarea v-model="userAnswer" placeholder="Your answer here..."
-                      class=" outline-none bg-transparent max-h-[200px]"></textarea>
-                    <!-- <UTextarea v-model="userAnswer" class=" !w-full outline-none" placeholder="Type your answer here..." /> -->
-                    <div class=" flex justify-end items-center gap-3 py-3">
-                      <UButton color="blue"
-                        :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'" variant="ghost"
-                        @click="toggleSpeech" class="w-fit" />
-                      <UButton color="blue" class="w-fit" icon="iconoir:arrow-up" type="submit"
-                        :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
-                        :disabled="loading_q || userAnswer.trim() == ''"
-                        loading-icon="svg-spinners:12-dots-scale-rotate" />
-                    </div>
-                  </div>
-                </form>
-                <UButton color="blue" v-else @click="resetInterview" label="Start New Interview" class="w-fit" />
               </div>
-            </div>
+            </form>
+            <UButton color="blue" v-else @click="resetInterview" label="Start New Interview" class="w-fit" />
           </div>
         </div>
-
       </div>
-
-
     </div>
+
   </div>
+
+
+
 
 </template>
 

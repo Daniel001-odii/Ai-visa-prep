@@ -1,9 +1,10 @@
 <template>
-  <!-- <div class="min-h-screen"> -->
-    <!-- <div class="container mx-auto h-full"> -->
+  <div class=" h-[100dvh] flex flex-col">
+    <TheNavbar/>
+    <div class="container mx-auto h-full">
       <slot />
-    <!-- </div> -->
-  <!-- </div> -->
+    </div>
+  </div>
 </template>
 
 <script>
