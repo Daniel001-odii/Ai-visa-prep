@@ -5,7 +5,9 @@
         <div v-if="false" class=" flex p-3 container mx-auto items-center justify-between relative">
 
             <!-- LOGO -->
-            <span class=" font-bold">AiVisaPrep</span>
+             <NuxtLink to="/">
+                <span class=" font-bold">AiVisaPrep</span>
+            </NuxtLink>
 
             <div :class="mobile_nav ? 'md:flex' : ' hidden md:flex'"
                 class=" w-full gap-3 md:border-none border-b bg-inherit md:relative md:justify-between absolute top-[100%] left-0 justify-center p-2 md:p-0">
@@ -37,7 +39,9 @@
         <div class=" flex p-3 container mx-auto items-center justify-between relative">
 
             <!-- LOGO -->
-            <span class=" font-bold">AiVisaPrep</span>
+            <NuxtLink to="/">
+                <span class=" font-bold">AiVisaPrep</span>
+            </NuxtLink>
 
             <!-- USER PROFILE -->
             <UDropdown class=" dark:bg-slate-800" :items="items"

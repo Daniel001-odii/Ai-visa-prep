@@ -118,7 +118,7 @@
 
 
   <!-- Main interview interface -->
-  <div class="flex flex-col fixed top-[60px] left-0 right-0 bottom-0">
+  <div class="flex flex-col min-h-screen">
     <div class="flex flex-col p-5 text-center">
       <span class="font-bold">{{ questions.visa_type }} Interview</span>
       <span class="text-gray-500">Please provide detailed answers to all questions.</span>
@@ -140,25 +140,22 @@
 
 
       <!-- Q&A AREA -->
-      <div class=" flex w-full md:max-w-[500px] relative ">
+      <div class=" flex flex-col gap-3 w-full md:max-w-[500px] relative ">
 
         <!-- RECOMMENDED ANSWER -->
-        <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 w-full">
         <!-- <div class="absolute -top-14 left-5 transform -translate-x-1/2 w-full"> -->
-          <div @click="userAnswer = rec_answer"
-            class=" relative flex flex-col text-[10px]  rounded-lg mb-3 text-white bg-green-500 cursor-pointer border-green-500 p-3 ">
-            <div class=" absolute -top-[15px]">
-              <UIcon name="iconoir:chat-lines-solid" class="text-green-500" />
-              <span class=" font-bold ml-1">Expert Suggestion</span>
-            </div>
-            <!-- <span class="blur-[1.8px]">{{ rec_answer }}</span> -->
-            <span>"{{ rec_answer }}"</span>
+        <div @click="userAnswer = rec_answer"
+          class=" relative flex flex-col text-[10px]  rounded-lg text-white bg-green-500 cursor-pointer border-green-500 p-3 ">
+          <div class=" absolute -top-[15px]">
+            <UIcon name="iconoir:chat-lines-solid" class="text-green-500" />
+            <span class=" font-bold ml-1">Expert Suggestion (tap to select)</span>
           </div>
+          <!-- <span class="blur-[1.8px]">{{ rec_answer }}</span> -->
+          <span>"{{ rec_answer }}"</span>
         </div>
 
 
-        <div
-          class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl mb-4">
+        <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl mb-4">
           <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
           <div class="flex gap-3 items-start">
 
@@ -170,10 +167,10 @@
                   <span class="italic font-bold">VO is typing...</span>
                 </div>
                 <!-- <span v-else-if="isFinal" class="font-bold text-md"
-                  :class="decision.status == 'DENIED' ? 'text-red-500' : 'text-green-500'">VISA {{ decision.status }}:
-                  {{
-                    decision.reason
-                  }}</span> -->
+              :class="decision.status == 'DENIED' ? 'text-red-500' : 'text-green-500'">VISA {{ decision.status }}:
+              {{
+                decision.reason
+              }}</span> -->
                 <div v-else class="font-bold text-md flex items-start gap-3">
 
                   <span>
