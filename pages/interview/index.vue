@@ -2,7 +2,7 @@
   <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit text-white font-sans"
     :class="{ 'opacity-80': isThinking }">
     <!-- Chat header (if needed) -->
-    <div class="flex items-center p-4 border-b border-gray-800">
+   <!--  <div class="flex items-center p-4 border-b border-gray-800">
       <div class="mr-4 text-white">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
           class="fill-none stroke-current stroke-2">
@@ -11,11 +11,12 @@
         </svg>
       </div>
       <div class="flex flex-col justify-center">
-        <!-- <div class="text-lg font-medium">{{ greeting }}</div> -->
         <div class="text-lg font-medium">Good evening</div>
         <div class="text-sm text-gray-400">How can I help you today?</div>
       </div>
     </div>
+ -->
+    <TheNavbar/>
 
     <!-- Chat messages container with scroll -->
     <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4" ref="messagesContainer">
