@@ -1,5 +1,5 @@
 <template>
-  <div class=" h-[100dvh] flex flex-col">
+  <div class=" flex flex-col">
     <TheNavbar/>
     <div class="container mx-auto h-full">
       <slot />
