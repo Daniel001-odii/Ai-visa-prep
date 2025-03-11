@@ -122,7 +122,7 @@
   <div class="flex flex-col !h-full pb-12">
 
     <!-- CHAT AREA -->
-    <div class="h-full overflow-y-auto flex flex-col gap-3 p-5">
+    <div class="!h-[700px] flex flex-col gap-4 overflow-y-auto relative border !border-red-500 max-w-[400px] mx-auto p-3" ref="chatContainer" >
 
       <div class="flex flex-col p-5 text-center">
         <span class="font-bold">{{ questions.visa_type }} Interview</span>
@@ -142,18 +142,21 @@
       <!-- RECOMMENDED ANSWER -->
       <Transition name="fade">
         <div class="">
-          <UAlert v-if="rec_answer" icon="iconoir:chat-lines" color="green" variant="solid" :description="rec_answer"
+          <UAlert 
+          class=" blur-[1.8px] max-w-[400px]"
+          v-if="rec_answer" icon="iconoir:chat-lines" color="green" variant="solid" :description="rec_answer"
             title="Expert Suggetion" />
         </div>
       </Transition>
+
     </div>
 
     <!-- TYPING AREA/BOX -->
     <div class=" p-5">
       <!-- Q&A AREA -->
-      <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] !border-red-500">
+      <div class=" flex flex-col gap-3 min-w-full max-w-[400px] md:min-w-[400px] mx-auto !border-red-500 ">
         <!-- <div class=" flex flex-col gap-3 min-w-full md:min-w-[400px] align-bottom bg-inherit border !border-red-500 absolute bottom-5"> -->
-        <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl">
+        <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl !h-[200px]">
           <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
           <div class="flex gap-3 items-start">
 
@@ -173,8 +176,8 @@
 
               <form v-if="!isFinal" @submit.prevent="getNextQuestion2" class="flex flex-col gap-2 w-full items-start">
                 <div class="flex flex-col w-full">
-                  <textarea v-model="userAnswer" placeholder="Your answer here..."
-                    class=" outline-none bg-transparent max-h-[200px]"></textarea>
+                  <input type="textarea" v-model="userAnswer" placeholder="Your answer here..."
+                    class=" outline-none bg-transparent max-h-[200px]"/>
                   <!-- <UTextarea v-model="userAnswer" class=" !w-full outline-none" placeholder="Type your answer here..." /> -->
                   <div class=" flex justify-end items-center gap-3 py-3">
                     <UButton color="blue" :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
@@ -213,6 +216,31 @@ import robotAnimation from '../../assets/lottie/robot.json'
 import approvedAnimation from '../../assets/lottie/approved.json'
 import deniedAnimation from '../../assets/lottie/denied.json'
 
+
+import { ref, nextTick } from 'vue';
+
+const rec_answer = ref('');
+
+const chatContainer = ref(null);
+
+const scrollToBottom = () => {
+  if (chatContainer.value) {
+    const { scrollTop, clientHeight, scrollHeight } = chatContainer.value;
+    const wasAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+    if (wasAtBottom) {
+      nextTick(() => {
+        chatContainer.value.scrollTop = scrollHeight - clientHeight;
+        console.log("chat scrolled")
+      });
+    }
+  }
+};
+
+watch(() => rec_answer, () => {
+  // scrollToBottom();
+});
+
+
 // Create a ref to access the Lottie component
 const lottieRef = ref(null);
 
@@ -238,6 +266,7 @@ const pauseAnimation = () => {
 };
 
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
+
 
 const show_answer_pane = ref(true);
 const intro_questions = ref(false);
@@ -289,7 +318,7 @@ const yes_no_options = ["Yes", "No"];
 const audio = ref(null);
 const isListening = ref(false);
 const recognition = ref(null);
-const rec_answer = ref('');
+
 const getNextQuestion2 = async () => {
   loading_q.value = true;
   rec_answer.value = '';
@@ -321,6 +350,9 @@ const getNextQuestion2 = async () => {
       isFinal.value = data.value.isFinal;
       decision.value = data.value.decision;
       rec_answer.value = data.value.recommendedReply;
+
+      // scroll chat to bottom..
+      // scrollToBottom();
 
       if (data.value.isFinal) {
         visa_status_modal.value = true;

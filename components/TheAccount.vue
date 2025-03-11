@@ -1,8 +1,8 @@
 <template>
 <div>
 
-    <div class="flex flex-col gap-3">
-        <div class=" w-full rounded-md text-white dark:border-gray-600 bg-black h-[150px] bg-right-bottom bg-contain flex flex-col p-5"
+    <div class="flex flex-col gap-12">
+        <!-- <div class=" w-full rounded-md text-white dark:border-gray-600 bg-black h-[150px] bg-right-bottom bg-contain flex flex-col p-5"
             :style="`background: url(${grok_image})`">
             <div class=" flex justify-between items-center">
                 <span class=" text-3xl">Ai-Visa Pro</span>
@@ -15,7 +15,7 @@
                 <li>Select prefered bot level</li>
             </ul>
 
-        </div>
+        </div> -->
         <div>
             <span class=" font-bold">Profile</span>
             <div class=" flex flex-col mt-2">
