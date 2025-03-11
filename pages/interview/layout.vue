@@ -18,12 +18,11 @@
 
         <!-- Chat messages container with scroll -->
         <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4" ref="messagesContainer">
+
             <!-- Default/permanent messages -->
-            <div v-for="(message, index) in defaultMessages" :key="`default-${index}`"
-                class="flex flex-col max-w-[85%]">
-                <div class="px-4 py-3 rounded-lg bg-gray-800 self-start">
-                    {{ message.text }}
-                </div>
+             <!-- VO AREA -->
+            <div class=" flex justify-center items-center">
+               <span>New Student Visa Interview</span>
             </div>
 
             <!-- Dynamic messages -->
