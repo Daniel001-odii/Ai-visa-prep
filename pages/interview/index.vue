@@ -137,9 +137,13 @@
         </div>
 
 
+        <!-- VO PLACEHOLDER -->
+        <!-- <div v-if="!show_message_train">
+          <img src="../../assets/images/table/vo_1.svg" class=" size-full mx-auto"/>
+        </div> -->
 
         <!-- MESSAGES -->
-        <div v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500"
+        <div v-if="show_message_train" v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500"
           :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
           <span>{{ chat.message }}</span>
           {{ chat.message }}
@@ -190,7 +194,7 @@
             <div class="flex flex-col gap-3 items-start w-full">
               <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
                 <div class="flex justify-center w-full" :class="check_me ? 'flex-col' : ''">
-                  <textarea @focus="userAnswer == '' ? (check_me = true) : ''"
+                  <textarea @focus="userAnswer ? (check_me = true) : ''"
                     @blur="userAnswer == '' ? (check_me = false) : (check_me = true)" v-model="userAnswer"
                     class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
                   
@@ -224,6 +228,7 @@ const countryList = Object.entries(countries).map(([code, data]) => ({ code, nam
 
 const check_me = ref(false)
 const messages = ref([]);
+const show_message_train = ref(false);
 
 // Computed properties
 /* const greeting = computed(() => {
