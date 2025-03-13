@@ -90,20 +90,12 @@
       <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
 
         <div v-if="decision.status == 'APPROVED'" class=" flex flex-col justify-center items-center">
-          <!-- <ClientOnly>
-            <Vue3Lottie :animationData="approvedAnimation" :height="200" :width="200" :autoplay="false"
-              :speed="1" />
-          </ClientOnly> -->
           <img src="../../assets/images/ok.png" class=" size-[200px]" />
           <span class="font-bold text-md text-green-500">VISA APPROVED</span>
           <span class="text-gray-500">Your visa application has been approved. You will receive an email with further
             instructions.</span>
         </div>
         <div v-else class=" flex flex-col justify-center items-center">
-          <!-- <ClientOnly>
-            <Vue3Lottie :animationData="deniedAnimation" :height="200" :width="200" :autoplay="false"
-              :speed="1" />
-          </ClientOnly> -->
           <img src="../../assets/images/cancel.png" class=" size-[200px]" />
           <span class="font-bold text-md text-red-500">VISA DENIED</span>
           <span class="text-gray-500">Your visa application has been denied. Please review the reason below and try
@@ -153,6 +145,7 @@
 
     <!-- TYPING AREA/BOX -->
     <div class=" p-5">
+
       <!-- Q&A AREA -->
       <div class=" flex flex-col gap-3 min-w-full max-w-[400px] md:min-w-[400px] mx-auto !border-red-500 ">
         <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl !h-[200px]">
@@ -192,6 +185,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
 
@@ -249,19 +243,6 @@ const retryInterView = () => {
   window?.location?.reload()
 };
 
-// Method to play the animation
-const playAnimation = () => {
-  if (lottieRef.value) {
-    lottieRef.value.play();
-  }
-};
-
-// Method to pause the animation
-const pauseAnimation = () => {
-  if (lottieRef.value) {
-    lottieRef.value.pause();
-  }
-};
 
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
 
