@@ -47,7 +47,7 @@
             <UDropdown class=" dark:bg-slate-800" :items="items"
                 :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-white dark:bg-slate-900' }"
                 :popper="{ placement: 'bottom-start' }">
-                <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
+                <UAvatar alt="John Doe" size="lg" class="rounded-full"/>
 
                 <template #account="{ item }">
                     <div class="text-left">
@@ -76,7 +76,7 @@
             <template #header>
                 <div class="flex items-center justify-between">
                     <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-                        Account & Settings
+                        Settings
                     </h3>
                     <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
                         @click="account_modal = false" />
@@ -129,12 +129,12 @@ const isDark = computed({
 
 const items = [
     [{
-        label: 'ben@example.com',
+        label: 'johndoe@example.com',
         slot: 'account',
         disabled: true,
 
     }], [{
-        label: 'Account',
+        label: 'Settings',
         icon: 'heroicons:user-circle',
         shortcuts: ['E'],
         click: () => {
