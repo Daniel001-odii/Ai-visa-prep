@@ -9,31 +9,16 @@
       <div class="flex flex-col justify-center items-center gap-3">
         <div class="">
           <div class="avatar-container" :class="{ revealed: isRevealed }">
-            <img
-              v-if="!isRevealed"
-              :src="placeholderImages[currentPlaceholder]"
-              alt="Placeholder"
-              class="avatar placeholder"
-            />
-            <img
-              v-else
-              :src="selectedUserImage"
-              alt="Selected User"
-              class="avatar"
-            />
+            <img v-if="!isRevealed" :src="placeholderImages[currentPlaceholder]" alt="Placeholder"
+              class="avatar placeholder" />
+            <img v-else :src="selectedUserImage" alt="Selected User" class="avatar" />
           </div>
 
           <div class="flex flex-col gap-2 justify-center items-center mt-4">
             <span class="font-bold">Meet Your Visa Officer</span>
-            <UButton
-              @click="isRevealed ? (useRouter().push('/Interview')) : (startSelection())"
-              :disabled="isAnimating"
-              :label="isRevealed ? 'Start Interview':'Select Visa Officer'"
-              color="green"
-              class="w-fit"
-              :loading="isAnimating"
-              loading-icon="svg-spinners:12-dots-scale-rotate"
-            />
+            <UButton @click="isRevealed ? (useRouter().push('/Interview')) : (startSelection())" :disabled="isAnimating"
+              :label="isRevealed ? 'Start Interview' : 'Select Visa Officer'" color="green" class="w-fit"
+              :loading="isAnimating" loading-icon="svg-spinners:12-dots-scale-rotate" />
           </div>
           <!--   <button @click="startSelection" :disabled="isAnimating">
             Pick a Random User
@@ -43,21 +28,116 @@
     </UCard>
   </UModal>
 
-  <div class="flex flex-col justify-center items-center min-h-screen">
-    <h1 class="text-4xl font-bold text-center">Welcome to AI Visa Prep</h1>
-    <p class="text-lg text-center mt-4">
-      Your smart assistant for a seamless visa application process
-    </p>
-    <div class="mt-6 flex items-center gap-3">
-    <!--  -->
-      <UButton
-        icon="heroicons:arrow-long-right"
-        trailing="true"
-        color="blue"
-        label="Try Now"
-        @click="useRouter().push('/Interview?modal=true')"
-      />
+  <div class="flex flex-col justify-start items-center min-h-screen p-5 ">
+
+    <div class="flex flex-col justify-center items-center mt-[100px] gap-6">
+      <span class=" text-black dark:text-white text-opacity-50 text-sm border rounded-3xl bg-white px-4 py-2">Currently
+        for Nigerian based immigrants
+      </span>
+      <h1 class="text-5xl text-center">Master Your Visa Interview<br/> with AI-Powered Precision</h1>
+      <p class="text-lg text-center mt-2 max-w-[650px]">Preparing for a visa interview can be stressful, but with VisaMaster AI, you gain a competitive edge. Our intelligent simulator replicates real visa interviews, offering tailored feedback, dynamic practice sessions, and expert guidance to boost your confidence and success rate.
+      </p>
+
+      <div class="flex gap-4 mt-4">
+        <UButton size="xl" color="blue" label="Start free trial" @click="useRouter().push('/Interview?modal=true')" />
+        <UButton label="Pricing" variant="ghost" size="xl" class=" bg-inherit" color="green" />
+      </div>
+
+      <!-- hero image -->
+      <div class=" rounded-t-3xl mt-4 overflow-hidden">
+        <img src="../assets/images/hero/hero_1.png" />
+      </div>
+
     </div>
+
+    <!-- NEW SECTION -->
+    <div class=" flex flex-col border-t pt-[100px] mt-12 w-full justify-center items-center gap-12">
+
+      <div class="flex flex-col max-w-[500px] justify-center items-center text-center gap-3">
+        <span class=" font-bold text-3xl ">Why Choose <span class="text-blue-500">VisaMaster</span> AI?build</span>
+        <span>Join thousands of applicants who have boosted their visa approval chances with VisaMaster AI. Real practice. Real results.</span>
+      </div>
+
+
+       <!-- NEW SECTION -->
+      <div class="flex flex-wrap gap-4 justify-center items-center  ">
+        <div class=" flex flex-col flex-1 min-w-fit bg-white rounded-lg p-6 border">
+          <UIcon name="material-symbols-light:rocket-launch-outline" class=" size-9"/>
+          <span class=" font-bold">Realistic Interview Simulations</span>
+          <p>Experience AI-driven mock interviews tailored to your visa category.</p>
+        </div>
+
+        <div class=" flex flex-col flex-1 min-w-fit bg-white rounded-lg p-6 border">
+          <UIcon name="material-symbols-light:chat-apps-script-outline-rounded" class=" size-9"/>
+          <span class=" font-bold">Personalized Feedback</span>
+          <p>Get instant, actionable insights to improve your responses.</p>
+        </div>
+
+        <div class=" flex flex-col flex-1 min-w-fit bg-white rounded-lg p-6 border">
+          <UIcon name="material-symbols-light:settings-account-box-outline-rounded" class=" size-9"/>
+          <span class=" font-bold">Visa-Specific Guidance</span>
+          <p>Expert-curated questions based on real embassy interview trends.</p>
+        </div>
+
+        <div class=" flex flex-col flex-1 min-w-fit bg-white rounded-lg p-6 border">
+          <UIcon name="material-symbols-light:tactic" class=" size-9"/>
+          <span class=" font-bold">AI-Powered Analysis</span>
+          <p>Identify weak points and refine your answers with smart coaching.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col bg-gray-200 p-[150px] min-h-[300px] gap-6">
+        <div class=" text-4xl">
+          "VisaMaster AI was a game-changer for me. It gave me the confidence and preparation I needed to ace my interview. Highly recommended!"
+        </div>
+        <div class="flex gap-3">
+          <UAvatar alt="Chidera Emmanuel"/>
+          <div class=" flex flex-col">
+            <span class=" font-bold">Chidera Emmanuel</span>
+            <span>Founder Zenit technologies</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="flex flex-col max-w-[500px] justify-center items-center text-center gap-3">
+        <span class=" font-bold text-3xl ">How It Works</span>
+        
+      </div>
+
+      <div class=" flex flex-wrap gap-6">
+        <div class=" flex flex-col flex-1 min-w-fit rounded-lg p-6">
+          <UIcon name="material-symbols-light:stylus-laser-pointer" class=" size-9"/>
+          <span class=" font-bold">Select Your Visa Type </span>
+          <p> Student, work, tourist, or business visa..</p>
+        </div>
+
+        <div class=" flex flex-col flex-1 min-w-fit rounded-lg p-6">
+          <UIcon name="material-symbols-light:live-tv" class=" size-9"/>
+          <span class=" font-bold">Engage in a Live AI Interview</span>
+          <p> Answer real-world questions in an interactive format.</p>
+        </div>
+
+        <div class=" flex flex-col flex-1 min-w-fit rounded-lg p-6">
+          <UIcon name="material-symbols-light:feedback" class=" size-9"/>
+          <span class=" font-bold">Receive Instant Feedback  </span>
+          <p>AI evaluates your confidence, clarity, and content.</p>
+        </div>
+
+        <div class=" flex flex-col flex-1 min-w-fit rounded-lg p-6">
+          <UIcon name="material-symbols-light:tactic" class=" size-9"/>
+          <span class=" font-bold">Refine & Retake </span>
+          <p>Improve your responses and retry for better performance.</p>
+        </div>
+      </div>
+    </div>
+
+
+    <span>AiVisaPrep &copy; 2025 by daniel</span>
+
+
+   
+
   </div>
 </template>
 
@@ -82,7 +162,7 @@ const vo = ref({
 import vo_1 from "@/assets/images/vo_1.svg";
 import vo_2 from "@/assets/images/vo_2.svg";
 
-import placeholder_image from "@/assets/placeholder.png";
+
 
 const isAnimating = ref(false);
 const isRevealed = ref(false);
@@ -92,6 +172,15 @@ const placeholderImages = ref([
   vo_1,
   vo_2,
 ]);
+
+
+const speak = () => {
+  console.log("trying to speak...")
+  const synth = window.speechSynthesis;
+  const utterance = new SpeechSynthesisUtterance("hello world");
+  synth.speak(utterance);
+}
+
 
 // Methods
 const startSelection = async () => {
@@ -144,7 +233,8 @@ const shuffleAnimation = () => {
   position: relative;
   overflow: hidden;
   border-radius: 50%;
-  background: #f0f0f0; /* Optional: subtle background during shuffle */
+  background: #f0f0f0;
+  /* Optional: subtle background during shuffle */
 }
 
 .avatar {
@@ -157,7 +247,8 @@ const shuffleAnimation = () => {
 }
 
 .placeholder {
-  animation: flicker 1s infinite; /* Fast flicker during shuffle */
+  animation: flicker 1s infinite;
+  /* Fast flicker during shuffle */
 }
 
 .revealed .avatar {
@@ -170,10 +261,12 @@ const shuffleAnimation = () => {
     opacity: 0.7;
     transform: scale(0.95);
   }
+
   50% {
     opacity: 1;
     transform: scale(1);
   }
+
   100% {
     opacity: 0.7;
     transform: scale(0.95);
@@ -186,6 +279,7 @@ const shuffleAnimation = () => {
     opacity: 0;
     transform: scale(0.9) rotate(5deg);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) rotate(0deg);

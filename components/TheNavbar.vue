@@ -47,8 +47,8 @@
             <UDropdown class=" dark:bg-slate-800" :items="items"
                 :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-white dark:bg-slate-900' }"
                 :popper="{ placement: 'bottom-start' }">
-                <UAvatar alt="John Doe" size="lg" class="rounded-full"/>
-
+                <UIcon name="iconoir:profile-circle"/>
+                <!-- <UAvatar alt="John Doe" size="lg" class=" !rounded-full"/> -->
                 <template #account="{ item }">
                     <div class="text-left">
                         <p>

@@ -244,9 +244,10 @@ onMounted(()=>{
 });
  */
  const settings = reactive({
-    show_prev_msg: false,
-    show_rec_answers: false,
-})
+    show_prev_msg: true,
+    show_rec_answers: true,
+});
+
 
 // Methods
 const messagesContainer = ref(null);
