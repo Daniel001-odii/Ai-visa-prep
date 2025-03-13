@@ -148,20 +148,11 @@
         <!-- EXPERT SUGGESTION -->
         <div v-if="expert_suggestion" class="flex gap-3 bg-inherit p-3 pb-5 rounded-xl relative border group">
           <div class=" flex gap-3 absolute right-2 top-2 ">
-            <UButton
-            icon="iconoir:chat-bubble-check-solid"
-            variant="soft"
-            color="blue"
-            @click="userAnswer = expert_suggestion"
-            />
-            <UButton
-            icon="iconoir:xmark"
-            variant="soft"
-            color="blue"
-            @click="expert_suggestion = false"
-            />
+            <UButton icon="iconoir:chat-bubble-check-solid" variant="soft" color="blue"
+              @click="userAnswer = expert_suggestion" />
+            <UButton icon="iconoir:xmark" variant="soft" color="blue" @click="expert_suggestion = false" />
           </div>
-          
+
           <span>
             <UIcon name="iconoir:sparks-solid" />
           </span>
@@ -180,41 +171,41 @@
         <!-- TYPING AREA/BOX -->
         <!-- Q&A AREA -->
         <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
-          <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
-            <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
-            <div class="flex gap-3">
+          <div class="flex">
+            <div v-if="loading_q" class="flex items-center gap-2 w-full">
+              <UIcon name="svg-spinners:3-dots-bounce" />
+              <span class="italic font-bold">VO is typing...</span>
+            </div>
+            <div v-else class="font-bold text-md flex items-start gap-3">
+              <UButton icon="heroicons:speaker-x-mark-16-solid" color="blue" variant="soft" size="sm" @click="playAudio"
+                disabled />
+              <span>{{ currentQuestion }}</span>
+            </div>
+          </div>
 
-              <div class="flex flex-col gap-3 items-start w-full">
-                <div class="flex">
-                  <div v-if="loading_q" class="flex items-center gap-2 w-full">
-                    <UIcon name="svg-spinners:3-dots-bounce" />
-                    <span class="italic font-bold">VO is typing...</span>
-                  </div>
-                  <div v-else class="font-bold text-md flex items-start gap-3">
-                    <span>
-                      <UButton icon="heroicons:speaker-wave-solid" color="blue" variant="soft" size="sm"
-                        @click="playAudio" /> {{ currentQuestion }}
-                    </span>
+
+          <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
+            <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
+            <!-- <div class="flex gap-3"> -->
+            <div class="flex flex-col gap-3 items-start w-full">
+              <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
+                <div class="flex justify-center w-full" :class="check_me ? 'flex-col' : ''">
+                  <textarea @focus="userAnswer == '' ? (check_me = true) : ''"
+                    @blur="userAnswer == '' ? (check_me = false) : (check_me = true)" v-model="userAnswer"
+                    class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
+                  
+                  <div class=" flex justify-end items-center gap-3">
+                    <UButton color="blue" :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
+                      variant="ghost" @click="toggleSpeech" class="w-fit" />
+                    <UButton color="blue" class="w-fit" icon="iconoir:arrow-up" type="submit"
+                      :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
+                      :disabled="loading_q || userAnswer.trim() == ''"
+                      loading-icon="svg-spinners:12-dots-scale-rotate" />
                   </div>
                 </div>
-
-                <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-start">
-                  <div class="flex flex-col w-full">
-                    <textarea v-model="userAnswer" class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
-                    <!-- <UTextarea v-model="userAnswer" class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..." /> -->
-                    <div class=" flex justify-end items-center gap-3">
-                      <UButton color="blue"
-                        :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'" variant="ghost"
-                        @click="toggleSpeech" class="w-fit" />
-                      <UButton color="blue" class="w-fit" icon="iconoir:arrow-up" type="submit"
-                        :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
-                        :disabled="loading_q || userAnswer.trim() == ''"
-                        loading-icon="svg-spinners:12-dots-scale-rotate" />
-                    </div>
-                  </div>
-                </form>
-              </div>
+              </form>
             </div>
+            
           </div>
         </div>
       </div>
@@ -231,16 +222,8 @@ import { ref, onMounted, nextTick, watch, computed } from 'vue';
 import { countries } from 'countries-list';
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
 
-const messages = ref([
-  {
-    message: 'hello world',
-    sender: 'bot'
-  },
-  {
-    message: 'yes boss',
-    sender: 'user'
-  }
-]);
+const check_me = ref(false)
+const messages = ref([]);
 
 // Computed properties
 /* const greeting = computed(() => {
@@ -328,7 +311,7 @@ const getNextQuestion = async () => {
   loading_q.value = true;
   expert_suggestion.value = '';
   scrollToBottom();
-  
+
 
   // add to messages array...
   let chat = {
