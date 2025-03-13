@@ -26,7 +26,7 @@
                             <span>xenithheight@gmail.com</span>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between gap-3 flex-wrap">
                         <div class=" flex items-center gap-3">
                             <USkeleton class="h-12 w-12 rounded-full" />
                             <div class="grid gap-2">
@@ -44,19 +44,22 @@
             </div>
 
             <div>
-                <span class=" font-bold">Preferences</span>
+                <div class=" font-bold flex items-center gap-3">
+                    <span>Preferences</span> 
+                    <UBadge icon="i-lucide-rocket" size="xs" color="orange" variant="solid">Premium</UBadge>
+                </div>
                 <div class=" flex flex-col gap-3 mt-2 text-sm">
                     <div class=" flex justify-between items-center">
-                        <span>V.O Bot Level</span>
+                        <span>V.O Bot Level </span>
                         <USelectMenu v-model="selected_level" :options="bot_levels" disabled />
                     </div>
                     <div class=" flex justify-between items-center">
-                        <span>Show Previous messages in chat</span>
-                        <UToggle v-model="selected" :ui="{ active: ' bg-blue-500' }" disabled />
+                        <span>Show Previous messages in chat </span>
+                        <UToggle v-model="settings.show_prev_msg" @change="updateSettings" :ui="{ active: ' bg-blue-500' }" />
                     </div>
                     <div class=" flex justify-between">
                         <span>Show Recommended Answers</span>
-                        <UToggle v-model="selected" :ui="{ active: ' bg-blue-500' }" disabled />
+                        <UToggle v-model="settings.show_rec_answers" @change="updateSettings" :ui="{ active: ' bg-blue-500' }" />
                     </div>
                     <div class=" flex justify-between">
                         <span>Email Notifications</span>
@@ -74,8 +77,19 @@ const selected = ref(true);
 const bot_levels = ['Easy', 'Medium', 'Hard'];
 const selected_level = ref(bot_levels[0]);
 
+const settings = reactive({
+    show_prev_msg: false,
+    show_rec_answers: false,
+})
 
 // const settings = localStorage.getItem('settings')
+const updateSettings =()=>{
+    localStorage.setItem('settings',JSON.stringify(settings));
+}
+
+onMounted(()=>{
+    localStorage.setItem('settings',JSON.stringify(settings));
+})
 
 </script>
 

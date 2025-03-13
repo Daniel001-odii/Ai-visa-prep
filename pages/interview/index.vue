@@ -143,14 +143,14 @@
         </div> -->
 
         <!-- MESSAGES -->
-        <div v-if="show_message_train" v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500"
+        <div v-if="settings.show_prev_msg" v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500"
           :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
           <span>{{ chat.message }}</span>
           {{ chat.message }}
         </div>
 
         <!-- EXPERT SUGGESTION -->
-        <div v-if="expert_suggestion" class="flex gap-3 bg-inherit p-3 pb-5 rounded-xl relative border group">
+        <div v-if="settings.show_rec_answers" class="flex gap-3 bg-inherit p-3 pb-5 rounded-xl relative border group">
           <div class=" flex gap-3 absolute right-2 top-2 ">
             <UButton icon="iconoir:chat-bubble-check-solid" variant="soft" color="blue"
               @click="userAnswer = expert_suggestion" />
@@ -229,6 +229,10 @@ const countryList = Object.entries(countries).map(([code, data]) => ({ code, nam
 const check_me = ref(false)
 const messages = ref([]);
 const show_message_train = ref(false);
+
+const storee = localStorage.getItem('settings');
+
+const settings = JSON.parse(storee);
 
 // Computed properties
 /* const greeting = computed(() => {
