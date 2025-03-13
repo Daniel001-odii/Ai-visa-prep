@@ -108,7 +108,7 @@
   </UModal>
 
 
-  <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit text-white font-sans">
+  <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit dark:bg-inherit font-sans">
     <!-- Chat header (if needed) -->
     <!--  <div class="flex items-center p-4 border-b border-gray-800">
       <div class="mr-4 text-white">
@@ -139,9 +139,11 @@
 
 
         <!-- MESSAGES -->
-        <div v-for="chat in messages" class=" p-3 rounded-md"
-          :class="chat.sender == 'bot' ? 'bg-red-500' : 'bg-blue-500'">
-          {{ chat.message }}</div>
+        <div v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500"
+          :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
+          <span>{{ chat.message }}</span>
+          {{ chat.message }}
+        </div>
 
         <!-- EXPERT SUGGESTION -->
         <div v-if="expert_suggestion" class="flex gap-3 bg-inherit p-3 pb-5 rounded-xl relative border group">
@@ -178,7 +180,7 @@
         <!-- TYPING AREA/BOX -->
         <!-- Q&A AREA -->
         <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
-          <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl">
+          <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
             <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
             <div class="flex gap-3">
 
@@ -229,7 +231,16 @@ import { ref, onMounted, nextTick, watch, computed } from 'vue';
 import { countries } from 'countries-list';
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
 
-const messages = ref([]);
+const messages = ref([
+  {
+    message: 'hello world',
+    sender: 'bot'
+  },
+  {
+    message: 'yes boss',
+    sender: 'user'
+  }
+]);
 
 // Computed properties
 /* const greeting = computed(() => {
