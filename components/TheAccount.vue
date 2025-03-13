@@ -87,9 +87,7 @@ const updateSettings =()=>{
     localStorage.setItem('settings',JSON.stringify(settings));
 }
 
-onMounted(()=>{
-    localStorage.setItem('settings',JSON.stringify(settings));
-})
+
 
 </script>
 

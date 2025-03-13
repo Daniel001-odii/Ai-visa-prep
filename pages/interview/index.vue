@@ -230,9 +230,10 @@ const check_me = ref(false)
 const messages = ref([]);
 const show_message_train = ref(false);
 
-const storee = localStorage.getItem('settings');
-
-const settings = JSON.parse(storee);
+onMounted(()=>{
+    localStorage.setItem('settings',JSON.stringify(settings));
+});
+// const settings = JSON.parse(window?.localStorage.getItem('settings') || "");
 
 // Computed properties
 /* const greeting = computed(() => {
@@ -242,6 +243,10 @@ const settings = JSON.parse(storee);
   return `Good evening, ${props.userName}`;
 });
  */
+ const settings = reactive({
+    show_prev_msg: false,
+    show_rec_answers: false,
+})
 
 // Methods
 const messagesContainer = ref(null);
