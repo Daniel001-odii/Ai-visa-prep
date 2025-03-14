@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class=" border border-red-500">
       <div id="waveform" ref="waveform"></div>
-      <audio ref="audio" controls @play="onPlay" @pause="onPause"></audio>
+      <audio ref="audio" controls @play="onPlay" @pause="onPause" class="hidden"></audio>
     </div>
   </template>
   
