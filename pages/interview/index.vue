@@ -181,15 +181,15 @@
               <span class="italic font-bold">VO is typing...</span>
             </div>
             <div v-else class="font-bold text-md flex items-start gap-3">
-              <UButton icon="heroicons:speaker-x-mark-16-solid" color="blue" variant="soft" size="sm" @click="playAudio"
-                disabled />
+              <UButton icon="heroicons:speaker-x-mark-16-solid" color="blue" variant="soft" size="sm" @click="audio.play()"
+                />
               <span>{{ currentQuestion }}</span>
             </div>
           </div>
 
 
           <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
-            <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
+            <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
             <!-- <div class="flex gap-3"> -->
             <div class="flex flex-col gap-3 items-start w-full">
               <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
@@ -197,7 +197,7 @@
                   <textarea @focus="userAnswer ? (check_me = true) : ''"
                     @blur="userAnswer == '' ? (check_me = false) : (check_me = true)" v-model="userAnswer"
                     class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
-                  
+
                   <div class=" flex justify-end items-center gap-3">
                     <UButton color="blue" :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
                       variant="ghost" @click="toggleSpeech" class="w-fit" />
@@ -209,7 +209,7 @@
                 </div>
               </form>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -222,6 +222,9 @@ definePageMeta({
   layout: 'plain',
 });
 
+
+// import { MsEdgeTTS, OUTPUT_FORMAT } from "edge-tts-node";
+import audioTrack from '../../tmpfolder/audio.webm'
 import { ref, onMounted, nextTick, watch, computed } from 'vue';
 import { countries } from 'countries-list';
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
@@ -230,8 +233,8 @@ const check_me = ref(false)
 const messages = ref([]);
 const show_message_train = ref(false);
 
-onMounted(()=>{
-    localStorage.setItem('settings',JSON.stringify(settings));
+onMounted(() => {
+  localStorage.setItem('settings', JSON.stringify(settings));
 });
 // const settings = JSON.parse(window?.localStorage.getItem('settings') || "");
 
@@ -243,11 +246,17 @@ onMounted(()=>{
   return `Good evening, ${props.userName}`;
 });
  */
- const settings = reactive({
-    show_prev_msg: true,
-    show_rec_answers: true,
+const settings = reactive({
+  show_prev_msg: true,
+  show_rec_answers: true,
 });
 
+
+const playAudioMain = () => {
+  if (audio.value && audioSrc.value) {
+    audio.value.play().catch((err) => console.error('Audio playback failed:', err));
+  }
+};
 
 // Methods
 const messagesContainer = ref(null);
@@ -263,7 +272,10 @@ const current_question_slide = ref(0);
 const loading_q = ref(false);
 const currentQuestion = ref('');
 const userAnswer = ref('');
+
 const audioSrc = ref('');
+const audio = ref(null);
+
 const questionCount = ref(0);
 const previousQuestions = ref([]);
 const previousAnswers = ref([]);
@@ -271,6 +283,18 @@ const isFinal = ref(false);
 const decision = ref(null);
 
 const questions = reactive({
+  fullname: '',
+  nationality: '',
+  country_applying_to: '',
+  visa_type: '',
+  ever_travelled_before: '',
+  ever_had_visa_refusal: '',
+  how_fund_trip: '',
+  occupation: '',
+  have_all_documents: ''
+});
+
+/* const questions = reactive({
   fullname: 'Odii chibuikem daniel',
   nationality: 'Nigeria',
   country_applying_to: 'United States',
@@ -280,7 +304,8 @@ const questions = reactive({
   how_fund_trip: '',
   occupation: 'Software Engineering',
   have_all_documents: 'yes'
-});
+}); */
+
 
 
 
@@ -313,7 +338,7 @@ const visaFundOptions = [
 
 const yes_no_options = ["Yes", "No"];
 
-const audio = ref(null);
+
 const isListening = ref(false);
 const recognition = ref(null);
 
@@ -357,7 +382,7 @@ const getNextQuestion = async () => {
       currentQuestion.value = 'Something went wrong. Please try again.';
     } else {
       currentQuestion.value = data.value.question;
-      audioSrc.value = data.value.audio; // Now a URL
+      audioSrc.value = `${audioTrack}`; // Now a URL
       questionCount.value = data.value.questionCount;
       previousQuestions.value = data.value.previousQuestions;
       previousAnswers.value = data.value.previousAnswers;
@@ -378,23 +403,20 @@ const getNextQuestion = async () => {
       if (data.value.isFinal) {
         visa_status_modal.value = true;
       }
-      // Autoplay handled by <audio> tag with autoplay attribute
-      if (audio.value && audioSrc.value) {
-        audio.value.load();
-        audio.value.play().catch((err) => console.error('Audio playback failed:', err));
+
+      // Generate audio with edge-tts
+      if (data.value.question || (data.value.decision && data.value.decision.status)) {
+        const textToSpeak = data.value.question || `${data.value.decision.status}: ${data.value.decision.reason}`;
+        audio.play();
+        console.log("audio generated...")
       }
+
       userAnswer.value = '';
     }
   } catch (err) {
     console.error(err);
   }
   loading_q.value = false;
-};
-
-const playAudio = () => {
-  if (audio.value && audioSrc.value) {
-    audio.value.play().catch((err) => console.error('Audio playback failed:', err));
-  }
 };
 
 const resetInterview = () => {

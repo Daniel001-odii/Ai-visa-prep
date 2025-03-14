@@ -31,7 +31,7 @@
   <div class="flex flex-col justify-start items-center min-h-screen p-5 ">
 
     <div class="flex flex-col justify-center items-center mt-[100px] gap-6">
-      <span class=" text-black dark:text-white text-opacity-50 text-sm border rounded-3xl bg-white px-4 py-2">Currently
+      <span class=" text-black dark:text-white text-opacity-50 text-sm border rounded-3xl bg-white dark:bg-slate-700 px-4 py-2">Currently
         for Nigerian based immigrants
       </span>
       <h1 class="text-5xl text-center">Master Your Visa Interview<br/> with AI-Powered Precision</h1>
@@ -39,13 +39,13 @@
       </p>
 
       <div class="flex gap-4 mt-4">
-        <UButton size="xl" color="blue" label="Start free trial" @click="useRouter().push('/Interview?modal=true')" />
-        <UButton label="Pricing" variant="ghost" size="xl" class=" bg-inherit" color="green" />
+        <UButton size="xl" color="blue" label="Start free trial" @click="useRouter().push('/Interview?modal=true')" :trailing="true" icon="hugeicons:arrow-right-02" />
+        <UButton label="Pricing" variant="ghost" size="xl" class=" bg-inherit" color="black" />
       </div>
 
       <!-- hero image -->
-      <div class=" rounded-t-3xl mt-4 overflow-hidden">
-        <img src="../assets/images/hero/hero_1.png" />
+      <div class=" rounded-t-3xl mt-4 overflow-hidden pt-3 px-3 border">
+        <img src="../assets/images/hero/hero_1.png" class=" rounded-t-2xl"/>
       </div>
 
     </div>
@@ -61,79 +61,105 @@
 
        <!-- NEW SECTION -->
       <div class="flex flex-wrap gap-4 justify-center items-center  ">
-        <div class=" flex flex-col flex-1 min-w-fit bg-white rounded-lg p-6 border">
-          <UIcon name="material-symbols-light:rocket-launch-outline" class=" size-9"/>
+        <div class=" flex flex-col flex-1 min-w-fit bg-white dark:bg-slate-700 rounded-lg p-6 border">
+          <span class=" bg-blue-500 w-fit text-white rounded-md p-3 size-16 mb-4">
+            <UIcon name="material-symbols-light:rocket-launch-outline" class=" size-9 "/>
+          </span>
+          
           <span class=" font-bold">Realistic Interview Simulations</span>
           <p>Experience AI-driven mock interviews tailored to your visa category.</p>
         </div>
 
-        <div class=" flex flex-col flex-1 min-w-fit bg-white rounded-lg p-6 border">
-          <UIcon name="material-symbols-light:chat-apps-script-outline-rounded" class=" size-9"/>
+        <div class=" flex flex-col flex-1 min-w-fit bg-white dark:bg-slate-700 rounded-lg p-6 border">
+          <span class=" bg-blue-500 w-fit text-white rounded-md p-3 size-16 mb-4">
+            <UIcon name="material-symbols-light:chat-apps-script-outline-rounded" class=" size-9"/>
+          </span>
           <span class=" font-bold">Personalized Feedback</span>
           <p>Get instant, actionable insights to improve your responses.</p>
         </div>
 
-        <div class=" flex flex-col flex-1 min-w-fit bg-white rounded-lg p-6 border">
-          <UIcon name="material-symbols-light:settings-account-box-outline-rounded" class=" size-9"/>
+        <div class=" flex flex-col flex-1 min-w-fit bg-white dark:bg-slate-700 rounded-lg p-6 border">
+          <span class=" bg-blue-500 w-fit text-white rounded-md p-3 size-16 mb-4">
+            <UIcon name="material-symbols-light:settings-account-box-outline-rounded" class=" size-9"/>
+          </span>
           <span class=" font-bold">Visa-Specific Guidance</span>
           <p>Expert-curated questions based on real embassy interview trends.</p>
         </div>
 
-        <div class=" flex flex-col flex-1 min-w-fit bg-white rounded-lg p-6 border">
-          <UIcon name="material-symbols-light:tactic" class=" size-9"/>
+        <div class=" flex flex-col flex-1 min-w-fit bg-white dark:bg-slate-700 rounded-lg p-6 border">
+          <span class=" bg-blue-500 w-fit text-white rounded-md p-3 size-16 mb-4">
+            <UIcon name="material-symbols-light:tactic" class=" size-9"/>
+          </span>
           <span class=" font-bold">AI-Powered Analysis</span>
           <p>Identify weak points and refine your answers with smart coaching.</p>
         </div>
       </div>
 
-      <div class="flex flex-col bg-gray-200 p-[150px] min-h-[300px] gap-6">
+      <div class="flex flex-col bg-black bg-opacity-20 p-[150px] min-h-[300px] gap-6">
         <div class=" text-4xl">
-          "VisaMaster AI was a game-changer for me. It gave me the confidence and preparation I needed to ace my interview. Highly recommended!"
+          {{ reviews[0].feedback }}
         </div>
         <div class="flex gap-3">
-          <UAvatar alt="Chidera Emmanuel"/>
+          <UAvatar :alt="reviews[0].name"/>
           <div class=" flex flex-col">
-            <span class=" font-bold">Chidera Emmanuel</span>
-            <span>Founder Zenit technologies</span>
+            <span class=" font-bold">{{ reviews[0].name }}</span>
+            <span>{{ reviews[0].location }}</span>
           </div>
         </div>
       </div>
 
 
-      <div class="flex flex-col max-w-[500px] justify-center items-center text-center gap-3">
+      <div class="flex flex-col max-w-[500px] justify-center items-center text-center gap-3 mt-12">
         <span class=" font-bold text-3xl ">How It Works</span>
-        
       </div>
 
-      <div class=" flex flex-wrap gap-6">
-        <div class=" flex flex-col flex-1 min-w-fit rounded-lg p-6">
+      <div class=" flex flex-wrap gap-6 justify-center items-center">
+        <div class="how_it_works">
           <UIcon name="material-symbols-light:stylus-laser-pointer" class=" size-9"/>
           <span class=" font-bold">Select Your Visa Type </span>
-          <p> Student, work, tourist, or business visa..</p>
+          <p> Student, work, tourist, business visa, etc.</p>
         </div>
 
-        <div class=" flex flex-col flex-1 min-w-fit rounded-lg p-6">
+        <div class=" how_it_works">
           <UIcon name="material-symbols-light:live-tv" class=" size-9"/>
           <span class=" font-bold">Engage in a Live AI Interview</span>
           <p> Answer real-world questions in an interactive format.</p>
         </div>
 
-        <div class=" flex flex-col flex-1 min-w-fit rounded-lg p-6">
+        <div class=" how_it_works">
           <UIcon name="material-symbols-light:feedback" class=" size-9"/>
           <span class=" font-bold">Receive Instant Feedback  </span>
           <p>AI evaluates your confidence, clarity, and content.</p>
         </div>
 
-        <div class=" flex flex-col flex-1 min-w-fit rounded-lg p-6">
+        <div class=" how_it_works">
           <UIcon name="material-symbols-light:tactic" class=" size-9"/>
           <span class=" font-bold">Refine & Retake </span>
           <p>Improve your responses and retry for better performance.</p>
         </div>
       </div>
+
+
+      <!-- TESTIMONIAL -->
+      <div class="flex flex-col bg-black bg-opacity-20 p-[150px] min-h-[300px] gap-6">
+        <div class=" text-4xl">
+          {{ reviews[1].feedback }}
+        </div>
+        <div class="flex gap-3">
+          <UAvatar :alt="reviews[1].name"/>
+          <div class=" flex flex-col">
+            <span class=" font-bold">{{ reviews[1].name }}</span>
+            <span>{{ reviews[1].location }}</span>
+          </div>
+        </div>
+      </div>
+
+
+
     </div>
 
 
-    <span>AiVisaPrep &copy; 2025 by daniel</span>
+    <span class=" mt-20 text-opacity-50">AiVisaPrep &copy; 2025, built with GrokAi & Google Vertex</span>
 
 
    
@@ -142,6 +168,7 @@
 </template>
 
 <script setup>
+
 const colorMode = useColorMode();
 const isDark = computed({
   get() {
@@ -172,6 +199,28 @@ const placeholderImages = ref([
   vo_1,
   vo_2,
 ]);
+
+
+const reviews = [
+  {
+    name: "Emily",
+    location: "Nigeria",
+    feedback: "I had a fantastic experience with VisaMaster AI! The practice sessions helped me gain confidence, and I successfully passed my visa interview on the first attempt.",
+    rating: 5
+  },
+  {
+    name: "Raj",
+    location: "India",
+    feedback: "VisaMaster AI is a must-have! The AI feedback highlighted my weak points, allowing me to improve quickly. Highly recommended!",
+    rating: 5
+  },
+  {
+    name: "Anonymous",
+    location: "United States",
+    feedback: "This tool made all the difference! It provided personalized questions and helped me practice effectively. Thanks to VisaMaster AI, I aced my visa interview!",
+    rating: 5
+  }
+];
 
 
 const speak = () => {
@@ -284,5 +333,10 @@ const shuffleAnimation = () => {
     opacity: 1;
     transform: scale(1) rotate(0deg);
   }
+}
+
+
+.how_it_works{
+  @apply  flex flex-col flex-1 min-w-fit rounded-lg p-6 justify-center items-center text-center
 }
 </style>

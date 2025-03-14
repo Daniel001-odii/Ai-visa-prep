@@ -2,7 +2,7 @@
     <nav class="border-b  dark:border-gray-800 dark:bg-inherit">
 
         <!-- NON AUTH NABAR -->
-        <div v-if="false" class=" flex p-3 container mx-auto items-center justify-between relative">
+        <div v-if="true" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
             <!-- LOGO -->
             <NuxtLink to="/">
@@ -36,7 +36,7 @@
 
         </div>
 
-        <div class=" flex p-3 container mx-auto items-center justify-between relative">
+        <div v-if="false" class=" flex p-3 container mx-auto items-center justify-between relative">
 
             <!-- LOGO -->
             <NuxtLink to="/">

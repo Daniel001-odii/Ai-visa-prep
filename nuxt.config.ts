@@ -22,5 +22,14 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ]
     }
-  }
+  },
+
+/*   vite: {
+    optimizeDeps: {
+      exclude: ['edge-tts-node'], // Prevent Vite from bundling this in client
+    },
+    ssr: {
+      noExternal: ['edge-tts-node'], // Keep it out of SSR client bundle
+    },
+  }, */
 });

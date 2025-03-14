@@ -1,4 +1,7 @@
 import { ofetch } from 'ofetch';
+// import { MsEdgeTTS, OUTPUT_FORMAT } from "edge-tts-node";
+import { MsEdgeTTS, OUTPUT_FORMAT } from "msedge-tts";
+
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -94,11 +97,26 @@ export default defineEventHandler(async (event) => {
   const updatedPreviousQuestions = isFinal ? previousQuestions : [...previousQuestions, question];
   const updatedPreviousAnswers = currentAnswer ? [...previousAnswers, currentAnswer] : previousAnswers;
 
+
+  // AUDIO...
+  let audioBase64 = "";
+  try{
+    (async () => {
+      const tts = new MsEdgeTTS();
+      await tts.setMetadata("en-US-AriaNeural", OUTPUT_FORMAT.WEBM_24KHZ_16BIT_MONO_OPUS);
+      const { audioFilePath } = await tts.toFile("./tmpfolder", `${isFinal ? '':question}`);  
+      audioBase64 = audioFilePath;
+  })();
+  }catch(error){
+    console.error('error in EDGETTS ', error);
+  }
+
+
   return {
     question: isFinal ? '' : question,
     decision: isFinal ? decision : null,
     recommendedReply: isFinal ? '' : recommendedReply,
-    // audio: audioUrl, // Remains commented out as per user's note
+    audio: audioBase64,
     questionCount: updatedQuestionCount,
     previousQuestions: updatedPreviousQuestions,
     previousAnswers: updatedPreviousAnswers,
