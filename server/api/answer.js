@@ -99,24 +99,33 @@ export default defineEventHandler(async (event) => {
 
 
   // AUDIO...
-  let audioBase64 = "";
-  try{
-    (async () => {
+  // let audioBase64 = "";
+  const createAudio = async()=>{
+    try{
       const tts = new MsEdgeTTS();
-      await tts.setMetadata("en-US-AriaNeural", OUTPUT_FORMAT.WEBM_24KHZ_16BIT_MONO_OPUS);
+      await tts.setMetadata("en-US-MichelleNeural", OUTPUT_FORMAT.WEBM_24KHZ_16BIT_MONO_OPUS);
       const { audioFilePath } = await tts.toFile("./tmpfolder", `${isFinal ? '':question}`);  
-      audioBase64 = audioFilePath;
+      // audioBase64 = audioFilePath;
+      return audioFilePath;
+    }catch(error){
+      console.error('error in EDGETTS ', error);
+    }
+  }
+  const audio = createAudio();
+/*   try{
+    (async () => {
+      
   })();
   }catch(error){
-    console.error('error in EDGETTS ', error);
-  }
+   
+  } */
 
 
   return {
     question: isFinal ? '' : question,
     decision: isFinal ? decision : null,
     recommendedReply: isFinal ? '' : recommendedReply,
-    audio: audioBase64,
+    audio,
     questionCount: updatedQuestionCount,
     previousQuestions: updatedPreviousQuestions,
     previousAnswers: updatedPreviousAnswers,

@@ -1,6 +1,6 @@
 // server/api/auth/login.post.ts
 import { defineEventHandler, readBody, createError, setCookie } from 'h3';
-import { connectToDatabase } from '../../utils/db';
+import { connectToDatabase } from './utils/db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 

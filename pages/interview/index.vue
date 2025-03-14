@@ -282,7 +282,7 @@ const previousAnswers = ref([]);
 const isFinal = ref(false);
 const decision = ref(null);
 
-const questions = reactive({
+/* const questions = reactive({
   fullname: '',
   nationality: '',
   country_applying_to: '',
@@ -292,9 +292,9 @@ const questions = reactive({
   how_fund_trip: '',
   occupation: '',
   have_all_documents: ''
-});
+}); */
 
-/* const questions = reactive({
+const questions = reactive({
   fullname: 'Odii chibuikem daniel',
   nationality: 'Nigeria',
   country_applying_to: 'United States',
@@ -304,7 +304,7 @@ const questions = reactive({
   how_fund_trip: '',
   occupation: 'Software Engineering',
   have_all_documents: 'yes'
-}); */
+});
 
 
 
@@ -405,11 +405,11 @@ const getNextQuestion = async () => {
       }
 
       // Generate audio with edge-tts
-      if (data.value.question || (data.value.decision && data.value.decision.status)) {
+     /*  if (data.value.question || (data.value.decision && data.value.decision.status)) {
         const textToSpeak = data.value.question || `${data.value.decision.status}: ${data.value.decision.reason}`;
         audio.play();
         console.log("audio generated...")
-      }
+      } */
 
       userAnswer.value = '';
     }

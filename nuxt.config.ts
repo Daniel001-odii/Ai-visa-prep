@@ -24,12 +24,12 @@ export default defineNuxtConfig({
     }
   },
 
-/*   vite: {
+  vite: {
     optimizeDeps: {
-      exclude: ['edge-tts-node'], // Prevent Vite from bundling this in client
+      exclude: ['msedge-tts"'], // Prevent Vite from bundling this in client
     },
     ssr: {
-      noExternal: ['edge-tts-node'], // Keep it out of SSR client bundle
+      noExternal: ['msedge-tts"'], // Keep it out of SSR client bundle
     },
-  }, */
+  },
 });

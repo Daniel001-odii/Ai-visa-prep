@@ -3,7 +3,7 @@ import { defineEventHandler, getCookie, createError } from 'h3';
 import jwt from 'jsonwebtoken';
 
 export default defineEventHandler((event) => {
-  const token = getCookie(event, 'token');
+//   const token = getCookie(event, 'token');
   /* if (!token) {
     throw createError({
       statusCode: 401,

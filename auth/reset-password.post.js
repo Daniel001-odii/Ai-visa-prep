@@ -1,6 +1,6 @@
 // server/api/auth/reset-password.post.ts
 import { defineEventHandler, readBody, createError } from 'h3';
-import { connectToDatabase } from '../../utils/db';
+import { connectToDatabase } from './utils/db';
 import jwt from 'jsonwebtoken';
 
 export default defineEventHandler(async (event) => {

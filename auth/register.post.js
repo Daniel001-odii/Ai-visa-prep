@@ -1,6 +1,6 @@
 // server/api/auth/register.post.ts
 import { defineEventHandler, readBody, createError } from 'h3';
-import { connectToDatabase } from '../../utils/db';
+import { connectToDatabase } from './utils/db';
 import bcrypt from 'bcrypt';
 
 export default defineEventHandler(async (event) => {
