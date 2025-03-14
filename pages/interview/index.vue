@@ -133,6 +133,9 @@
         <!-- Default/permanent messages -->
         <!-- VO AREA -->
         <div class=" flex justify-center items-center">
+          <div>
+            <audio-visualizer :audio-url="audioSrc" />
+          </div>
           <span>New Student Visa Interview</span>
         </div>
 

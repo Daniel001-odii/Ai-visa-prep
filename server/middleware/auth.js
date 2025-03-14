@@ -1,6 +1,6 @@
 // server/middleware/auth.ts
-import { defineEventHandler, getCookie, createError } from 'h3';
-import jwt from 'jsonwebtoken';
+// import { defineEventHandler, getCookie, createError } from 'h3';
+// import jwt from 'jsonwebtoken';
 
 export default defineEventHandler((event) => {
 //   const token = getCookie(event, 'token');

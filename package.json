@@ -20,6 +20,7 @@
     "nuxt": "^3.15.4",
     "vue": "latest",
     "vue-router": "latest",
-    "vue3-lottie": "^3.3.1"
+    "vue3-lottie": "^3.3.1",
+    "wavesurfer.js": "^7.9.1"
   }
 }
