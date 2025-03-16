@@ -14,6 +14,9 @@ export default defineNuxtConfig({
     huggingFaceApiKey: process.env.HUGGING_FACE_API_KEY,
     playhtApiKey: process.env.PLAYHT_API_KEY, // Add this
     playhtUserId: process.env.PLAYHT_USER_ID,
+    public: {
+      apiBase: process.env.API_BASE_URL,
+    }
   },
 
   app: {
@@ -26,10 +29,10 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      exclude: ['msedge-tts"'], // Prevent Vite from bundling this in client
+      exclude: ["msedge-tts", "tailwindcss"], // Prevent Vite from bundling this in client
     },
     ssr: {
-      noExternal: ['msedge-tts"'], // Keep it out of SSR client bundle
+      noExternal: ["msedge-tts"], // Keep it out of SSR client bundle
     },
   },
 });

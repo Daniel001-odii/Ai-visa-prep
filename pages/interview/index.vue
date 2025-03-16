@@ -109,113 +109,64 @@
 
 
   <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit dark:bg-inherit font-sans">
-    <!-- Chat header (if needed) -->
-    <!--  <div class="flex items-center p-4 border-b border-gray-800">
-      <div class="mr-4 text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-          class="fill-none stroke-current stroke-2">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="7" y1="12" x2="17" y2="12" />
-        </svg>
-      </div>
-      <div class="flex flex-col justify-center">
-        <div class="text-lg font-medium">Good evening</div>
-        <div class="text-sm text-gray-400">How can I help you today?</div>
-      </div>
-    </div>
- -->
     <TheNavbar />
 
-    <div class="h-[90%] container mx-auto flex flex-col">
-      <!-- Chat messages container with scroll -->
-      <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4" ref="messagesContainer">
+    <div class="h-[90%] container mx-auto flex flex-col justify-center items-center">
 
-        <!-- Default/permanent messages -->
-        <!-- VO AREA -->
-        <div class=" flex justify-center items-center">
-          <div>
-            <audio-visualizer :audio-url="audioSrc" />
-          </div>
-          <span>New Student Visa Interview</span>
-        </div>
-
-
-        <!-- VO PLACEHOLDER -->
-        <!-- <div v-if="!show_message_train">
-          <img src="../../assets/images/table/vo_1.svg" class=" size-full mx-auto"/>
-        </div> -->
-
-        <!-- MESSAGES -->
-        <div v-if="settings.show_prev_msg" v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500"
-          :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
-          <span>{{ chat.message }}</span>
-          {{ chat.message }}
-        </div>
-
-        <!-- EXPERT SUGGESTION -->
-        <div v-if="settings.show_rec_answers" class="flex gap-3 bg-inherit p-3 pb-5 rounded-xl relative border group">
-          <div class=" flex gap-3 absolute right-2 top-2 ">
-            <UButton icon="iconoir:chat-bubble-check-solid" variant="soft" color="blue"
-              @click="userAnswer = expert_suggestion" />
-            <UButton icon="iconoir:xmark" variant="soft" color="blue" @click="expert_suggestion = false" />
-          </div>
-
-          <span>
-            <UIcon name="iconoir:sparks-solid" />
-          </span>
-          <div class=" flex flex-col mt-3">
-            <span class=" font-bold">Expert Suggestion</span>
-            <span>{{ expert_suggestion }}</span>
-          </div>
-        </div>
-
-
-
+      <div class=" flex justify-center items-center flex-col">
+        <AudioVisualizer :audio-base64="audioSrc" />
+        <span>VISUALIZER HERE</span>
       </div>
 
-      <!-- Chat input area -->
-      <div class="bg-inherit p-4">
-        <!-- TYPING AREA/BOX -->
-        <!-- Q&A AREA -->
-        <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
-          <div class="flex">
-            <div v-if="loading_q" class="flex items-center gap-2 w-full">
-              <UIcon name="svg-spinners:3-dots-bounce" />
-              <span class="italic font-bold">VO is typing...</span>
-            </div>
-            <div v-else class="font-bold text-md flex items-start gap-3">
-              <UButton icon="heroicons:speaker-x-mark-16-solid" color="blue" variant="soft" size="sm" @click="audio.play()"
-                />
-              <span>{{ currentQuestion }}</span>
-            </div>
+      <div class=" w-full md:w-[500px] p-4 flex flex-col gap-3">
+
+        <!-- CHAT CONTAINER -->
+        <div class=" w-full h-[250px] overflow-y-auto flex flex-col gap-3 " ref="messagesContainer">
+
+          <!-- MESSAGES -->
+          <div v-if="settings.show_prev_msg" v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500 w-fit border"
+            :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
+            <span>{{ chat.message }}</span>
           </div>
 
+          <span v-if="loading_q" class=" p-3">VO is typing...</span>
 
-          <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
-            <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
-            <!-- <div class="flex gap-3"> -->
-            <div class="flex flex-col gap-3 items-start w-full">
-              <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
-                <div class="flex justify-center w-full" :class="check_me ? 'flex-col' : ''">
-                  <textarea @focus="userAnswer ? (check_me = true) : ''"
-                    @blur="userAnswer == '' ? (check_me = false) : (check_me = true)" v-model="userAnswer"
-                    class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
 
-                  <div class=" flex justify-end items-center gap-3">
-                    <UButton color="blue" :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
-                      variant="ghost" @click="toggleSpeech" class="w-fit" />
-                    <UButton color="blue" class="w-fit" icon="iconoir:arrow-up" type="submit"
-                      :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
-                      :disabled="loading_q || userAnswer.trim() == ''"
-                      loading-icon="svg-spinners:12-dots-scale-rotate" />
+        </div>
+
+
+        <!-- Chat input area -->
+        <div class="bg-inherit ">
+          <!-- TYPING AREA/BOX -->
+          <!-- Q&A AREA -->
+          <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
+            <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
+              <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
+              <!-- <div class="flex gap-3"> -->
+              <div class="flex flex-col gap-3 items-start w-full">
+                <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
+                  <div class="flex flex-col justify-center w-full">
+                    <textarea @blur="userAnswer == '' ? (check_me = false) : (check_me = true)" v-model="userAnswer"
+                      class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
+
+                    <div class=" flex justify-end items-center gap-3">
+                      <UButton color="blue"
+                        :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'" variant="ghost"
+                        @click="toggleSpeech" class="w-fit" />
+                      <UButton color="blue" class="w-fit" icon="heroicons:arrow-up-solid" type="submit"
+                        :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
+                        :disabled="loading_q || userAnswer.trim() == ''"
+                        loading-icon="svg-spinners:12-dots-scale-rotate" />
+                    </div>
                   </div>
-                </div>
-              </form>
-            </div>
+                </form>
+              </div>
 
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -230,36 +181,24 @@ definePageMeta({
 import audioTrack from '../../tmpfolder/audio.webm'
 import { ref, onMounted, nextTick, watch, computed } from 'vue';
 import { countries } from 'countries-list';
+import { UButton } from '#components';
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
 
 const check_me = ref(false)
 const messages = ref([]);
 const show_message_train = ref(false);
 
-onMounted(() => {
-  localStorage.setItem('settings', JSON.stringify(settings));
-});
-// const settings = JSON.parse(window?.localStorage.getItem('settings') || "");
-
-// Computed properties
-/* const greeting = computed(() => {
-  const hour = new Date().getHours();
-  if (hour < 12) return `Good morning, ${props.userName}`;
-  if (hour < 18) return `Good afternoon, ${props.userName}`;
-  return `Good evening, ${props.userName}`;
-});
- */
 const settings = reactive({
   show_prev_msg: true,
   show_rec_answers: true,
 });
 
-
-const playAudioMain = () => {
+/* const playAudioMain = () => {
   if (audio.value && audioSrc.value) {
     audio.value.play().catch((err) => console.error('Audio playback failed:', err));
   }
-};
+}; */
+
 
 // Methods
 const messagesContainer = ref(null);
@@ -345,28 +284,22 @@ const yes_no_options = ["Yes", "No"];
 const isListening = ref(false);
 const recognition = ref(null);
 
-const chat = {
-  message: '',
-  sender: '',
-};
-
 const getNextQuestion = async () => {
   loading_q.value = true;
-  expert_suggestion.value = '';
-  scrollToBottom();
-
-
-  // add to messages array...
-  let chat = {
-    message: userAnswer.value,
-    sender: 'user'
-  };
-  messages.value.push(chat);
-  userAnswer.value = ''
-
-  // playAnimation()
   try {
-    const { data, error } = await useFetch('/api/answer', {
+
+    expert_suggestion.value = '';
+    scrollToBottom();
+
+
+    // add to messages array...
+    let chat = {
+      message: userAnswer.value,
+      sender: 'user'
+    };
+    messages.value.push(chat);
+
+    const res = await useNuxtApp().$apiFetch('/visa/question', {
       method: 'POST',
       body: {
         candidateData: questions,
@@ -374,53 +307,41 @@ const getNextQuestion = async () => {
         questionCount: questionCount.value,
         previousQuestions: previousQuestions.value,
         previousAnswers: previousAnswers.value,
-      },
+      }
     });
 
-    console.log("returned: ", data);
-    // pauseAnimation()
+    scrollToBottom();
 
-    if (error.value) {
-      console.error('Error fetching question:', error.value);
-      currentQuestion.value = 'Something went wrong. Please try again.';
-    } else {
-      currentQuestion.value = data.value.question;
+    let bot_msg = {
+      message: res.question,
+      sender: 'bot'
+    };
+    messages.value.push(bot_msg);
+    audioSrc.value = res.audioPath;
+    userAnswer.value = '';
+    currentQuestion.value = res.question;
+    questionCount.value = res.questionCount;
+    previousQuestions.value = res.previousQuestions;
+    isFinal.value = res.isFinal;
+    decision.value = res.decision;
+    expert_suggestion.value = res.recommendedReply;
+
+    console.log("retunred res: ", res);
+
+  /*   currentQuestion.value = data.value.question;
       audioSrc.value = `${audioTrack}`; // Now a URL
       questionCount.value = data.value.questionCount;
       previousQuestions.value = data.value.previousQuestions;
       previousAnswers.value = data.value.previousAnswers;
       isFinal.value = data.value.isFinal;
       decision.value = data.value.decision;
-      expert_suggestion.value = data.value.recommendedReply;
+      expert_suggestion.value = data.value.recommendedReply; */
 
-      // add to messages array...
-      let chat = {
-        message: currentQuestion.value,
-        sender: 'bot'
-      };
-      messages.value.push(chat);
-
-      // scroll chat to bottom..
-      // scrollToBottom();
-
-      if (data.value.isFinal) {
-        visa_status_modal.value = true;
-      }
-
-      // Generate audio with edge-tts
-     /*  if (data.value.question || (data.value.decision && data.value.decision.status)) {
-        const textToSpeak = data.value.question || `${data.value.decision.status}: ${data.value.decision.reason}`;
-        audio.play();
-        console.log("audio generated...")
-      } */
-
-      userAnswer.value = '';
-    }
   } catch (err) {
-    console.error(err);
+    console.error("error getting questions: ", err)
   }
   loading_q.value = false;
-};
+}
 
 const resetInterview = () => {
   visa_status_modal.value = false;
@@ -450,9 +371,11 @@ const toggleSpeech = () => {
 };
 
 onMounted(() => {
-  if (useRoute().query.modal) {
-    intro_questions.value = true;
-  }
+
+
+  /*   if (useRoute().query.modal) {
+      intro_questions.value = true;
+    } */
 
   // Initialize SpeechRecognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -487,11 +410,6 @@ onUnmounted(() => {
   if (recognition.value) recognition.value.stop();
 });
 
-/* watch(() => expert_suggestion, () => {
-  scrollToBottom();
-}); */
-
-
 // Watch for changes in messages to auto-scroll
 watch(messages, () => {
   scrollToBottom();
@@ -500,6 +418,7 @@ watch(messages, () => {
 // Lifecycle hook
 onMounted(() => {
   scrollToBottom();
+  // getNextQuestion()
 });
 
 </script>

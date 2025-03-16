@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify-json/iconoir": "^1.2.7",
     "@nuxt/ui": "^2.21.0",
     "bcrypt": "^5.1.1",
     "countries-list": "^3.1.1",
@@ -19,8 +20,12 @@
     "msedge-tts": "^2.0.0",
     "nuxt": "^3.15.4",
     "vue": "latest",
+    "vue-audio-visual": "^3.0.10",
     "vue-router": "latest",
     "vue3-lottie": "^3.3.1",
     "wavesurfer.js": "^7.9.1"
+  },
+  "devDependencies": {
+    "@iconify-json/hugeicons": "^1.2.4"
   }
 }

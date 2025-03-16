@@ -1,5 +1,4 @@
 <template>
-  <!-- Introductory questions modal -->
   <UModal v-model="intro_questions" prevent-close>
     <UCard>
       <template #header>
@@ -69,7 +68,7 @@
           <UButton v-if="current_question_slide > 0" @click="current_question_slide--" label="Previous" variant="soft"
             icon="heroicons:arrow-small-left-20-solid" />
           <UButton
-            @click="current_question_slide === 2 ? (intro_questions = false, getNextQuestion2()) : current_question_slide++"
+            @click="current_question_slide === 2 ? (intro_questions = false, getNextQuestion()) : current_question_slide++"
             :label="current_question_slide === 2 ? 'Start Interview' : 'Next'"
             :icon="current_question_slide === 2 ? '' : 'heroicons:arrow-small-right-20-solid'" :trailing="true" />
         </div>
@@ -109,72 +108,108 @@
   </UModal>
 
 
-
-  <!-- CONTAINer -->
-  <div class="flex flex-col !h-full pb-12">
-
-    <!-- CHAT AREA -->
-    <div class="!h-[700px] flex flex-col gap-4 overflow-y-auto relative border !border-red-500 max-w-[400px] mx-auto p-3" ref="chatContainer" >
-
-      <div class="flex flex-col p-5 text-center">
-        <span class="font-bold">{{ questions.visa_type }} Interview</span>
-        <span class="text-gray-500">Please provide detailed answers to all questions.</span>
+  <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit dark:bg-inherit font-sans">
+    <!-- Chat header (if needed) -->
+    <!--  <div class="flex items-center p-4 border-b border-gray-800">
+      <div class="mr-4 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+          class="fill-none stroke-current stroke-2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="7" y1="12" x2="17" y2="12" />
+        </svg>
       </div>
-
-      <!-- VO AREA -->
-      <div>
-        <ClientOnly>
-          <div class=" mb-3">
-            <Vue3Lottie ref="lottieRef" :animationData="robotAnimation" :height="150" :width="150" :autoplay="false"
-              :speed="1" />
-          </div>
-        </ClientOnly>
+      <div class="flex flex-col justify-center">
+        <div class="text-lg font-medium">Good evening</div>
+        <div class="text-sm text-gray-400">How can I help you today?</div>
       </div>
-
-      <!-- RECOMMENDED ANSWER -->
-      <Transition name="fade">
-        <div class="">
-          <UAlert 
-          class=" blur-[1.8px] max-w-[400px]"
-          v-if="rec_answer" icon="iconoir:chat-lines" color="green" variant="solid" :description="rec_answer"
-            title="Expert Suggetion" />
-        </div>
-      </Transition>
-
     </div>
+ -->
+    <TheNavbar />
 
-    <!-- TYPING AREA/BOX -->
-    <div class=" p-5">
+    <div class="h-[90%] container mx-auto flex flex-col">
+      <!-- Chat messages container with scroll -->
+      <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4" ref="messagesContainer">
 
-      <!-- Q&A AREA -->
-      <div class=" flex flex-col gap-3 min-w-full max-w-[400px] md:min-w-[400px] mx-auto !border-red-500 ">
-        <div class="flex flex-col gap-3 w-full border mx-auto p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl !h-[200px]">
-          <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay></audio>
-          <div class="flex gap-3 items-start">
+        <!-- Default/permanent messages -->
+        <!-- VO AREA -->
+        <div class=" flex justify-center items-center flex-col">
+          <div>
+            <audio-visualizer 
+            :bar-count="64"
+            bar-colot="#efefe"
+            :idle-height="20"
+            ref="visualizer"
+            :audio-src="audioSrc" />
+          </div>
+          <span>New Student Visa Interview</span>
+        </div>
 
+
+        <!-- VO PLACEHOLDER -->
+        <!-- <div v-if="!show_message_train">
+          <img src="../../assets/images/table/vo_1.svg" class=" size-full mx-auto"/>
+        </div> -->
+
+        <!-- MESSAGES -->
+        <div v-if="settings.show_prev_msg" v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500"
+          :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
+          <span>{{ chat.message }}</span>
+          {{ chat.message }}
+        </div>
+
+        <!-- EXPERT SUGGESTION -->
+        <div v-if="settings.show_rec_answers" class="flex gap-3 bg-inherit p-3 pb-5 rounded-xl relative border group">
+          <div class=" flex gap-3 absolute right-2 top-2 ">
+            <UButton icon="iconoir:chat-bubble-check-solid" variant="soft" color="blue"
+              @click="userAnswer = expert_suggestion" />
+            <UButton icon="iconoir:xmark" variant="soft" color="blue" @click="expert_suggestion = false" />
+          </div>
+
+          <span>
+            <UIcon name="iconoir:sparks-solid" />
+          </span>
+          <div class=" flex flex-col mt-3">
+            <span class=" font-bold">Expert Suggestion</span>
+            <span>{{ expert_suggestion }}</span>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <!-- Chat input area -->
+      <div class="bg-inherit p-4">
+        <!-- TYPING AREA/BOX -->
+        <!-- Q&A AREA -->
+        <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
+          <div class="flex">
+            <div v-if="loading_q" class="flex items-center gap-2 w-full">
+              <UIcon name="svg-spinners:3-dots-bounce" />
+              <span class="italic font-bold">VO is typing...</span>
+            </div>
+            <div v-else class="font-bold text-md flex items-start gap-3">
+              <UButton icon="heroicons:speaker-x-mark-16-solid" color="blue" variant="soft" size="sm" @click="audio.play()"
+                />
+              <span>{{ currentQuestion }}</span>
+            </div>
+          </div>
+
+
+          <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
+            <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
+            <!-- <div class="flex gap-3"> -->
             <div class="flex flex-col gap-3 items-start w-full">
-              <div class="flex">
-                <div v-if="loading_q" class="flex items-center gap-2 w-full">
-                  <UIcon name="svg-spinners:3-dots-bounce" />
-                  <span class="italic font-bold">VO is typing...</span>
-                </div>
-                <div v-else class="font-bold text-md flex items-start gap-3">
-                  <span>
-                    <UButton icon="heroicons:speaker-wave-solid" color="blue" variant="soft" size="[10px]"
-                      @click="playAudio" /> {{ currentQuestion }}
-                  </span>
-                </div>
-              </div>
+              <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
+                <div class="flex justify-center w-full" :class="check_me ? 'flex-col' : ''">
+                  <textarea @focus="userAnswer ? (check_me = true) : ''"
+                    @blur="userAnswer == '' ? (check_me = false) : (check_me = true)" v-model="userAnswer"
+                    class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
 
-              <form @submit.prevent="getNextQuestion2" class="flex flex-col gap-2 w-full items-start">
-                <div class="flex flex-col w-full">
-                  <input type="textarea" v-model="userAnswer" placeholder="Your answer here..."
-                    class=" outline-none bg-transparent max-h-[200px]"/>
-                  <!-- <UTextarea v-model="userAnswer" class=" !w-full outline-none" placeholder="Type your answer here..." /> -->
-                  <div class=" flex justify-end items-center gap-3 py-3">
+                  <div class=" flex justify-end items-center gap-3">
                     <UButton color="blue" :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'"
                       variant="ghost" @click="toggleSpeech" class="w-fit" />
-                    <UButton color="blue" class="w-fit" icon="iconoir:arrow-up" type="submit"
+                    <UButton color="blue" class="w-fit" icon="heroicons:arrow-up-solid" type="submit"
                       :variant="userAnswer.trim() == '' ? 'ghost' : 'solid'"
                       :disabled="loading_q || userAnswer.trim() == ''"
                       loading-icon="svg-spinners:12-dots-scale-rotate" />
@@ -182,83 +217,90 @@
                 </div>
               </form>
             </div>
+
           </div>
         </div>
       </div>
-
     </div>
-
-
   </div>
-
 </template>
 
 <script setup>
-// import vo_image from '@/assets/images/table/vo_1.svg';
 definePageMeta({
-  layout: 'fixed',
+  layout: 'plain',
 });
 
 
-import vo_image from '@/assets/images/robot.webm';
-import { Vue3Lottie } from 'vue3-lottie';
+// import { MsEdgeTTS, OUTPUT_FORMAT } from "edge-tts-node";
+import audioTrack from '../../tmpfolder/audio.webm'
+import { ref, onMounted, nextTick, watch, computed } from 'vue';
 import { countries } from 'countries-list';
-import robotAnimation from '../../assets/lottie/robot.json'
+const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
 
-import approvedAnimation from '../../assets/lottie/approved.json'
-import deniedAnimation from '../../assets/lottie/denied.json'
+const check_me = ref(false)
+const messages = ref([]);
+const show_message_train = ref(false);
+
+onMounted(() => {
+  localStorage.setItem('settings', JSON.stringify(settings));
+});
+// const settings = JSON.parse(window?.localStorage.getItem('settings') || "");
+
+// Computed properties
+/* const greeting = computed(() => {
+  const hour = new Date().getHours();
+  if (hour < 12) return `Good morning, ${props.userName}`;
+  if (hour < 18) return `Good afternoon, ${props.userName}`;
+  return `Good evening, ${props.userName}`;
+});
+ */
+const settings = reactive({
+  show_prev_msg: true,
+  show_rec_answers: true,
+});
 
 
-import { ref, nextTick } from 'vue';
-
-const rec_answer = ref('');
-
-const chatContainer = ref(null);
-
-const scrollToBottom = () => {
-  if (chatContainer.value) {
-    const { scrollTop, clientHeight, scrollHeight } = chatContainer.value;
-    const wasAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
-    if (wasAtBottom) {
-      nextTick(() => {
-        chatContainer.value.scrollTop = scrollHeight - clientHeight;
-        console.log("chat scrolled")
-      });
-    }
+const playAudioMain = () => {
+  if (audio.value && audioSrc.value) {
+    audio.value.play().catch((err) => console.error('Audio playback failed:', err));
   }
 };
 
-watch(() => rec_answer, () => {
-  // scrollToBottom();
-});
-
-
-// Create a ref to access the Lottie component
-const lottieRef = ref(null);
-
-const visa_status_modal = ref(false);
-
-
-const retryInterView = () => {
-  window?.location?.reload()
+// Methods
+const messagesContainer = ref(null);
+const scrollToBottom = async () => {
+  await nextTick();
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
+  }
 };
 
-
-const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
-
-
-const show_answer_pane = ref(true);
 const intro_questions = ref(false);
 const current_question_slide = ref(0);
 const loading_q = ref(false);
 const currentQuestion = ref('');
 const userAnswer = ref('');
+
 const audioSrc = ref('');
+const audio = ref(null);
+
 const questionCount = ref(0);
 const previousQuestions = ref([]);
 const previousAnswers = ref([]);
 const isFinal = ref(false);
 const decision = ref(null);
+
+/* const questions = reactive({
+  fullname: '',
+  nationality: '',
+  country_applying_to: '',
+  visa_type: '',
+  ever_travelled_before: '',
+  ever_had_visa_refusal: '',
+  how_fund_trip: '',
+  occupation: '',
+  have_all_documents: ''
+}); */
 
 const questions = reactive({
   fullname: 'Odii chibuikem daniel',
@@ -271,6 +313,16 @@ const questions = reactive({
   occupation: 'Software Engineering',
   have_all_documents: 'yes'
 });
+
+
+
+
+
+const expert_suggestion = ref('');
+const visa_status_modal = ref(false);
+const retryInterView = () => {
+  window?.location?.reload()
+};
 
 const visaTypes = [
   { type: "Tourist Visa", description: "For leisure travel and short visits." },
@@ -294,13 +346,29 @@ const visaFundOptions = [
 
 const yes_no_options = ["Yes", "No"];
 
-const audio = ref(null);
+
 const isListening = ref(false);
 const recognition = ref(null);
 
-const getNextQuestion2 = async () => {
+const chat = {
+  message: '',
+  sender: '',
+};
+
+const getNextQuestion = async () => {
   loading_q.value = true;
-  rec_answer.value = '';
+  expert_suggestion.value = '';
+  scrollToBottom();
+
+
+  // add to messages array...
+  let chat = {
+    message: userAnswer.value,
+    sender: 'user'
+  };
+  messages.value.push(chat);
+  userAnswer.value = ''
+
   // playAnimation()
   try {
     const { data, error } = await useFetch('/api/answer', {
@@ -322,13 +390,20 @@ const getNextQuestion2 = async () => {
       currentQuestion.value = 'Something went wrong. Please try again.';
     } else {
       currentQuestion.value = data.value.question;
-      audioSrc.value = data.value.audio; // Now a URL
+      audioSrc.value = `${audioTrack}`; // Now a URL
       questionCount.value = data.value.questionCount;
       previousQuestions.value = data.value.previousQuestions;
       previousAnswers.value = data.value.previousAnswers;
       isFinal.value = data.value.isFinal;
       decision.value = data.value.decision;
-      rec_answer.value = data.value.recommendedReply;
+      expert_suggestion.value = data.value.recommendedReply;
+
+      // add to messages array...
+      let chat = {
+        message: currentQuestion.value,
+        sender: 'bot'
+      };
+      messages.value.push(chat);
 
       // scroll chat to bottom..
       // scrollToBottom();
@@ -336,23 +411,20 @@ const getNextQuestion2 = async () => {
       if (data.value.isFinal) {
         visa_status_modal.value = true;
       }
-      // Autoplay handled by <audio> tag with autoplay attribute
-      if (audio.value && audioSrc.value) {
-        audio.value.load();
-        audio.value.play().catch((err) => console.error('Audio playback failed:', err));
-      }
+
+      // Generate audio with edge-tts
+     /*  if (data.value.question || (data.value.decision && data.value.decision.status)) {
+        const textToSpeak = data.value.question || `${data.value.decision.status}: ${data.value.decision.reason}`;
+        audio.play();
+        console.log("audio generated...")
+      } */
+
       userAnswer.value = '';
     }
   } catch (err) {
     console.error(err);
   }
   loading_q.value = false;
-};
-
-const playAudio = () => {
-  if (audio.value && audioSrc.value) {
-    audio.value.play().catch((err) => console.error('Audio playback failed:', err));
-  }
 };
 
 const resetInterview = () => {
@@ -365,7 +437,7 @@ const resetInterview = () => {
   currentQuestion.value = '';
   userAnswer.value = '';
   audioSrc.value = '';
-  getNextQuestion2();
+  getNextQuestion();
 };
 
 const toggleSpeech = () => {
@@ -403,7 +475,7 @@ onMounted(() => {
     recognition.value.onend = () => {
       isListening.value = false;
       // Optionally auto-submit after speech
-      // getNextQuestion2();
+      // getNextQuestion();
     };
 
     recognition.value.onerror = (event) => {
@@ -419,24 +491,20 @@ onMounted(() => {
 onUnmounted(() => {
   if (recognition.value) recognition.value.stop();
 });
+
+/* watch(() => expert_suggestion, () => {
+  scrollToBottom();
+}); */
+
+
+// Watch for changes in messages to auto-scroll
+watch(messages, () => {
+  scrollToBottom();
+}, { deep: true });
+
+// Lifecycle hook
+onMounted(() => {
+  scrollToBottom();
+});
+
 </script>
-
-<style scoped>
-/* Fade-Up Transition with Delay */
-.fade-up-enter-active,
-.fade-up-leave-active {
-  transition: opacity 0.5s ease 0.5s, transform 0.5s ease 0.5s;
-}
-
-.fade-up-enter-from,
-.fade-up-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.fade-up-enter-to,
-.fade-up-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-</style>

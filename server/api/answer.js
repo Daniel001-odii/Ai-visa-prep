@@ -112,20 +112,13 @@ export default defineEventHandler(async (event) => {
     }
   }
   const audio = createAudio();
-/*   try{
-    (async () => {
-      
-  })();
-  }catch(error){
-   
-  } */
 
 
   return {
     question: isFinal ? '' : question,
     decision: isFinal ? decision : null,
     recommendedReply: isFinal ? '' : recommendedReply,
-    audio,
+    // audio,
     questionCount: updatedQuestionCount,
     previousQuestions: updatedPreviousQuestions,
     previousAnswers: updatedPreviousAnswers,
