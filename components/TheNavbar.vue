@@ -2,7 +2,7 @@
     <div class="border-b  dark:border-gray-800 bg-white dark:bg-slate-900 bg-opacity-50 z-10 backdrop-blur-lg">
 
         <!-- NON AUTH NABAR -->
-        <div v-if="true" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
+        <div v-if="!token" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
             <!-- LOGO -->
             <TheLogo/>
@@ -13,7 +13,6 @@
                 <!-- QUICK LINKS -->
                 <div class=" flex gap-4 md:items-center mx-auto md:flex-row flex-col items-start ">
                     <UButton label="Features" variant="link" color="black" />
-                    <UButton label="About" variant="link" color="black" />
                     <UButton label="Blog" variant="link" color="black" />
                 </div>
 
@@ -37,7 +36,7 @@
 
         </div>
 
-        <div v-if="false" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
+        <div v-else class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
              <!-- LOGO -->
              <NuxtLink to="/">
@@ -51,9 +50,9 @@
             <UDropdown class=" dark:bg-slate-800" :items="items"
                 :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-white dark:bg-slate-900' }"
                 :popper="{ placement: 'bottom-start' }">
-                <UIcon name="iconoir:profile-circle"/>
-                <!-- <UAvatar alt="John Doe" size="lg" class=" !rounded-full"/> -->
-                <template #account="{ item }">
+                <!-- <UIcon name="iconoir:profile-circle"/> -->
+                <UAvatar alt="John Doe" size="md" class=" !rounded-full"/>
+                <!-- <template #account="{ item }">
                     <div class="text-left">
                         <p>
                             Signed in as
@@ -62,7 +61,7 @@
                             {{ item.label }}
                         </p>
                     </div>
-                </template>
+                </template> -->
 
                 <template #item="{ item }">
                     <span class="truncate">{{ item.label }}</span>
@@ -116,6 +115,13 @@
 <script setup>
 import ThePreviousTest from './ThePreviousTest.vue';
 
+const token = useCookie("vy_token").value;
+
+const logout = () => {
+    const token = useCookie('vy_token');
+    token.value = null; // Clear the token
+    navigateTo('/login'); // Redirect to the login page
+};
 
 const login_modal = ref(false)
 const sign_up_modal = ref(false)
@@ -139,12 +145,13 @@ const isDark = computed({
 });
 
 const items = [
-    [{
+   /*  [{
         label: 'johndoe@example.com',
         slot: 'account',
         disabled: true,
 
-    }], [{
+    }],  */
+    [{
         label: 'Settings',
         icon: 'heroicons:user-circle',
         shortcuts: ['E'],
@@ -168,12 +175,21 @@ const items = [
     },
     ], [{
         label: 'Sign out',
-        icon: 'i-heroicons-arrow-left-on-rectangle'
+        icon: 'i-heroicons-arrow-left-on-rectangle',
+        click: () => {
+            logout();
+        }
     }]
 ]
 
 const account_modal = ref(false);
 const prev_tests_modal = ref(false);
+
+onMounted(()=>{
+    if(token){
+
+    }
+})
 </script>
 
 <style lang="scss" scoped></style>

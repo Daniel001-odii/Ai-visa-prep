@@ -54,7 +54,7 @@
             <span class="font-bold">What do you do for a living?</span>
             <UInput v-model="questions.occupation" placeholder="What do you do for a living?" />
           </div>
-          <div class="flex flex-col gap-3 text-orange-500 p-5 bg-orange-500 bg-opacity-10">
+          <!-- <div class="flex flex-col gap-3 text-orange-500 p-5 bg-orange-500 bg-opacity-10">
             <span class="font-bold">Show expert suggestions in interview?</span>
             <UCheckbox 
               default-value
@@ -63,7 +63,7 @@
               color="orange"
               description="Show Expert Suggested Answers to Interview Questions"
             />
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -72,9 +72,10 @@
           <UButton v-if="current_question_slide > 0" @click="current_question_slide--" label="Previous" variant="soft"
             icon="heroicons:arrow-small-left-20-solid" />
           <UButton
+          :color="current_question_slide === 2 ? 'blue':'primary'"
             @click="current_question_slide === 2 ? (intro_questions = false, getNextQuestion()) : current_question_slide++"
             :label="current_question_slide === 2 ? 'Start Interview' : 'Next'"
-            :icon="current_question_slide === 2 ? '' : 'heroicons:arrow-small-right-20-solid'" :trailing="true" />
+            :icon="current_question_slide === 2 ? 'hugeicons:presentation-line-chart-02' : 'heroicons:arrow-small-right-20-solid'" :trailing="true" />
         </div>
       </template>
     </UCard>
@@ -130,9 +131,13 @@
           <!-- default message -->
           <div v-if="messages.length == 0"
             class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
-            <UIcon name="heroicons:information-circle" class=" text-4xl"/>
+            <div class=" w-[200px]">
+              <img src="../../assets/images/woman.png"/>
+            </div>
+            <!-- <UIcon name="heroicons:information-circle" class=" text-4xl"/> -->
+             <h1 class=" font-bold text-2xl">Hold up!</h1>
             <p>Before we begin the interview, please fill out the following form with your personal and visa-related information. This will help us tailor the interview process to your specific needs and ensure a smooth experience.</p>
-           <UButton label="Continue" color="blue" @click="intro_questions = true"/>
+           <UButton label="Continue" color="yellow" @click="intro_questions = true"/>
           </div>
 
           <!-- MESSAGES -->

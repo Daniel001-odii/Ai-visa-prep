@@ -41,12 +41,10 @@
             type="submit"
             block
             color="blue"
+            :icon="isLoading ? 'svg-spinners:bars-rotate-fade':'i-heroicons-lock-closed'"
             class="animate-pulse-on-hover transition-all duration-300"
-            :loading="isLoading"
+            :disabled="isLoading"
           >
-            <template #leading>
-              <UIcon name="i-heroicons-lock-closed" class="w-5 h-5" />
-            </template>
             Sign in
           </UButton>
           
@@ -103,15 +101,28 @@
   const isLoading = ref(false);
   
   // Form submission handler
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     isLoading.value = true;
-    
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Login attempt with:', form);
-      isLoading.value = false;
-      // Here you would typically call your authentication API
-    }, 1000);
+
+    try {
+      const res = await useNuxtApp().$apiFetch(`/auth/login`, {
+        body: {
+          email: form.email,
+          password: form.password,
+        },
+        method: "POST",
+      });
+
+      const token = useCookie("vy_token");
+      token.value = res.token;
+      useRouter().push("/");
+
+      console.log("from res: ", res);
+    } catch (err) {
+      console.log("res from signup: ", err);
+    }
+
+    isLoading.value = false;
   };
   
   // Google sign-in handler

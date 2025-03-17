@@ -4,10 +4,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     const axiosInstance = $fetch.create({
       baseURL: config.public.apiBase,
       onRequest({ options }) {
-        const token = useCookie("accessToken").value;
+        const token = useCookie("vy_token").value;
         options.headers = {
           ...options.headers,
-          Authorization: token ? `Bearer ${token}` : "",
+          Authorization: token ? `JWT ${token}` : "",
         };
       },
       onResponseError({ response }) {
