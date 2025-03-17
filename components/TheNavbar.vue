@@ -6,7 +6,10 @@
 
             <!-- LOGO -->
             <NuxtLink to="/">
-                <span class=" font-bold">AiVisaPrep</span>
+                <div class=" flex flex-row gap-3 items-center justify-center">
+                    <img src="../public/favicon.ico" class=" w-[30px]"/>
+                    <span class=" font-bold">Visalify</span>
+                </div>
             </NuxtLink>
 
             <div :class="mobile_nav ? 'md:flex' : ' hidden md:flex'"
