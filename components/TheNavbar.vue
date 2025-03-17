@@ -5,12 +5,7 @@
         <div v-if="true" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
             <!-- LOGO -->
-            <NuxtLink to="/">
-                <div class=" flex flex-row gap-3 items-center justify-center">
-                    <img src="../public/favicon.ico" class=" w-[30px]"/>
-                    <span class=" font-bold">Visalify</span>
-                </div>
-            </NuxtLink>
+            <TheLogo/>
 
             <div :class="mobile_nav ? 'md:flex' : ' hidden md:flex'"
                 class=" w-full gap-3 md:border-none border-b bg-inherit md:relative md:justify-between absolute top-[100%] left-0 justify-center p-2 md:p-0">
@@ -28,10 +23,13 @@
                     <UButton :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
                         " color="gray" variant="ghost" aria-label="Theme" @click="isDark = !isDark" />
 
-                    <UButton label="Sign Up" color="blue" variant="soft" @click="sign_up_modal = true" />
+                <NuxtLink to="/login">
+                    <UButton label="Sign Up" color="blue" variant="soft"/>
+                </NuxtLink>
 
-                    <UButton label="Sign in" color="blue" variant="solid" @click="login_modal = true" />
-
+                <NuxtLink to="/register">
+                    <UButton label="Sign in" color="blue" variant="solid"/>
+                </NuxtLink>
                 </div>
             </div>
 
@@ -109,38 +107,7 @@
         </UCard>
     </UModal>
 
-    <!-- LOGIN MODAL -->
-    <UModal v-model="login_modal">
-        <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-            <template #header>
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-                        Login
-                    </h3>
-                    <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
-                        @click="login_modal = false" />
-                </div>
-            </template>
-            <TheLogin />
-        </UCard>
-    </UModal>
 
-
-     <!-- SIGN UP MODAL -->
-     <UModal v-model="sign_up_modal">
-        <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-            <template #header>
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-                        Sign Up
-                    </h3>
-                    <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
-                        @click="sign_up_modal = false" />
-                </div>
-            </template>
-            <TheSignup />
-        </UCard>
-    </UModal>
 
 
 

@@ -32,9 +32,9 @@
   
           <div class="flex items-center justify-between">
   
-            <ULink href="#" class="text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors duration-300">
+            <NuxtLink to="/request_reset" class="text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors duration-300">
               Forgot your password?
-            </ULink>
+            </NuxtLink>
           </div>
   
           <UButton
