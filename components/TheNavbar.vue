@@ -28,9 +28,9 @@
                     <UButton :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
                         " color="gray" variant="ghost" aria-label="Theme" @click="isDark = !isDark" />
 
-                    <UButton label="Sign Up" color="blue" variant="soft" />
+                    <UButton label="Sign Up" color="blue" variant="soft" @click="sign_up_modal = true" />
 
-                    <UButton label="Sign in" color="blue" variant="solid" />
+                    <UButton label="Sign in" color="blue" variant="solid" @click="login_modal = true" />
 
                 </div>
             </div>
@@ -41,9 +41,12 @@
 
         <div v-if="false" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
-            <!-- LOGO -->
-            <NuxtLink to="/">
-                <span class=" font-bold">AiVisaPrep</span>
+             <!-- LOGO -->
+             <NuxtLink to="/">
+                <div class=" flex flex-row gap-3 items-center justify-center">
+                    <img src="../public/favicon.ico" class=" w-[30px]"/>
+                    <span class=" font-bold">Visalify</span>
+                </div>
             </NuxtLink>
 
             <!-- USER PROFILE -->
@@ -105,12 +108,50 @@
             <ThePreviousTest />
         </UCard>
     </UModal>
+
+    <!-- LOGIN MODAL -->
+    <UModal v-model="login_modal">
+        <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+            <template #header>
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+                        Login
+                    </h3>
+                    <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+                        @click="login_modal = false" />
+                </div>
+            </template>
+            <TheLogin />
+        </UCard>
+    </UModal>
+
+
+     <!-- SIGN UP MODAL -->
+     <UModal v-model="sign_up_modal">
+        <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+            <template #header>
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+                        Sign Up
+                    </h3>
+                    <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+                        @click="sign_up_modal = false" />
+                </div>
+            </template>
+            <TheSignup />
+        </UCard>
+    </UModal>
+
+
+
 </template>
 
 <script setup>
 import ThePreviousTest from './ThePreviousTest.vue';
 
 
+const login_modal = ref(false)
+const sign_up_modal = ref(false)
 
 const mobile_nav = ref(false);
 const toggleMenu = () => {

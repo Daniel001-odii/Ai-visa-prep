@@ -39,7 +39,7 @@
       </p>
 
       <div class="flex gap-4 mt-4">
-        <UButton size="xl" color="blue" label="Start free trial" @click="useRouter().push('/Interview?modal=true')" :trailing="true" icon="hugeicons:arrow-right-02" />
+        <UButton size="xl" color="blue" label="Start free trial" @click="useRouter().push('/Interview?modal=true')" />
         <UButton label="Pricing" variant="ghost" size="xl" class=" bg-inherit" color="black" />
       </div>
 

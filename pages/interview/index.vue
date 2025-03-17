@@ -86,7 +86,7 @@
       <template #header>
         <h2 class="font-bold text-2xl text-left">
           <span v-if="decision.status == 'APPROVED'">Congratulations!</span>
-          <span v-else>You can try again</span>
+          <span v-else>Sorry</span>
         </h2>
       </template>
 
@@ -106,7 +106,7 @@
             later.</span>
         </div>
         <span>{{ decision.reason }}</span>
-        <UButton color="green" @click="retryInterView()" label="Start New Interview" class="w-fit" />
+        <UButton color="green" @click="resetInterview()" label="Start New Interview" class="w-fit" />
       </div>
     </UCard>
   </UModal>
@@ -141,7 +141,13 @@
             :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
             <span>{{ chat.message }}</span>
           </div>
-          <span v-if="loading_q" class=" p-3">VO is typing...</span>
+
+          <!-- typing status -->
+          <div v-if="loading_q" class=" flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><!-- Icon from SVG Spinners by Utkarsh Verma - https://github.com/n3r4zzurr0/svg-spinners/blob/main/LICENSE --><circle cx="4" cy="12" r="3" fill="currentColor"><animate id="svgSpinners3DotsBounce0" attributeName="cy" begin="0;svgSpinners3DotsBounce1.end+0.25s" calcMode="spline" dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12"/></circle><circle cx="12" cy="12" r="3" fill="currentColor"><animate attributeName="cy" begin="svgSpinners3DotsBounce0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12"/></circle><circle cx="20" cy="12" r="3" fill="currentColor"><animate id="svgSpinners3DotsBounce1" attributeName="cy" begin="svgSpinners3DotsBounce0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12"/></circle></svg>
+            <span class=" p-3">V.O is typing...</span>
+          </div>
+         
         </div>
 
         
@@ -152,6 +158,7 @@
           <!-- Q&A AREA -->
           <div v-if="!questions.fullname == ''" class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
             <UAlert
+              v-if="expert_suggestion"
               color="primary"
               variant="soft"
               title="Expert Suggestion"
@@ -358,7 +365,13 @@ const getNextQuestion = async () => {
     }
  
   } catch (err) {
-    console.error("error getting questions: ", err)
+    console.error("error getting questions: ", err);
+    let bot_msg = {
+      message: "An error occured",
+      sender: 'bot',
+      error: true,
+    };
+    messages.value.push(bot_msg);
   }
   loading_q.value = false;
 }
@@ -373,6 +386,8 @@ const resetInterview = () => {
   currentQuestion.value = '';
   userAnswer.value = '';
   audioSrc.value = '';
+
+  messages.value = []
   getNextQuestion();
 };
 
@@ -391,12 +406,6 @@ const toggleSpeech = () => {
 };
 
 onMounted(() => {
-
-
-  /*   if (useRoute().query.modal) {
-      intro_questions.value = true;
-    } */
-
   // Initialize SpeechRecognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SpeechRecognition) {
