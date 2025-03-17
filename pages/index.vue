@@ -35,7 +35,7 @@
         for Nigerian based immigrants
       </span>
       <h1 class="text-5xl text-center">Master Your Visa Interview<br/> with AI-Powered Precision</h1>
-      <p class="text-lg text-center mt-2 max-w-[650px]">Preparing for a visa interview can be stressful, but with VisaMaster AI, you gain a competitive edge. Our intelligent simulator replicates real visa interviews, offering tailored feedback, dynamic practice sessions, and expert guidance to boost your confidence and success rate.
+      <p class="text-lg text-center mt-2 max-w-[650px]">Preparing for a visa interview can be stressful, but with Visalify AI, you gain a competitive edge. <br/>Our intelligent simulator replicates real visa interviews, offering tailored feedback, dynamic practice sessions, and expert guidance to boost your confidence and success rate.
       </p>
 
       <div class="flex gap-4 mt-4">
@@ -44,8 +44,8 @@
       </div>
 
       <!-- hero image -->
-      <div class=" rounded-t-3xl mt-4 overflow-hidden pt-3 px-3 border">
-        <img src="../assets/images/hero/hero_1.png" class=" rounded-t-2xl"/>
+      <div class=" rounded-3xl mt-4 overflow-hidden">
+        <img src="../assets/images/hero/hero_1.png" />
       </div>
 
     </div>
@@ -54,8 +54,8 @@
     <div class=" flex flex-col border-t pt-[100px] mt-12 w-full justify-center items-center gap-12">
 
       <div class="flex flex-col max-w-[500px] justify-center items-center text-center gap-3">
-        <span class=" font-bold text-3xl ">Why Choose <span class="text-blue-500">VisaMaster</span> AI?build</span>
-        <span>Join thousands of applicants who have boosted their visa approval chances with VisaMaster AI. Real practice. Real results.</span>
+        <span class=" font-bold text-3xl ">Why Choose <span class="text-blue-500">Visalify</span> AI?build</span>
+        <span>Join thousands of applicants who have boosted their visa approval chances with Visalify AI. Real practice. Real results.</span>
       </div>
 
 
@@ -95,8 +95,8 @@
         </div>
       </div>
 
-      <div class="flex flex-col bg-black bg-opacity-20 p-[150px] min-h-[300px] gap-6">
-        <div class=" text-4xl">
+      <div class="flex flex-col bg-black bg-opacity-10 md:p-[150px] p-12 min-h-[300px] gap-6">
+        <div class=" text-xl md:text-4xl">
           {{ reviews[0].feedback }}
         </div>
         <div class="flex gap-3">
@@ -141,9 +141,9 @@
 
 
       <!-- TESTIMONIAL -->
-      <div class="flex flex-col bg-black bg-opacity-20 p-[150px] min-h-[300px] gap-6">
-        <div class=" text-4xl">
-          {{ reviews[1].feedback }}
+      <div class="flex flex-col bg-black bg-opacity-10 md:p-[150px] p-12 min-h-[300px] gap-6">
+        <div class=" text-xl md:text-4xl">
+          {{ reviews[0].feedback }}
         </div>
         <div class="flex gap-3">
           <UAvatar :alt="reviews[1].name"/>
@@ -205,19 +205,19 @@ const reviews = [
   {
     name: "Emily",
     location: "Nigeria",
-    feedback: "I had a fantastic experience with VisaMaster AI! The practice sessions helped me gain confidence, and I successfully passed my visa interview on the first attempt.",
+    feedback: "I had a fantastic experience with Visalify AI! The practice sessions helped me gain confidence, and I successfully passed my visa interview on the first attempt.",
     rating: 5
   },
   {
     name: "Raj",
     location: "India",
-    feedback: "VisaMaster AI is a must-have! The AI feedback highlighted my weak points, allowing me to improve quickly. Highly recommended!",
+    feedback: "Visalify AI is a must-have! The AI feedback highlighted my weak points, allowing me to improve quickly. Highly recommended!",
     rating: 5
   },
   {
     name: "Anonymous",
     location: "United States",
-    feedback: "This tool made all the difference! It provided personalized questions and helped me practice effectively. Thanks to VisaMaster AI, I aced my visa interview!",
+    feedback: "This tool made all the difference! It provided personalized questions and helped me practice effectively. Thanks to Visalify AI, I aced my visa interview!",
     rating: 5
   }
 ];

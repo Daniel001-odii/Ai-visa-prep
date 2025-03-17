@@ -30,8 +30,7 @@
           <div class="flex flex-col gap-3">
             <span class="font-bold">Visa Type</span>
             <USelectMenu searchable searchable-placeholder="Search a visa type" class=" !w-full lg:w-48"
-              placeholder="Select visa type" v-model="questions.visa_type" :options="visaTypes" value-attribute="type"
-              option-attribute="type" />
+              placeholder="Select visa type" v-model="questions.visa_type" :options="visaTypes" />
           </div>
           <div class="flex flex-col gap-3">
             <span class="font-bold">Ever Travelled Before?</span>
@@ -55,10 +54,15 @@
             <span class="font-bold">What do you do for a living?</span>
             <UInput v-model="questions.occupation" placeholder="What do you do for a living?" />
           </div>
-          <div class="flex flex-col gap-3">
-            <span class="font-bold">Do you have all the required documents?</span>
-            <USelectMenu placeholder="Select an option" v-model="questions.have_all_documents"
-              :options="yes_no_options" />
+          <div class="flex flex-col gap-3 text-orange-500 p-5 bg-orange-500 bg-opacity-10">
+            <span class="font-bold">Show expert suggestions in interview?</span>
+            <UCheckbox 
+              default-value
+              v-model="show_expert_suggestions"
+              label="Expert Suggestions"
+              color="orange"
+              description="Show Expert Suggested Answers to Interview Questions"
+            />
           </div>
         </div>
       </div>
@@ -89,13 +93,13 @@
       <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
 
         <div v-if="decision.status == 'APPROVED'" class=" flex flex-col justify-center items-center">
-          <img src="../../assets/images/ok.png" class=" size-[200px]" />
+          <img src="../../assets/images/ok.png" class=" size-[150px]" />
           <span class="font-bold text-md text-green-500">VISA APPROVED</span>
           <span class="text-gray-500">Your visa application has been approved. You will receive an email with further
             instructions.</span>
         </div>
         <div v-else class=" flex flex-col justify-center items-center">
-          <img src="../../assets/images/cancel.png" class=" size-[200px]" />
+          <img src="../../assets/images/cancel.png" class=" size-[150px]" />
           <span class="font-bold text-md text-red-500">VISA DENIED</span>
           <span class="text-gray-500">Your visa application has been denied. Please review the reason below and try
             again
@@ -111,22 +115,24 @@
   <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit dark:bg-inherit font-sans">
     <TheNavbar />
 
-    <div class="h-[90%] container mx-auto flex flex-col justify-center items-center">
+    <div class="h-[90%] container mx-auto flex flex-col justify-center items-center p-4 ">
 
-      <div class=" flex justify-center items-center flex-col">
-        <AudioVisualizer v-if="audioSrc" ref="visualizer" :audioData="audioSrc" />
-        <button @click="playAudio">{{ isPlaying ? 'Pause' : 'Play' }}</button>
-      </div>
+     <!--  <div class=" flex justify-center items-center flex-col h-[350px]">
+          <AudioVisualizer ref="visualizer" :audioData="audioSrc" v-if="audioSrc" class=" " />
+          <UButton icon="heroicons:speaker-wave-solid" class=" w-fit" v-if="audioSrc" label="play audio" @click="playAudio" />
+      </div> -->
 
-      <div class=" w-full md:w-[500px] p-4 flex flex-col gap-3">
+      <div class=" w-full md:w-[500px] flex flex-col gap-3 h-full ">
 
         <!-- CHAT CONTAINER -->
-        <div class=" w-full h-[250px] overflow-y-auto flex flex-col gap-3 " ref="messagesContainer">
+        <div class=" w-full  overflow-y-auto flex flex-col gap-3 h-full" ref="messagesContainer">
 
           <!-- default message -->
           <div v-if="messages.length == 0"
-            class=" mt-12 p-5 rounded-3xl items-center justify-center text-center border">
-            <span>Start a new chat <br />by typing into the textarea</span>
+            class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
+            <UIcon name="heroicons:information-circle" class=" text-4xl"/>
+            <p>Before we begin the interview, please fill out the following form with your personal and visa-related information. This will help us tailor the interview process to your specific needs and ensure a smooth experience.</p>
+           <UButton label="Continue" color="blue" @click="intro_questions = true"/>
           </div>
 
           <!-- MESSAGES -->
@@ -138,18 +144,27 @@
           <span v-if="loading_q" class=" p-3">VO is typing...</span>
         </div>
 
+        
+
         <!-- Chat input area -->
         <div class="bg-inherit ">
           <!-- TYPING AREA/BOX -->
           <!-- Q&A AREA -->
-          <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
+          <div v-if="!questions.fullname == ''" class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
+            <UAlert
+              color="primary"
+              variant="soft"
+              title="Expert Suggestion"
+              :description="expert_suggestion"
+              icon="heroicons:sparkles-16-solid"
+            />
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
-              <!-- <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class=""></audio> -->
+              <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
               <!-- <div class="flex gap-3"> -->
               <div class="flex flex-col gap-3 items-start w-full">
                 <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
                   <div class="flex flex-col justify-center w-full">
-                    <textarea @blur="userAnswer == '' ? (check_me = false) : (check_me = true)" v-model="userAnswer"
+                    <textarea v-model="userAnswer"
                       class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
 
                     <div class=" flex justify-end items-center gap-3">
@@ -187,9 +202,10 @@ import { countries } from 'countries-list';
 import { UButton } from '#components';
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
 
-const check_me = ref(false)
+
 const messages = ref([]);
 const show_message_train = ref(false);
+const show_expert_suggestions = ref(false);
 
 const settings = reactive({
   show_prev_msg: true,
@@ -243,7 +259,7 @@ const decision = ref(null);
 }); */
 
 const questions = reactive({
-  fullname: 'Odii chibuikem daniel',
+  fullname: '',
   nationality: 'Nigeria',
   country_applying_to: 'United States',
   visa_type: 'Student visa',
@@ -265,11 +281,13 @@ const retryInterView = () => {
 };
 
 const visaTypes = [
-  { type: "Tourist Visa", description: "For leisure travel and short visits." },
-  { type: "Business Visa", description: "For business meetings and professional activities." },
-  { type: "Student Visa", description: "For studying in an educational institution abroad." },
-  { type: "Work Visa", description: "For employment in a foreign country." },
-  { type: "Transit Visa", description: "For short stays while traveling to another destination." }
+  "Tourist Visa",
+  "Work Visa",
+  "Student Visa",
+  "Transit Visa",
+  "Business Visa",
+  "Immigrant Visa",
+  "Visitor Visa"
 ];
 
 const visaFundOptions = [
@@ -335,11 +353,10 @@ const getNextQuestion = async () => {
     expert_suggestion.value = res.recommendedReply;
     console.log("retunred res: ", res);
 
-    // play visualizer...
-    // playAudio();
-
-
-
+    if(res.isFinal){
+      visa_status_modal.value = true;
+    }
+ 
   } catch (err) {
     console.error("error getting questions: ", err)
   }

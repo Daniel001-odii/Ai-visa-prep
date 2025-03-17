@@ -1,5 +1,5 @@
 <template>
-    <nav class="border-b  dark:border-gray-800 dark:bg-inherit">
+    <div class="border-b  dark:border-gray-800 bg-white dark:bg-slate-900 bg-opacity-50 z-10 backdrop-blur-lg">
 
         <!-- NON AUTH NABAR -->
         <div v-if="true" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
@@ -36,7 +36,7 @@
 
         </div>
 
-        <div v-if="false" class=" flex p-3 container mx-auto items-center justify-between relative">
+        <div v-if="false" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
             <!-- LOGO -->
             <NuxtLink to="/">
@@ -67,7 +67,7 @@
                 </template>
             </UDropdown>
         </div>
-    </nav>
+    </div>
 
 
     <!-- ACCOUNT MODAL -->

@@ -1,8 +1,8 @@
 <!-- AudioVisualizer.vue -->
 <template>
-  <div class="audio-visualizer">
+  <div  class="audio-visualizer">
     <canvas ref="canvas" class="visualizer-canvas"></canvas>
-    <audio ref="audioElement" @ended="onAudioEnded" ></audio>
+    <audio ref="audioElement" @ended="onAudioEnded"></audio>
   </div>
 </template>
 
