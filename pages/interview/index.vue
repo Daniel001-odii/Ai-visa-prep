@@ -114,8 +114,8 @@
     <div class="h-[90%] container mx-auto flex flex-col justify-center items-center">
 
       <div class=" flex justify-center items-center flex-col">
-        <AudioVisualizer :audio-base64="audioSrc" />
-        <span>VISUALIZER HERE</span>
+        <AudioVisualizer v-if="audioSrc" ref="visualizer" :audioData="audioSrc" />
+        <button @click="playAudio">{{ isPlaying ? 'Pause' : 'Play' }}</button>
       </div>
 
       <div class=" w-full md:w-[500px] p-4 flex flex-col gap-3">
@@ -123,17 +123,20 @@
         <!-- CHAT CONTAINER -->
         <div class=" w-full h-[250px] overflow-y-auto flex flex-col gap-3 " ref="messagesContainer">
 
+          <!-- default message -->
+          <div v-if="messages.length == 0"
+            class=" mt-12 p-5 rounded-3xl items-center justify-center text-center border">
+            <span>Start a new chat <br />by typing into the textarea</span>
+          </div>
+
           <!-- MESSAGES -->
-          <div v-if="settings.show_prev_msg" v-for="chat in messages" class=" p-3 rounded-md max-w-[65%] bg-slate-500 w-fit border"
+          <div v-if="settings.show_prev_msg" v-for="chat in messages"
+            class=" p-3 rounded-md max-w-[65%] bg-slate-500 w-fit"
             :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
             <span>{{ chat.message }}</span>
           </div>
-
           <span v-if="loading_q" class=" p-3">VO is typing...</span>
-
-
         </div>
-
 
         <!-- Chat input area -->
         <div class="bg-inherit ">
@@ -141,7 +144,7 @@
           <!-- Q&A AREA -->
           <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
-              <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
+              <!-- <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class=""></audio> -->
               <!-- <div class="flex gap-3"> -->
               <div class="flex flex-col gap-3 items-start w-full">
                 <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
@@ -176,7 +179,7 @@ definePageMeta({
   layout: 'plain',
 });
 
-
+import { AVWaveform } from 'vue-audio-visual'
 // import { MsEdgeTTS, OUTPUT_FORMAT } from "edge-tts-node";
 import audioTrack from '../../tmpfolder/audio.webm'
 import { ref, onMounted, nextTick, watch, computed } from 'vue';
@@ -193,11 +196,14 @@ const settings = reactive({
   show_rec_answers: true,
 });
 
-/* const playAudioMain = () => {
-  if (audio.value && audioSrc.value) {
-    audio.value.play().catch((err) => console.error('Audio playback failed:', err));
+const isPlaying = ref(false)
+const visualizer = ref(null);
+const playAudio = async () => {
+  if (!isPlaying.value) {
+    await nextTick(); // Wait for the DOM to update
+    visualizer.value.play();
   }
-}; */
+};
 
 
 // Methods
@@ -289,6 +295,7 @@ const getNextQuestion = async () => {
   try {
 
     expert_suggestion.value = '';
+    audioSrc.value = null;
     scrollToBottom();
 
 
@@ -312,6 +319,7 @@ const getNextQuestion = async () => {
 
     scrollToBottom();
 
+
     let bot_msg = {
       message: res.question,
       sender: 'bot'
@@ -325,17 +333,12 @@ const getNextQuestion = async () => {
     isFinal.value = res.isFinal;
     decision.value = res.decision;
     expert_suggestion.value = res.recommendedReply;
-
     console.log("retunred res: ", res);
 
-  /*   currentQuestion.value = data.value.question;
-      audioSrc.value = `${audioTrack}`; // Now a URL
-      questionCount.value = data.value.questionCount;
-      previousQuestions.value = data.value.previousQuestions;
-      previousAnswers.value = data.value.previousAnswers;
-      isFinal.value = data.value.isFinal;
-      decision.value = data.value.decision;
-      expert_suggestion.value = data.value.recommendedReply; */
+    // play visualizer...
+    // playAudio();
+
+
 
   } catch (err) {
     console.error("error getting questions: ", err)
