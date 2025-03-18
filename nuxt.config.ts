@@ -6,9 +6,6 @@ export default defineNuxtConfig({
   googleSignIn: {
     clientId: '877367357708-su3kiqq7ql133589gg4vj3dh6e968mjp.apps.googleusercontent.com',
   },
-  pinia: {
-    autoImports: ['defineStore', 'storeToRefs'],
-  },
   css: ["@/assets/css/style.css"],
 
   nitro: {

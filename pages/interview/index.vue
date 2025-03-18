@@ -1,5 +1,5 @@
 <template>
-   <UModal v-model="intro_questions" prevent-close :ui="{ container: 'flex items-center justify-center min-h-screen' }">
+   <UModal v-model="intro_questions" :ui="{ container: 'flex items-center justify-center min-h-screen' }">
     <UCard>
       <template #header>
         <h2 class="font-bold text-2xl text-left">Welcome to the Interview</h2>
@@ -82,11 +82,11 @@
   </UModal>
 
   <!-- VISA STATUS -->
-  <UModal v-model="intro_questions" prevent-close :ui="{ container: 'flex items-center justify-center min-h-screen' }">
+  <UModal v-model="visa_status_modal" prevent-close :ui="{ container: 'flex items-center justify-center min-h-screen' }">
     <UCard>
       <template #header>
         <h2 class="font-bold text-2xl text-left">
-          <span v-if="decision.status == 'APPROVED'">Congratulations!</span>
+          <span v-if="decision?.status == 'APPROVED'">Congratulations!</span>
           <span v-else>Sorry</span>
         </h2>
       </template>
@@ -137,7 +137,7 @@
             <!-- <UIcon name="heroicons:information-circle" class=" text-4xl"/> -->
              <h1 class=" font-bold text-2xl">Hold up!</h1>
             <p>Before we begin the interview, please fill out the following form with your personal and visa-related information. This will help us tailor the interview process to your specific needs and ensure a smooth experience.</p>
-           <UButton label="Continue" color="yellow" @click="intro_questions = true"/>
+           <UButton label="Continue" color="yellow" @click="openIntroQuestions"/>
           </div>
 
           <!-- MESSAGES -->
@@ -223,6 +223,10 @@ const settings = reactive({
   show_prev_msg: true,
   show_rec_answers: true,
 });
+
+const openIntroQuestions = ()=>{
+  intro_questions.value = true
+}
 
 const isPlaying = ref(false)
 const visualizer = ref(null);
