@@ -199,12 +199,6 @@ const resetForm = () => {
     // In a real app, you would fetch this from your backend
 };
 
-const login = () => {
-    // In a real app, this would redirect to login page or open a login modal
-    isAuthenticated.value = true; // Just for demo purposes
-    userSubscription.value = 'premium'; // Just for demo purposes
-};
-
 // Load settings from localStorage on component mount
 onMounted( async() => {
     await useUserStore().fetchUser();
