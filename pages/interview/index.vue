@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model="intro_questions" prevent-close>
+   <UModal v-model="intro_questions" prevent-close :ui="{ container: 'flex items-center justify-center min-h-screen' }">
     <UCard>
       <template #header>
         <h2 class="font-bold text-2xl text-left">Welcome to the Interview</h2>
@@ -82,7 +82,7 @@
   </UModal>
 
   <!-- VISA STATUS -->
-  <UModal v-model="visa_status_modal" prevent-close>
+  <UModal v-model="intro_questions" prevent-close :ui="{ container: 'flex items-center justify-center min-h-screen' }">
     <UCard>
       <template #header>
         <h2 class="font-bold text-2xl text-left">

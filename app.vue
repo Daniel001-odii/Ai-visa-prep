@@ -9,5 +9,16 @@
   </NuxtLayout>
   </div>
 </template>
+
+<script setup>
+import { useUserStore } from './stores/user';
+
+// fetching user data on app load...
+const user = useUserStore();
+onMounted( async ()=>{
+  // await user.fetchUser();
+})
+
+</script>
 <style>
 </style>

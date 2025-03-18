@@ -5,7 +5,7 @@
         <div v-if="!token" class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
             <!-- LOGO -->
-            <TheLogo/>
+            <TheLogo />
 
             <div :class="mobile_nav ? 'md:flex' : ' hidden md:flex'"
                 class=" w-full gap-3 md:border-none border-b bg-inherit md:relative md:justify-between absolute top-[100%] left-0 justify-center p-2 md:p-0">
@@ -22,13 +22,13 @@
                     <UButton :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
                         " color="gray" variant="ghost" aria-label="Theme" @click="isDark = !isDark" />
 
-                <NuxtLink to="/login">
-                    <UButton label="Sign Up" color="blue" variant="soft"/>
-                </NuxtLink>
+                    <NuxtLink to="/register">
+                        <UButton label="Sign Up" color="blue" variant="soft" />
+                    </NuxtLink>
 
-                <NuxtLink to="/register">
-                    <UButton label="Sign in" color="blue" variant="solid"/>
-                </NuxtLink>
+                    <NuxtLink to="/login">
+                        <UButton label="Sign in" color="blue" variant="solid" />
+                    </NuxtLink>
                 </div>
             </div>
 
@@ -38,30 +38,32 @@
 
         <div v-else class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
-             <!-- LOGO -->
-             <NuxtLink to="/">
+            <!-- LOGO -->
+            <NuxtLink to="/">
                 <div class=" flex flex-row gap-3 items-center justify-center">
-                    <img src="../public/favicon.ico" class=" w-[30px]"/>
+                    <img src="../public/favicon.ico" class=" w-[30px]" />
                     <span class=" font-bold">Visalify</span>
                 </div>
             </NuxtLink>
-
             <!-- USER PROFILE -->
-            <UDropdown class=" dark:bg-slate-800" :items="items"
-                :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-white dark:bg-slate-900' }"
+            <UDropdown class="" :items="items"
+                :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-inherit' }"
                 :popper="{ placement: 'bottom-start' }">
-                <!-- <UIcon name="iconoir:profile-circle"/> -->
-                <UAvatar alt="John Doe" size="md" class=" !rounded-full"/>
-                <!-- <template #account="{ item }">
+                <UAvatar  
+                :alt="!user?.profile_img ? (user?.name) : ''" 
+                :src="user?.profile_img ? (user?.profile_img) : ''"
+                :ui="{ avatar: { slots: { root: 'rounded-full !bg-inherit' } } }" class="rounded-full bg-red-500" />
+
+                <template #account="{ item }">
                     <div class="text-left">
                         <p>
                             Signed in as
                         </p>
                         <p class="truncate font-medium text-gray-900 dark:text-white">
-                            {{ item.label }}
+                            {{ user?.email }}
                         </p>
                     </div>
-                </template> -->
+                </template>
 
                 <template #item="{ item }">
                     <span class="truncate">{{ item.label }}</span>
@@ -114,6 +116,7 @@
 
 <script setup>
 import ThePreviousTest from './ThePreviousTest.vue';
+import { useUserStore } from '#imports';
 
 const token = useCookie("vy_token").value;
 
@@ -122,9 +125,6 @@ const logout = () => {
     token.value = null; // Clear the token
     navigateTo('/login'); // Redirect to the login page
 };
-
-const login_modal = ref(false)
-const sign_up_modal = ref(false)
 
 const mobile_nav = ref(false);
 const toggleMenu = () => {
@@ -145,18 +145,25 @@ const isDark = computed({
 });
 
 const items = [
-   /*  [{
+    [{
         label: 'johndoe@example.com',
         slot: 'account',
         disabled: true,
 
-    }],  */
-    [{
+    }],
+    [
+    {
+        label: 'New Interview',
+        icon: 'heroicons:user-circle',
+        click: () => {
+            navigateTo('/interview')
+        }
+    },
+        {
         label: 'Settings',
         icon: 'heroicons:user-circle',
-        shortcuts: ['E'],
         click: () => {
-            account_modal.value = true;
+            navigateTo('/account')
         }
     },
     {
@@ -185,11 +192,13 @@ const items = [
 const account_modal = ref(false);
 const prev_tests_modal = ref(false);
 
-onMounted(()=>{
-    if(token){
+const user = ref(null);
 
-    }
+onMounted( async ()=>{
+  await useUserStore().fetchUser();
+  user.value = useUserStore().user;
 })
+
 </script>
 
 <style lang="scss" scoped></style>
