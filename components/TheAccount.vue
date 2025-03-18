@@ -10,8 +10,8 @@
             <div class="sticky">
                 <UCard>
                     <div class=" flex flex-col gap-2">
-                        <UButton v-for="item in tabItems" variant="ghost" :label="item.label" :icon="item.icon"
-                            color="blue" />
+                        <UButton v-for="item in tabItems" variant="soft" :label="item.label" :icon="item.icon"
+                            color="neutral" />
                     </div>
                 </UCard>
             </div>
@@ -59,13 +59,14 @@
 
                             <div class="grid md:grid-cols-2 gap-4">
                                 <UFormGroup label="Country of Origin">
-                                   <!--  <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
+                                    <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
                                         placeholder="Select country" v-model="user.nationality" :options="countryList"
-                                        value-attribute="name" option-attribute="name" /> -->
+                                        value-attribute="name" option-attribute="name" />
                                 </UFormGroup>
                                 <UFormGroup label="Target Country">
-                                    <!-- <USelect v-model="userProfile.targetCountry" :options="countries"
-                                        placeholder="Select country" /> -->
+                                    <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
+                                        placeholder="Select country" v-model="user.target_country" :options="countryList"
+                                        value-attribute="name" option-attribute="name" />
                                 </UFormGroup>
                             </div>
 
@@ -79,7 +80,7 @@
                             </UFormGroup>
 
                             <div class="flex justify-end gap-2">
-                                <UButton color="gray" variant="soft" @click="resetForm">Cancel</UButton>
+                                <UButton color="gray" variant="ghost" @click="resetForm">Cancel</UButton>
                                 <UButton type="submit" color="blue">Save Changes</UButton>
                             </div>
                         </form>
@@ -104,7 +105,15 @@ import { useUserStore } from '#imports';
 import { countries } from 'countries-list';
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
 
-const user = ref(null);
+const user = reactive({
+    nationality: '',
+    name: '',
+    email: '',
+    profile_img: '',
+    target_country: '',
+    visa_type: '',
+    inteview_date: '',
+});
 
 // Authentication state
 const isAuthenticated = ref(false);
@@ -202,7 +211,7 @@ const resetForm = () => {
 // Load settings from localStorage on component mount
 onMounted( async() => {
     await useUserStore().fetchUser();
-    user.value = useUserStore().user;
+    user = useUserStore().user;
 });
 
 </script>

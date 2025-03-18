@@ -47,12 +47,12 @@
             </NuxtLink>
             <!-- USER PROFILE -->
             <UDropdown class="" :items="items"
-                :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-inherit' }"
+                :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-white dark:bg-slate-900' }"
                 :popper="{ placement: 'bottom-start' }">
                 <UAvatar  
                 :alt="!user?.profile_img ? (user?.name) : ''" 
                 :src="user?.profile_img ? (user?.profile_img) : ''"
-                :ui="{ avatar: { slots: { root: 'rounded-full !bg-inherit' } } }" class="rounded-full bg-red-500" />
+                :ui="{ avatar: { slots: { root: 'rounded-full !bg-inherit' } } }" />
 
                 <template #account="{ item }">
                     <div class="text-left">
@@ -154,7 +154,7 @@ const items = [
     [
     {
         label: 'New Interview',
-        icon: 'heroicons:user-circle',
+        icon: 'hugeicons:mirroring-screen',
         click: () => {
             navigateTo('/interview')
         }

@@ -5,7 +5,12 @@
 
   <div class="dark:bg-slate-900" >
   <NuxtLayout>
-    <NuxtPage />
+    <!-- <UApp :toaster="{
+      position: 'top-center'
+    }"> -->
+      <UNotifications />
+      <NuxtPage />
+    <!-- </UApp> -->
   </NuxtLayout>
   </div>
 </template>

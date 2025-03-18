@@ -110,6 +110,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+const toast = useToast();
 
 // Form state
 const form = reactive({
@@ -128,7 +129,10 @@ const handleSubmit = async () => {
 
   // Validate terms accepted
   if (!form.termsAccepted) {
-    alert("Please accept the terms and conditions");
+    toast.add({
+      description: "Please accept the terms and conditions",
+      color: 'red',
+    })
     isLoading.value = false;
     return;
   }
@@ -142,19 +146,24 @@ const handleSubmit = async () => {
       },
       method: "POST",
     });
+    toast.add({
+      description: "Sign Up Successful!",
+      color: 'green',
+    });
+
     console.log("from res: ", res)
   } catch (err) {
+    toast.add({
+      title: "Error in Sign Up",
+      description: err._data.message,
+      color: 'red',
+    })
     console.log("res from signup: ",err._data.message);
   }
 
-  isLoading.value = false;
+
 };
 
-// Google sign-up handler
-const signUpWithGoogle = () => {
-  console.log("Google sign-up initiated");
-  // In a real application, you would integrate with Google OAuth API
-};
 </script>
 
 <style>
