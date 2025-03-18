@@ -91,6 +91,7 @@
         </h2>
       </template>
 
+   
       <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
 
         <div v-if="decision.status == 'APPROVED'" class=" flex flex-col justify-center items-center">
@@ -276,8 +277,8 @@ const decision = ref(null);
 
 const questions = reactive({
   fullname: '',
-  nationality: 'Nigeria',
-  country_applying_to: 'United States',
+  nationality: '',
+  country_applying_to: '',
   visa_type: 'Student visa',
   ever_travelled_before: 'no',
   ever_had_visa_refusal: 'no',
@@ -286,6 +287,7 @@ const questions = reactive({
   have_all_documents: 'yes'
 });
 
+const user = ref(null);
 
 
 
@@ -413,8 +415,16 @@ const toggleSpeech = () => {
     isListening.value = true;
   }
 };
+import { useUserStore } from '#imports';
 
 onMounted(() => {
+  user.value = useUserStore().user;
+  if(useUserStore().user){
+    questions.fullname = user.name;
+    questions.country_applying_to = user.target_country;
+    questions.nationality = user.nationality;
+    questions.visa_type = user.visa_type;
+  }
   // Initialize SpeechRecognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SpeechRecognition) {

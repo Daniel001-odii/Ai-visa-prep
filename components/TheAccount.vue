@@ -11,7 +11,7 @@
                 <UCard>
                     <div class=" flex flex-col gap-2">
                         <UButton v-for="item in tabItems" variant="soft" :label="item.label" :icon="item.icon"
-                            color="neutral" />
+                            color="blue" />
                     </div>
                 </UCard>
             </div>
@@ -57,6 +57,10 @@
                                 <UInput v-model="user.email" type="email" placeholder="Email" />
                             </UFormGroup>
 
+                            <UFormGroup label="Occupation">
+                                <UInput v-model="user.occupation" placeholder="What do you do for a living?" />
+                            </UFormGroup>
+
                             <div class="grid md:grid-cols-2 gap-4">
                                 <UFormGroup label="Country of Origin">
                                     <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
@@ -71,17 +75,29 @@
                             </div>
 
                             <UFormGroup label="Visa Type">
-                                <USelect v-model="userProfile.visaType" :options="visaTypes"
+                                <USelect v-model="user.visa_type" :options="visaTypes"
+                                    placeholder="Select visa type" />
+                            </UFormGroup>
+
+                            <UFormGroup label="Ever Traveled Before">
+                                <USelect v-model="user.travelled_before" :options="yes_no_options"
+                                    placeholder="Select visa type" />
+                            </UFormGroup>
+
+                            <UFormGroup label="Visa denied before">
+                                <USelect v-model="user.visa_refused_before" :options="yes_no_options"
                                     placeholder="Select visa type" />
                             </UFormGroup>
 
                             <UFormGroup label="Planned Interview Date">
-                                <UInput v-model="userProfile.interviewDate" type="date" />
+                                <UInput v-model="user.interview_date" type="date" />
                             </UFormGroup>
 
                             <div class="flex justify-end gap-2">
                                 <UButton color="gray" variant="ghost" @click="resetForm">Cancel</UButton>
-                                <UButton type="submit" color="blue">Save Changes</UButton>
+                                <UButton
+                                :icon="updating_profile ? '':''" 
+                                :loading="updating_profile" type="submit" color="blue">Save Changes</UButton>
                             </div>
                         </form>
                     </div>
@@ -104,6 +120,7 @@ import { ref, reactive, computed } from 'vue';
 import { useUserStore } from '#imports';
 import { countries } from 'countries-list';
 const countryList = Object.entries(countries).map(([code, data]) => ({ code, name: data.name }));
+const toast = useToast();
 
 const user = reactive({
     nationality: '',
@@ -112,7 +129,10 @@ const user = reactive({
     profile_img: '',
     target_country: '',
     visa_type: '',
-    inteview_date: '',
+    interview_date: '',
+    travelled_before: '',
+    visa_refused_before: '',
+    occupation: '',
 });
 
 // Authentication state
@@ -147,7 +167,7 @@ const tabItems = [
         icon: 'i-heroicons-shield-check'
     }
 ];
-
+const yes_no_options = ["Yes", "No"];
 // User profile data
 const userProfile = reactive({
     name: 'John',
@@ -170,9 +190,27 @@ const settings = reactive({
 
 // Options for selects
 const botLevels = ['Easy', 'Medium', 'Hard'];
-// const countries = ['Nigeria', 'United States', 'Canada', 'United Kingdom', 'Australia', 'Germany'];
-const visaTypes = ['Student', 'Tourist', 'Business', 'Work', 'Immigration', 'Family'];
+const visaTypes = [
+  "Tourist Visa",
+  "Work Visa",
+  "Student Visa",
+  "Transit Visa",
+  "Business Visa",
+  "Immigrant Visa",
+  "Visitor Visa"
+];
 
+const visaFundOptions = [
+  { value: "self_funded", label: "Self-Funded (Personal Savings)" },
+  { value: "family_sponsor", label: "Sponsored by Family/Relative" },
+  { value: "employer_sponsor", label: "Sponsored by Employer" },
+  { value: "scholarship", label: "Scholarship or Grant" },
+  { value: "education_loan", label: "Education Loan" },
+  { value: "government_sponsor", label: "Government Sponsorship" },
+  { value: "business_funds", label: "Business or Corporate Sponsorship" },
+  { value: "crowdfunding", label: "Crowdfunding or Public Donations" },
+  { value: "combination", label: "Combination of Multiple Sources" }
+];
 // Subscription data
 const subscriptionStartDate = new Date('2025-02-15');
 const subscriptionEndDate = new Date('2025-04-15').toLocaleDateString();
@@ -192,15 +230,31 @@ const getPlanName = computed(() => {
 });
 
 // Methods
-const updateSettings = () => {
-    localStorage.setItem('visalify_settings', JSON.stringify(settings));
-    // In a real app, you would also send this to your backend
-    useToast().success('Settings updated successfully');
+const updateSettings = async () => {
+
 };
 
-const updateProfile = () => {
-    // In a real app, you would send this to your backend
-    useToast().success('Profile updated successfully');
+const updating_profile = ref(false);
+const updateProfile = async () => {
+    updating_profile.value = true;
+    try{
+        const res = await useNuxtApp().$apiFetch('/user/', {
+            method: 'PUT',
+            body: user
+        })
+
+        toast.add({
+            description: "Profile updated successfully!",
+            color: 'green'
+        })
+    }catch(err){
+        console.log("err profile update: ", err)
+        toast.add({
+            description: "Error updating profile",
+            color: 'red'
+        })
+    }
+    updating_profile.value = false;
 };
 
 const resetForm = () => {
@@ -211,7 +265,13 @@ const resetForm = () => {
 // Load settings from localStorage on component mount
 onMounted( async() => {
     await useUserStore().fetchUser();
-    user = useUserStore().user;
+    user.email = useUserStore().user.email;
+    user.inteview_date = useUserStore().user.interview_date;
+    user.name = useUserStore().user.name;
+    user.nationality = useUserStore().user.nationality;
+    user.profile_img = useUserStore().user.profile_img;
+    user.target_country = useUserStore().user.target_country;
+    user.visa_type = useUserStore().user.visa_type;
 });
 
 </script>
