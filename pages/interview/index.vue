@@ -1,5 +1,5 @@
 <template>
-   <UModal v-model="intro_questions" :ui="{ container: 'flex items-center justify-center min-h-screen' }">
+  <UModal v-model="intro_questions" :ui="{ container: 'flex items-center justify-center min-h-screen' }">
     <UCard>
       <template #header>
         <h2 class="font-bold text-2xl text-left">Welcome to the Interview</h2>
@@ -12,26 +12,29 @@
             <span class="font-bold">Your Fullname?</span>
             <UInput v-model="questions.fullname" placeholder="Enter your name" />
           </div>
-          <div class="flex flex-col gap-3">
-            <span class="font-bold">Nationality {{ questions.nationality }}</span>
-            <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
-              placeholder="Select country" v-model="questions.nationality" :options="countryList" value-attribute="name"
-              option-attribute="name" />
+          <div class=" flex gap-3 flex-1">
+            <UFormGroup label="Nationality" class=" flex-1">
+              <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
+                placeholder="Select country" v-model="questions.nationality" :options="countryList"
+                value-attribute="name" option-attribute="name" />
+            </UFormGroup>
+            <!-- </div> -->
+            <!-- <div class="flex flex-col gap-3"> -->
+            <UFormGroup label="Target country" class=" flex-1">
+              <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
+                placeholder="Select country" v-model="questions.country_applying_to" :options="countryList"
+                value-attribute="name" option-attribute="name" />
+            </UFormGroup>
           </div>
-          <div class="flex flex-col gap-3">
-            <span class="font-bold">Country Applying to {{ questions.country_applying_to }}</span>
-            <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
-              placeholder="Select country" v-model="questions.country_applying_to" :options="countryList"
-              value-attribute="name" option-attribute="name" />
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-6" v-if="current_question_slide === 1">
           <div class="flex flex-col gap-3">
             <span class="font-bold">Visa Type</span>
             <USelectMenu searchable searchable-placeholder="Search a visa type" class=" !w-full lg:w-48"
               placeholder="Select visa type" v-model="questions.visa_type" :options="visaTypes" />
           </div>
+        </div>
+
+        <div class="flex flex-col gap-6" v-if="current_question_slide === 1">
+
           <div class="flex flex-col gap-3">
             <span class="font-bold">Ever Travelled Before?</span>
             <USelectMenu placeholder="Select an option" v-model="questions.ever_travelled_before"
@@ -42,47 +45,37 @@
             <USelectMenu placeholder="Select an option" v-model="questions.ever_had_visa_refusal"
               :options="yes_no_options" />
           </div>
-        </div>
-
-        <div class="flex flex-col gap-6" v-if="current_question_slide === 2">
           <div class="flex flex-col gap-3">
             <span class="font-bold">How will you fund your trip?</span>
             <USelectMenu placeholder="Select an option" v-model="questions.how_fund_trip" value-attribute="value"
               option-attribute="label" :options="visaFundOptions" />
           </div>
-          <div class="flex flex-col gap-3">
-            <span class="font-bold">What do you do for a living?</span>
-            <UInput v-model="questions.occupation" placeholder="What do you do for a living?" />
-          </div>
-          <!-- <div class="flex flex-col gap-3 text-orange-500 p-5 bg-orange-500 bg-opacity-10">
-            <span class="font-bold">Show expert suggestions in interview?</span>
-            <UCheckbox 
-              default-value
-              v-model="show_expert_suggestions"
-              label="Expert Suggestions"
-              color="orange"
-              description="Show Expert Suggested Answers to Interview Questions"
-            />
-          </div> -->
         </div>
+
+        <!-- <div class="flex flex-col justify-center items-center" v-if="current_question_slide === 2">
+          <UButton
+          label="Start Interview"
+          />
+        </div> -->
       </div>
 
       <template #footer>
         <div :class="current_question_slide > 0 ? 'justify-between' : 'justify-end'" class="flex items-center">
           <UButton v-if="current_question_slide > 0" @click="current_question_slide--" label="Previous" variant="soft"
             icon="heroicons:arrow-small-left-20-solid" />
-          <UButton
-          :color="current_question_slide === 2 ? 'blue':'primary'"
-            @click="current_question_slide === 2 ? (intro_questions = false, getNextQuestion()) : current_question_slide++"
-            :label="current_question_slide === 2 ? 'Start Interview' : 'Next'"
-            :icon="current_question_slide === 2 ? 'hugeicons:presentation-line-chart-02' : 'heroicons:arrow-small-right-20-solid'" :trailing="true" />
+          <UButton :color="current_question_slide === 1 ? 'blue' : 'primary'"
+            @click="current_question_slide === 1 ? (intro_questions = false, getNextQuestion()) : current_question_slide++"
+            :label="current_question_slide === 1 ? 'Start Interview' : 'Next'"
+            :icon="current_question_slide === 1 ? 'hugeicons:presentation-line-chart-02' : 'heroicons:arrow-small-right-20-solid'"
+            :trailing="true" />
         </div>
       </template>
     </UCard>
   </UModal>
 
   <!-- VISA STATUS -->
-  <UModal v-model="visa_status_modal" prevent-close :ui="{ container: 'flex items-center justify-center min-h-screen' }">
+  <UModal v-model="visa_status_modal" prevent-close
+    :ui="{ container: 'flex items-center justify-center min-h-screen' }">
     <UCard>
       <template #header>
         <h2 class="font-bold text-2xl text-left">
@@ -91,7 +84,7 @@
         </h2>
       </template>
 
-   
+
       <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
 
         <div v-if="decision.status == 'APPROVED'" class=" flex flex-col justify-center items-center">
@@ -119,7 +112,7 @@
 
     <div class="h-[90%] container mx-auto flex flex-col justify-center items-center p-4 ">
 
-     <!--  <div class=" flex justify-center items-center flex-col h-[350px]">
+      <!--  <div class=" flex justify-center items-center flex-col h-[350px]">
           <AudioVisualizer ref="visualizer" :audioData="audioSrc" v-if="audioSrc" class=" " />
           <UButton icon="heroicons:speaker-wave-solid" class=" w-fit" v-if="audioSrc" label="play audio" @click="playAudio" />
       </div> -->
@@ -133,13 +126,29 @@
           <div v-if="messages.length == 0"
             class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
             <div class=" w-[200px]">
-              <img src="../../assets/images/woman.png"/>
+              <img src="../../assets/images/woman.png" />
             </div>
             <!-- <UIcon name="heroicons:information-circle" class=" text-4xl"/> -->
-             <h1 class=" font-bold text-2xl">Hold up!</h1>
-            <p>Before we begin the interview, please fill out the following form with your personal and visa-related information. This will help us tailor the interview process to your specific needs and ensure a smooth experience.</p>
-           <UButton label="Continue" color="yellow" @click="openIntroQuestions"/>
+            <h1 class=" font-bold text-2xl">Hold up!</h1>
+            <p>Before we begin the interview, please fill out the following form with your personal and visa-related
+              information. This will help us tailor the interview process to your specific needs and ensure a smooth
+              experience.</p>
+            <UButton label="Continue" color="yellow" @click="openIntroQuestions" />
           </div>
+
+          <div v-if="trial_ended"
+            class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
+            <div class=" w-[200px]">
+              <img src="../../assets/images/woman.png" />
+            </div>
+            <!-- <UIcon name="heroicons:information-circle" class=" text-4xl"/> -->
+            <h1 class=" font-bold text-2xl">Hold up!</h1>
+            <p>Before we begin the interview, please fill out the following form with your personal and visa-related
+              information. This will help us tailor the interview process to your specific needs and ensure a smooth
+              experience.</p>
+            <UButton label="Sign Up" @click="navigateTo('/login')" />
+          </div>
+          
 
           <!-- MESSAGES -->
           <div v-if="settings.show_prev_msg" v-for="chat in messages"
@@ -150,35 +159,44 @@
 
           <!-- typing status -->
           <div v-if="loading_q" class=" flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><!-- Icon from SVG Spinners by Utkarsh Verma - https://github.com/n3r4zzurr0/svg-spinners/blob/main/LICENSE --><circle cx="4" cy="12" r="3" fill="currentColor"><animate id="svgSpinners3DotsBounce0" attributeName="cy" begin="0;svgSpinners3DotsBounce1.end+0.25s" calcMode="spline" dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12"/></circle><circle cx="12" cy="12" r="3" fill="currentColor"><animate attributeName="cy" begin="svgSpinners3DotsBounce0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12"/></circle><circle cx="20" cy="12" r="3" fill="currentColor"><animate id="svgSpinners3DotsBounce1" attributeName="cy" begin="svgSpinners3DotsBounce0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12"/></circle></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+              viewBox="0 0 24 24"><!-- Icon from SVG Spinners by Utkarsh Verma - https://github.com/n3r4zzurr0/svg-spinners/blob/main/LICENSE -->
+              <circle cx="4" cy="12" r="3" fill="currentColor">
+                <animate id="svgSpinners3DotsBounce0" attributeName="cy" begin="0;svgSpinners3DotsBounce1.end+0.25s"
+                  calcMode="spline" dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12" />
+              </circle>
+              <circle cx="12" cy="12" r="3" fill="currentColor">
+                <animate attributeName="cy" begin="svgSpinners3DotsBounce0.begin+0.1s" calcMode="spline" dur="0.6s"
+                  keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12" />
+              </circle>
+              <circle cx="20" cy="12" r="3" fill="currentColor">
+                <animate id="svgSpinners3DotsBounce1" attributeName="cy" begin="svgSpinners3DotsBounce0.begin+0.2s"
+                  calcMode="spline" dur="0.6s" keySplines=".33,.66,.66,1;.33,0,.66,.33" values="12;6;12" />
+              </circle>
+            </svg>
             <span class=" p-3">V.O is typing...</span>
           </div>
-         
+
         </div>
 
-        
+
 
         <!-- Chat input area -->
         <div class="bg-inherit ">
           <!-- TYPING AREA/BOX -->
           <!-- Q&A AREA -->
-          <div v-if="!questions.fullname == ''" class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
-            <UAlert
-              v-if="expert_suggestion"
-              color="primary"
-              variant="soft"
-              title="Expert Suggestion"
-              :description="expert_suggestion"
-              icon="heroicons:sparkles-16-solid"
-            />
+          <div v-if="!questions.fullname == '' || !trial_ended"
+            class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
+            <UAlert v-if="expert_suggestion" color="primary" variant="soft" title="Expert Suggestion"
+              :description="expert_suggestion" icon="heroicons:sparkles-16-solid" />
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
               <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
               <!-- <div class="flex gap-3"> -->
               <div class="flex flex-col gap-3 items-start w-full">
                 <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
                   <div class="flex flex-col justify-center w-full">
-                    <textarea v-model="userAnswer"
-                      class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
+                    <textarea v-model="userAnswer" class=" !w-full outline-none !bg-inherit"
+                      placeholder="Type your answer here..."></textarea>
 
                     <div class=" flex justify-end items-center gap-3">
                       <UButton color="blue"
@@ -225,7 +243,7 @@ const settings = reactive({
   show_rec_answers: true,
 });
 
-const openIntroQuestions = ()=>{
+const openIntroQuestions = () => {
   intro_questions.value = true
 }
 
@@ -248,7 +266,7 @@ const scrollToBottom = async () => {
   }
 };
 
-const intro_questions = ref(false);
+const intro_questions = ref(true);
 const current_question_slide = ref(0);
 const loading_q = ref(false);
 const currentQuestion = ref('');
@@ -325,7 +343,7 @@ const yes_no_options = ["Yes", "No"];
 
 const isListening = ref(false);
 const recognition = ref(null);
-
+const trial_ended = ref(false);
 const getNextQuestion = async () => {
   loading_q.value = true;
   try {
@@ -371,10 +389,10 @@ const getNextQuestion = async () => {
     expert_suggestion.value = res.recommendedReply;
     console.log("retunred res: ", res);
 
-    if(res.isFinal){
+    if (res.isFinal) {
       visa_status_modal.value = true;
     }
- 
+
   } catch (err) {
     console.error("error getting questions: ", err);
     let bot_msg = {
@@ -383,6 +401,9 @@ const getNextQuestion = async () => {
       error: true,
     };
     messages.value.push(bot_msg);
+    if(err.status == '403'){
+      trial_ended.value = true;
+    }
   }
   loading_q.value = false;
 }
@@ -419,7 +440,7 @@ import { useUserStore } from '#imports';
 
 onMounted(() => {
   user.value = useUserStore().user;
-  if(useUserStore().user){
+  if (useUserStore().user) {
     questions.fullname = user.name;
     questions.country_applying_to = user.target_country;
     questions.nationality = user.nationality;

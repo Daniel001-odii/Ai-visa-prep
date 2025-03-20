@@ -39,12 +39,7 @@
         <div v-else class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
             <!-- LOGO -->
-            <NuxtLink to="/">
-                <div class=" flex flex-row gap-3 items-center justify-center">
-                    <img src="../public/favicon.ico" class=" w-[30px]" />
-                    <span class=" font-bold">Visalify</span>
-                </div>
-            </NuxtLink>
+            <TheLogo />
             <!-- USER PROFILE -->
             <UDropdown class="" :items="items"
                 :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-white dark:bg-slate-900' }"
