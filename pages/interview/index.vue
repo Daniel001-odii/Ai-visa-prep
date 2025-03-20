@@ -106,6 +106,30 @@
     </UCard>
   </UModal>
 
+   <!-- TRIAL ENDED -->
+   <UModal v-model="trial_ended" prevent-close
+    :ui="{ container: 'flex items-center justify-center min-h-screen' }">
+    <UCard>
+      <template #header>
+        <h2 class="font-bold text-2xl text-left">
+          <span>Demo ended</span>
+        </h2>
+      </template>
+
+
+      <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
+
+  
+        <div class=" flex flex-col justify-center items-center">
+          <img src="../../assets/images/cancel.png" class=" size-[150px]" />
+          <span class="font-bold text-md text-red-500">Your demo Session ended</span>
+          <span class="text-gray-500">YPlease Login to Try out fullu</span>
+        </div>
+        <UButton color="green" @click="navigateTo('/login')" label="Start New Interview" class="w-fit" />
+      </div>
+    </UCard>
+  </UModal>
+
 
   <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit dark:bg-inherit font-sans">
     <TheNavbar />
@@ -185,7 +209,7 @@
         <div class="bg-inherit ">
           <!-- TYPING AREA/BOX -->
           <!-- Q&A AREA -->
-          <div v-if="!questions.fullname == '' || !trial_ended"
+          <div 
             class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
             <UAlert v-if="expert_suggestion" color="primary" variant="soft" title="Expert Suggestion"
               :description="expert_suggestion" icon="heroicons:sparkles-16-solid" />
@@ -195,11 +219,12 @@
               <div class="flex flex-col gap-3 items-start w-full">
                 <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
                   <div class="flex flex-col justify-center w-full">
-                    <textarea v-model="userAnswer" class=" !w-full outline-none !bg-inherit"
+                    <textarea :disabled="!questions.fullname == '' || !trial_ended" v-model="userAnswer" class=" !w-full outline-none !bg-inherit"
                       placeholder="Type your answer here..."></textarea>
 
                     <div class=" flex justify-end items-center gap-3">
                       <UButton color="blue"
+                      :disabled="!questions.fullname == '' || !trial_ended"
                         :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'" variant="ghost"
                         @click="toggleSpeech" class="w-fit" />
                       <UButton color="blue" class="w-fit" icon="heroicons:arrow-up-solid" type="submit"
