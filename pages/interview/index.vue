@@ -338,8 +338,7 @@ const visaFundOptions = [
   { value: "combination", label: "Combination of Multiple Sources" }
 ];
 
-const yes_no_options = ["Yes", "No"];
-
+const yes_no_options = ["yes", "no"];
 
 const isListening = ref(false);
 const recognition = ref(null);

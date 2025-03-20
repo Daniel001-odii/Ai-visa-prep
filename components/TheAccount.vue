@@ -146,7 +146,7 @@ const items = [
         disabled: true,
     },
 ];
-const yes_no_options = ["Yes", "No"];
+const yes_no_options = ["yes", "no"];
 // User profile data
 const userProfile = reactive({
     name: 'John',

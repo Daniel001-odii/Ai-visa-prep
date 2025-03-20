@@ -7,17 +7,20 @@
             <!-- LOGO -->
             <TheLogo />
 
-            <div :class="mobile_nav ? 'md:flex' : ' hidden md:flex'"
-                class=" w-full gap-3 md:border-none border-b bg-inherit md:relative md:justify-between absolute top-[100%] left-0 justify-center p-2 md:p-0">
+            <!-- <div :class="mobile_nav ? 'md:flex' : ' hidden md:flex'" -->
+                <!-- class="flex w-full gap-3 md:border-none border-b bg-inherit md:relative md:justify-between absolute top-[100%] left-0 justify-center p-2 md:p-0"> -->
+            <div
+                
+                class="flex w-full gap-3 bg-inherit md:relative justify-end items-center border">
 
                 <!-- QUICK LINKS -->
-                <div class=" flex gap-4 md:items-center mx-auto md:flex-row flex-col items-start ">
+                <!-- <div class=" flex gap-4 md:items-center mx-auto md:flex-row flex-col items-start ">
                     <UButton label="Features" variant="link" color="black" />
                     <UButton label="Blog" variant="link" color="black" />
-                </div>
+                </div> -->
 
                 <!-- ACTIONS -->
-                <div class=" flex flex-row gap-3 items-center w-fit mt-6 md:mt-0">
+                <div class=" flex flex-row gap-3 items-center w-fit border">
 
                     <UButton :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
                         " color="gray" variant="ghost" aria-label="Theme" @click="isDark = !isDark" />
@@ -32,7 +35,7 @@
                 </div>
             </div>
 
-            <UButton class=" md:hidden" icon="hugeicons:menu-11" color="black" variant="soft" @click="toggleMenu()" />
+            <!-- <UButton class=" md:hidden" icon="hugeicons:menu-11" color="black" variant="soft" @click="toggleMenu()" /> -->
 
         </div>
 

@@ -7,17 +7,10 @@
     </div>
 </template>
 
-<script>
+<script setup>
 definePageMeta({
     layout: 'plain',
 });
-export default {
-    setup () {
-        
-
-        return {}
-    }
-}
 </script>
 
 <style lang="scss" scoped>
