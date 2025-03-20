@@ -4,7 +4,7 @@
       <div class="flex gap-2 items-center font-bold w-fit pr-4">
         <img src="../public/favicon.ico" class="w-[30px]" />
         <transition name="fade-right">
-          <span v-if="show_text" class=" hidden md:flex">Visalify</span>
+          <span v-if="show_text" class=" ">Visalify</span>
         </transition>
       </div>
     </NuxtLink>

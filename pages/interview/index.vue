@@ -1,4 +1,5 @@
 <template>
+  <!-- INTRO QUESTIONS -->
   <UModal v-model="intro_questions" :ui="{ container: 'flex items-center justify-center min-h-screen' }">
     <UCard>
       <template #header>
@@ -7,66 +8,57 @@
       </template>
 
       <div class="flex flex-col gap-0">
+        <span v-if="slide_error" class="text-red-500 pb-3">{{ slide_error }}</span>
+        <!-- {{ questions }} -->
         <div class="flex flex-col gap-6" v-if="current_question_slide === 0">
-          <div class="flex flex-col gap-3 p-0">
-            <span class="font-bold">Your Fullname?</span>
-            <UInput v-model="questions.fullname" placeholder="Enter your name" />
-          </div>
+          <UFormGroup label="Fullname">
+            <UInput v-model="questions.fullname" placeholder="John Doe" />
+          </UFormGroup>
           <div class=" flex gap-3 flex-1">
             <UFormGroup label="Nationality" class=" flex-1">
               <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
-                placeholder="Select country" v-model="questions.nationality" :options="countryList"
-                value-attribute="name" option-attribute="name" />
+                placeholder="Select country" v-model="questions.nationality" model-value="Nigeria"
+                :options="countryList" value-attribute="name" option-attribute="name" disabled />
             </UFormGroup>
-            <!-- </div> -->
-            <!-- <div class="flex flex-col gap-3"> -->
             <UFormGroup label="Target country" class=" flex-1">
               <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
                 placeholder="Select country" v-model="questions.country_applying_to" :options="countryList"
                 value-attribute="name" option-attribute="name" />
             </UFormGroup>
           </div>
-          <div class="flex flex-col gap-3">
-            <span class="font-bold">Visa Type</span>
+          <UFormGroup label="Visa type">
             <USelectMenu searchable searchable-placeholder="Search a visa type" class=" !w-full lg:w-48"
               placeholder="Select visa type" v-model="questions.visa_type" :options="visaTypes" />
-          </div>
+          </UFormGroup>
         </div>
 
         <div class="flex flex-col gap-6" v-if="current_question_slide === 1">
 
-          <div class="flex flex-col gap-3">
-            <span class="font-bold">Ever Travelled Before?</span>
+          <UFormGroup label="Ever travelled before?">
             <USelectMenu placeholder="Select an option" v-model="questions.ever_travelled_before"
               :options="yes_no_options" />
-          </div>
-          <div class="flex flex-col gap-3">
-            <span class="font-bold">Ever Had a Visa Refusal?</span>
+          </UFormGroup>
+          <UFormGroup label="Ever Had a Visa Refusal?">
             <USelectMenu placeholder="Select an option" v-model="questions.ever_had_visa_refusal"
               :options="yes_no_options" />
-          </div>
-          <div class="flex flex-col gap-3">
-            <span class="font-bold">How will you fund your trip?</span>
+          </UFormGroup>
+          <UFormGroup label="How would you fund your travel expenses?">
             <USelectMenu placeholder="Select an option" v-model="questions.how_fund_trip" value-attribute="value"
               option-attribute="label" :options="visaFundOptions" />
-          </div>
+          </UFormGroup>
         </div>
-
-        <!-- <div class="flex flex-col justify-center items-center" v-if="current_question_slide === 2">
-          <UButton
-          label="Start Interview"
-          />
-        </div> -->
       </div>
 
       <template #footer>
         <div :class="current_question_slide > 0 ? 'justify-between' : 'justify-end'" class="flex items-center">
-          <UButton v-if="current_question_slide > 0" @click="current_question_slide--" label="Previous" variant="soft"
+          <UButton v-if="current_question_slide > 0" 
+            @click="current_question_slide--" label="Previous" variant="soft"
             icon="heroicons:arrow-small-left-20-solid" />
-          <UButton :color="current_question_slide === 1 ? 'blue' : 'primary'"
-            @click="current_question_slide === 1 ? (intro_questions = false, getNextQuestion()) : current_question_slide++"
-            :label="current_question_slide === 1 ? 'Start Interview' : 'Next'"
-            :icon="current_question_slide === 1 ? 'hugeicons:presentation-line-chart-02' : 'heroicons:arrow-small-right-20-solid'"
+
+          <UButton color="primary"
+            @click="nextSlide()"
+            :label="current_question_slide === 1 ? 'Contnue' : 'Next'"
+            icon="heroicons:arrow-small-right-20-solid"
             :trailing="true" />
         </div>
       </template>
@@ -106,26 +98,20 @@
     </UCard>
   </UModal>
 
-   <!-- TRIAL ENDED -->
-   <UModal v-model="trial_ended" prevent-close
-    :ui="{ container: 'flex items-center justify-center min-h-screen' }">
+  <!-- TRIAL ENDED -->
+  <UModal v-model="trial_ended" prevent-close :ui="{ container: 'flex items-center justify-center min-h-screen' }">
     <UCard>
       <template #header>
         <h2 class="font-bold text-2xl text-left">
           <span>Demo ended</span>
         </h2>
       </template>
-
-
       <div class="flex flex-col gap-3 p-5 text-center justify-center items-center">
-
-  
         <div class=" flex flex-col justify-center items-center">
-          <img src="../../assets/images/cancel.png" class=" size-[150px]" />
-          <span class="font-bold text-md text-red-500">Your demo Session ended</span>
-          <span class="text-gray-500">YPlease Login to Try out fullu</span>
+          <img src="../../assets/images/trial_end.png" class=" size-[150px]" />
+          <span class="font-bold">Oops! The demo session just took a nap. Time to log in and wake it up! 😄</span>
         </div>
-        <UButton color="green" @click="navigateTo('/login')" label="Start New Interview" class="w-fit" />
+        <UButton color="green" @click="navigateTo('/login')" label="Sign In & continue" class="w-fit" />
       </div>
     </UCard>
   </UModal>
@@ -141,18 +127,17 @@
           <UButton icon="heroicons:speaker-wave-solid" class=" w-fit" v-if="audioSrc" label="play audio" @click="playAudio" />
       </div> -->
 
-      <div class=" w-full md:w-[500px] flex flex-col gap-3 h-full ">
+      <div class=" w-full flex flex-col gap-3 h-full ">
 
         <!-- CHAT CONTAINER -->
         <div class=" w-full  overflow-y-auto flex flex-col gap-3 h-full" ref="messagesContainer">
 
           <!-- default message -->
-          <div v-if="messages.length == 0"
+          <div v-if="messages.length == 0 && !completed_intro_questions"
             class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
             <div class=" w-[200px]">
               <img src="../../assets/images/woman.png" />
             </div>
-            <!-- <UIcon name="heroicons:information-circle" class=" text-4xl"/> -->
             <h1 class=" font-bold text-2xl">Hold up!</h1>
             <p>Before we begin the interview, please fill out the following form with your personal and visa-related
               information. This will help us tailor the interview process to your specific needs and ensure a smooth
@@ -160,19 +145,30 @@
             <UButton label="Continue" color="yellow" @click="openIntroQuestions" />
           </div>
 
+          <!-- completed intro questions -->
+          <div v-if="completed_intro_questions && messages.length == 0"
+            class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
+            <div class=" w-[200px]">
+              <img src="../../assets/images/complete.png" />
+            </div>
+            <h1 class=" font-bold text-2xl">Ready, Set, Go!</h1>
+            <p>You have successfully completed the form. Click "Start Interview" to start your interview with our Visa Officer.</p>
+            <UButton label="Start Interview" color="green" @click="getNextQuestion()" />
+          </div>
+          
+          <!-- trial ended -->
           <div v-if="trial_ended"
             class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
             <div class=" w-[200px]">
               <img src="../../assets/images/woman.png" />
             </div>
-            <!-- <UIcon name="heroicons:information-circle" class=" text-4xl"/> -->
             <h1 class=" font-bold text-2xl">Hold up!</h1>
             <p>Before we begin the interview, please fill out the following form with your personal and visa-related
               information. This will help us tailor the interview process to your specific needs and ensure a smooth
               experience.</p>
             <UButton label="Sign Up" @click="navigateTo('/login')" />
           </div>
-          
+
 
           <!-- MESSAGES -->
           <div v-if="settings.show_prev_msg" v-for="chat in messages"
@@ -209,8 +205,7 @@
         <div class="bg-inherit ">
           <!-- TYPING AREA/BOX -->
           <!-- Q&A AREA -->
-          <div 
-            class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
+          <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
             <UAlert v-if="expert_suggestion" color="primary" variant="soft" title="Expert Suggestion"
               :description="expert_suggestion" icon="heroicons:sparkles-16-solid" />
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
@@ -219,12 +214,11 @@
               <div class="flex flex-col gap-3 items-start w-full">
                 <form @submit.prevent="getNextQuestion" class="flex flex-col gap-2 w-full items-center">
                   <div class="flex flex-col justify-center w-full">
-                    <textarea :disabled="!questions.fullname == '' || !trial_ended" v-model="userAnswer" class=" !w-full outline-none !bg-inherit"
-                      placeholder="Type your answer here..."></textarea>
+                    <textarea :disabled="!interview_started || trial_ended" v-model="userAnswer"
+                      class=" !w-full outline-none !bg-inherit" placeholder="Type your answer here..."></textarea>
 
                     <div class=" flex justify-end items-center gap-3">
-                      <UButton color="blue"
-                      :disabled="!questions.fullname == '' || !trial_ended"
+                      <UButton color="blue" :disabled="!interview_started || trial_ended"
                         :icon="isListening ? 'svg-spinners:bars-scale' : 'heroicons:microphone-solid'" variant="ghost"
                         @click="toggleSpeech" class="w-fit" />
                       <UButton color="blue" class="w-fit" icon="heroicons:arrow-up-solid" type="submit"
@@ -250,9 +244,6 @@ definePageMeta({
   layout: 'plain',
 });
 
-import { AVWaveform } from 'vue-audio-visual'
-// import { MsEdgeTTS, OUTPUT_FORMAT } from "edge-tts-node";
-import audioTrack from '../../tmpfolder/audio.webm'
 import { ref, onMounted, nextTick, watch, computed } from 'vue';
 import { countries } from 'countries-list';
 import { UButton } from '#components';
@@ -260,38 +251,7 @@ const countryList = Object.entries(countries).map(([code, data]) => ({ code, nam
 
 
 const messages = ref([]);
-const show_message_train = ref(false);
-const show_expert_suggestions = ref(false);
-
-const settings = reactive({
-  show_prev_msg: true,
-  show_rec_answers: true,
-});
-
-const openIntroQuestions = () => {
-  intro_questions.value = true
-}
-
-const isPlaying = ref(false)
-const visualizer = ref(null);
-const playAudio = async () => {
-  if (!isPlaying.value) {
-    await nextTick(); // Wait for the DOM to update
-    visualizer.value.play();
-  }
-};
-
-
-// Methods
-const messagesContainer = ref(null);
-const scrollToBottom = async () => {
-  await nextTick();
-  if (messagesContainer.value) {
-    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
-  }
-};
-
-const intro_questions = ref(true);
+const intro_questions = ref(false);
 const current_question_slide = ref(0);
 const loading_q = ref(false);
 const currentQuestion = ref('');
@@ -305,6 +265,71 @@ const previousQuestions = ref([]);
 const previousAnswers = ref([]);
 const isFinal = ref(false);
 const decision = ref(null);
+
+const messagesContainer = ref(null);
+
+const user = ref(null);
+const expert_suggestion = ref('');
+const visa_status_modal = ref(false);
+
+const isListening = ref(false);
+const recognition = ref(null);
+const trial_ended = ref(false);
+
+const slide_error = ref('');
+
+const settings = reactive({
+  show_prev_msg: true,
+  show_rec_answers: true,
+});
+
+const completed_intro_questions = ref(false);
+const openIntroQuestions = () => {
+  intro_questions.value = true
+}
+
+const interview_started = ref(false);
+const nextSlide =()=>{
+  if(current_question_slide.value == 0 
+  && questions.fullname == ''
+  || questions.nationality == ''
+  || questions.country_applying_to == ''
+  || questions.visa_type == ''
+  ){
+    // slide_error.value = 'all fields are required' 
+    return
+  } else {
+    current_question_slide.value += 1;
+    slide_error.value = null
+  }
+
+  if(current_question_slide.value == 1
+    && questions.ever_travelled_before == ''
+    || questions.ever_had_visa_refusal == ''
+    || questions.how_fund_trip == ''
+  ){
+    // slide_error.value = 'all fields are required' 
+    return
+  } else {
+    // current_question_slide === 1 ? (intro_questions = false, storeTempUserData(), completed_intro_questions = true) : 
+    completed_intro_questions.value = true
+    intro_questions.value = false;
+    
+    storeTempUserData()
+    slide_error.value = null
+  }
+}
+
+// Methods
+
+const scrollToBottom = async () => {
+  await nextTick();
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
+  }
+};
+
+
 
 /* const questions = reactive({
   fullname: '',
@@ -320,23 +345,17 @@ const decision = ref(null);
 
 const questions = reactive({
   fullname: '',
-  nationality: '',
+  nationality: 'Nigeria',
   country_applying_to: '',
   visa_type: 'Student visa',
-  ever_travelled_before: 'no',
-  ever_had_visa_refusal: 'no',
+  ever_travelled_before: 'yes',
+  ever_had_visa_refusal: 'yes',
   how_fund_trip: '',
   occupation: 'Software Engineering',
   have_all_documents: 'yes'
 });
 
-const user = ref(null);
 
-
-
-
-const expert_suggestion = ref('');
-const visa_status_modal = ref(false);
 const retryInterView = () => {
   window?.location?.reload()
 };
@@ -363,15 +382,18 @@ const visaFundOptions = [
   { value: "combination", label: "Combination of Multiple Sources" }
 ];
 
+const storeTempUserData =()=>{
+  localStorage.setItem('anon_user_data', JSON.stringify(questions));
+  console.log("anon user data stored...")
+}
 const yes_no_options = ["yes", "no"];
 
-const isListening = ref(false);
-const recognition = ref(null);
-const trial_ended = ref(false);
+
 const getNextQuestion = async () => {
+  interview_started.value = true;
   loading_q.value = true;
   try {
-
+    storeTempUserData()
     expert_suggestion.value = '';
     audioSrc.value = null;
     scrollToBottom();
@@ -425,7 +447,7 @@ const getNextQuestion = async () => {
       error: true,
     };
     messages.value.push(bot_msg);
-    if(err.status == '403'){
+    if (err.status == '403') {
       trial_ended.value = true;
     }
   }

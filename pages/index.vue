@@ -14,7 +14,7 @@
       </p>
 
       <div class="flex gap-4 mt-4">
-        <UButton size="xl" color="blue" label="Try For Free" @click="useRouter().push('/Interview?modal=true')" />
+        <UButton size="xl" color="blue" label="Try A Free Demo" @click="useRouter().push('/Interview?modal=true')" />
         <UButton label="Pricing" variant="ghost" size="xl" class="bg-inherit" color="black"
           @click="scrollToPricing()" />
       </div>
@@ -121,7 +121,7 @@
       <!-- TESTIMONIAL -->
       <div class="flex flex-col bg-black bg-opacity-10 md:p-[150px] p-12 min-h-[300px] gap-6">
         <div class=" text-xl md:text-4xl">
-          {{ reviews[0].feedback }}
+          {{ reviews[1].feedback }}
         </div>
         <div class="flex gap-3">
           <UAvatar :alt="reviews[1].name" />
@@ -319,13 +319,6 @@ const isDark = computed({
 
 const select_vo_modal = ref(false);
 
-const vo = ref({
-  name: "John Doe",
-  image: "../assets/vo_1.png",
-});
-
-import vo_1 from "@/assets/images/vo_1.svg";
-import vo_2 from "@/assets/images/vo_2.svg";
 
 const scrollToPricing = () => {
   const pricingSection = document.getElementById('pricing');
@@ -333,16 +326,6 @@ const scrollToPricing = () => {
     pricingSection.scrollIntoView({ behavior: 'smooth' });
   }
 };
-
-const isAnimating = ref(false);
-const isRevealed = ref(false);
-const selectedUserImage = ref("");
-const currentPlaceholder = ref(0);
-const placeholderImages = ref([
-  vo_1,
-  vo_2,
-]);
-
 
 const reviews = [
   {
@@ -366,56 +349,6 @@ const reviews = [
 ];
 
 
-const speak = () => {
-  console.log("trying to speak...")
-  const synth = window.speechSynthesis;
-  const utterance = new SpeechSynthesisUtterance("hello world");
-  synth.speak(utterance);
-}
-
-
-// Methods
-const startSelection = async () => {
-  isAnimating.value = true;
-  isRevealed.value = false;
-
-  // Run the shuffle animation
-  await shuffleAnimation();
-
-  // Set the final user image (replace with your actual logic)
-  selectedUserImage.value = vo_1;
-  isRevealed.value = true;
-  isAnimating.value = false;
-};
-
-const has_selected_user = ref(false);
-
-const shuffleAnimation = () => {
-  return new Promise((resolve) => {
-    let speed = 50; // Initial switch speed in ms (fast)
-    const totalDuration = 3000; // Total animation time in ms
-    const minSpeed = 100; // Slowest speed before stopping
-    let elapsed = 0;
-
-    const shuffle = () => {
-      // Cycle to next placeholder
-      currentPlaceholder.value =
-        (currentPlaceholder.value + 1) % placeholderImages.value.length;
-
-      // Increase speed (slow down) over time
-      elapsed += speed;
-      if (elapsed < totalDuration) {
-        speed = Math.min(speed + 20, minSpeed); // Gradually slow down
-        setTimeout(shuffle, speed);
-      } else {
-        resolve(); // End animation
-      }
-    };
-
-    // Start shuffling
-    shuffle();
-  });
-};
 </script>
 
 <style scoped>
