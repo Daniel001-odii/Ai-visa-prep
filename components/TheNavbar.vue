@@ -7,20 +7,18 @@
             <!-- LOGO -->
             <TheLogo />
 
-            <!-- <div :class="mobile_nav ? 'md:flex' : ' hidden md:flex'" -->
-                <!-- class="flex w-full gap-3 md:border-none border-b bg-inherit md:relative md:justify-between absolute top-[100%] left-0 justify-center p-2 md:p-0"> -->
-            <div
-                
-                class="flex w-full gap-3 bg-inherit md:relative justify-end items-center border">
+            <div :class="mobile_nav ? 'md:flex' : ' hidden md:flex'"
+                class=" md:mx-auto w-full border gap-3 md:border-none border-b bg-inherit md:relative md:justify-between absolute top-[100%] left-0 justify-center p-2 md:p-0">
 
                 <!-- QUICK LINKS -->
-                <!-- <div class=" flex gap-4 md:items-center mx-auto md:flex-row flex-col items-start ">
-                    <UButton label="Features" variant="link" color="black" />
-                    <UButton label="Blog" variant="link" color="black" />
-                </div> -->
+                <div class=" flex gap-4 md:items-center mx-auto md:flex-row flex-col items-start ">
+                    <UButton label="Features" variant="link" color="black" @click="navigateTo('/#features')" />
+                    <UButton label="Pricing" variant="link" color="black" @click="gotToPricing"/>
+                    <UButton label="FAQ" variant="link" color="black" @click="navigateTo('/#FAQ')"/>
+                </div>
 
                 <!-- ACTIONS -->
-                <div class=" flex flex-row gap-3 items-center w-fit border">
+                <div class=" flex flex-row gap-3 items-center w-fit mt-6 md:mt-0">
 
                     <UButton :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
                         " color="gray" variant="ghost" aria-label="Theme" @click="isDark = !isDark" />
@@ -35,14 +33,19 @@
                 </div>
             </div>
 
-            <!-- <UButton class=" md:hidden" icon="hugeicons:menu-11" color="black" variant="soft" @click="toggleMenu()" /> -->
+            <UButton class=" md:hidden" icon="hugeicons:menu-11" color="black" variant="soft" @click="toggleMenu()" />
 
         </div>
 
         <div v-else class=" flex p-3 container mx-auto items-center justify-between relative bg-inherit">
 
             <!-- LOGO -->
-            <TheLogo />
+            <NuxtLink to="/">
+                <div class=" flex flex-row gap-3 items-center justify-center">
+                    <img src="../public/favicon.ico" class=" w-[30px]" />
+                    <span class=" font-bold">Visalify</span>
+                </div>
+            </NuxtLink>
             <!-- USER PROFILE -->
             <UDropdown class="" :items="items"
                 :ui="{ item: { disabled: 'cursor-text select-text' }, background: 'bg-white dark:bg-slate-900' }"
@@ -117,6 +120,10 @@ import ThePreviousTest from './ThePreviousTest.vue';
 import { useUserStore } from '#imports';
 
 const token = useCookie("vy_token").value;
+
+const gotToPricing =()=>{
+    $emit('goToPricing');
+}
 
 const logout = () => {
     const token = useCookie('vy_token');

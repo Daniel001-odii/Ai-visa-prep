@@ -37,8 +37,8 @@
       </div>
 
 
-      <!-- NEW SECTION -->
-      <div class="flex flex-wrap gap-4 justify-center items-center  ">
+      <!-- NEW SECTION FEATURES -->
+      <div class="flex flex-wrap gap-4 justify-center items-center  " id="features">
         <div class=" flex flex-col flex-1 min-w-fit bg-white dark:bg-slate-700 rounded-lg p-6 border">
           <span class=" bg-blue-500 w-fit text-white rounded-md p-3 size-16 mb-4">
             <UIcon name="material-symbols-light:rocket-launch-outline" class=" size-9 " />
@@ -234,7 +234,7 @@
         </div>
 
         <!-- FAQ Section -->
-        <div class="mt-12 w-full max-w-3xl">
+        <div class="mt-12 w-full max-w-3xl" id="FAQ">
           <h3 class="text-2xl font-bold text-center mb-6">Frequently Asked Questions</h3>
 
           <div class="space-y-4">

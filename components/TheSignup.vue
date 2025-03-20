@@ -85,9 +85,7 @@
           <div class="w-full border-t border-gray-300"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-slate-50 dark:bg-slate-900 text-gray-500"
-            >Or continue with</span
-          >
+          <span class="px-2 bg-slate-50 dark:bg-slate-900 text-gray-500">OR</span>
         </div>
       </div>
 
