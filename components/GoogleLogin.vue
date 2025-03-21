@@ -19,7 +19,7 @@
   
           const token = useCookie("vy_token");
           token.value = res.token;
-          useRouter().push("/account");
+          useRouter().push("/in/account");
   
           console.log("code verified: ", res)
       } catch (err) {
