@@ -29,10 +29,10 @@
     </UCard>
   </UModal>
 
-  <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit dark:bg-inherit font-sans p-5">
+  <div class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit dark:bg-inherit font-sans">
     <TheNavbar />
 
-    <div class="h-[90%] container mx-auto flex flex-col justify-center items-center p-4">
+    <div class="h-[90%] container mx-auto flex flex-col justify-center items-center p-2">
       <!--  <div class=" flex justify-center items-center flex-col h-[350px]">
             <AudioVisualizer ref="visualizer" :audioData="audioSrc" v-if="audioSrc" class=" " />
             <UButton icon="heroicons:speaker-wave-solid" class=" w-fit" v-if="audioSrc" label="play audio" @click="playAudio" />
