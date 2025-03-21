@@ -14,7 +14,7 @@
       </p>
 
       <div class="flex gap-4 mt-4">
-        <UButton size="xl" color="blue" label="Try A Free Demo" @click="useRouter().push('/Interview?modal=true')" />
+        <UButton size="xl" color="blue" label="Try A Free Demo" @click="useRouter().push('/interview')" />
         <UButton label="Pricing" variant="ghost" size="xl" class="bg-inherit" color="black"
           @click="scrollToPricing()" />
       </div>
@@ -285,7 +285,7 @@
           <h3 class="text-3xl font-bold mb-4">Ready to Ace Your Visa Interview?</h3>
           <p class="text-lg mb-6 max-w-2xl mx-auto">Join thousands of successful visa applicants who prepared with
             Visalify AI. Start your journey today!</p>
-          <UButton size="xl" color="blue" label="Try For Free" @click="useRouter().push('/Interview?modal=true')" />
+          <UButton size="xl" color="blue" label="Try For Free" @click="useRouter().push('/interview')" />
         </div>
       </div>
 
