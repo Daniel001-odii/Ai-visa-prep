@@ -82,7 +82,11 @@
       </NuxtLink>
 
       <div class=" flex items-center justify-center gap-3">
-        <UButton icon="hugeicons:comment-add-01" variant="ghost" label="New Interview" color="blue" />
+        <UButton 
+        :disabled="profileIsComplete"
+        @click="navigateTo('/in/interview')"
+        icon="hugeicons:comment-add-01" 
+        variant="outline" label="New" color="blue" />
 
         <!-- USER PROFILE -->
         <UDropdown
@@ -232,7 +236,7 @@ const items = [
       label: "Settings",
       icon: "heroicons:user-circle",
       click: () => {
-        navigateTo("/account");
+        navigateTo("/in/account");
       },
     },
     {
@@ -265,6 +269,19 @@ const account_modal = ref(false);
 const prev_tests_modal = ref(false);
 
 const user = ref(null);
+
+const profileIsComplete = computed(() => {
+  const isComplete = !!(
+    user && 
+    user.target_country && 
+    user.visa_type && 
+    user.travelled_before && 
+    user.visa_refused_before && 
+    user.interview_date
+  );
+  console.log('Profile complete:', isComplete, user);
+  return isComplete;
+});
 
 onMounted(async () => {
   await useUserStore().fetchUser();
