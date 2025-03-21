@@ -174,13 +174,13 @@
               class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
               POPULAR</div>
             <span class="font-bold text-2xl mb-2">Standard</span>
-            <span class="text-3xl font-bold mb-4">$29</span>
+            <span class="text-3xl font-bold mb-4">$10</span>
             <span class="text-sm text-gray-500 dark:text-gray-300 mb-6">One-time payment, 30-day access</span>
 
             <ul class="space-y-3 mb-8">
               <li class="flex items-start">
                 <UIcon name="i-heroicons-check-circle" class="text-green-500 mr-2 mt-1" />
-                <span>5 Mock Interview Sessions</span>
+                <span>Unlimited Mock Interviews</span>
               </li>
               <li class="flex items-start">
                 <UIcon name="i-heroicons-check-circle" class="text-green-500 mr-2 mt-1" />
@@ -200,7 +200,7 @@
           </div>
 
           <!-- Premium Plan -->
-          <div
+         <!--  <div
             class="flex flex-col flex-1 min-w-[280px] bg-white dark:bg-slate-700 rounded-lg p-8 border border-gray-200 dark:border-slate-600 hover:shadow-lg transition-shadow">
             <span class="font-bold text-2xl mb-2">Premium</span>
             <span class="text-3xl font-bold mb-4">$49</span>
@@ -230,7 +230,7 @@
             </ul>
 
             <UButton color="blue" label="Get Premium" class="mt-auto" />
-          </div>
+          </div> -->
         </div>
 
         <!-- FAQ Section -->
