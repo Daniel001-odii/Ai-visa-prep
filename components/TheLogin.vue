@@ -109,6 +109,7 @@ const handleSubmit = async () => {
       color: 'red',
     })
   }
+  isLoading.value = false;
 };
 
 
@@ -128,7 +129,7 @@ const handleSubmit = async () => {
   }
 }
 
-@keyframes pulseOnHover {
+/* @keyframes pulseOnHover {
   50% {
     transform: scale(1.02);
   }
@@ -145,7 +146,7 @@ const handleSubmit = async () => {
 .animate-pulse-on-hover:hover {
   animation: pulseOnHover 0.8s infinite;
 }
-
+ */
 /* Ensure our theme color is applied */
 :root {
   --color-primary: #3b82f6;

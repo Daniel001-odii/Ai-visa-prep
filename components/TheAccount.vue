@@ -199,7 +199,7 @@
 
                 <UDivider/>
                 <span class=" font-bold">V.O Settings</span>
-                <div class=" flex gap-3 flex-1 ">
+                <div class=" flex flex-wrap gap-3 flex-1 ">
                     <UFormGroup label="Visa Officer Gender" class=" flex-1">
                         <USelect
                         model-value="female"
@@ -414,8 +414,12 @@ onMounted(async () => {
   user.travelled_before = useUserStore().user.travelled_before;
   user.subscription = useUserStore().user.subscription
   user.visa_refused_before = useUserStore().user.visa_refused_before;
-  user.interview_date = new Date(useUserStore().user.interview_date)
-    .toISOString()
-    .split("T")[0];
+  user.interview_date = new Date(useUserStore().user.interview_date).toISOString().split("T")[0];
+  user.settings.vo_voice = useUserStore().user.settings.vo_voice;
+  user.settings.voice_over = useUserStore().user.settings.voice_over;
+  user.settings.expert_suggestions = useUserStore().user.settings.expert_suggestions;
+  user.settings.daily_tips_mail = useUserStore().user.settings.daily_tips_mail;
+    
+    
 });
 </script>

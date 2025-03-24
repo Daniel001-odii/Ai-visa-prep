@@ -39,15 +39,47 @@
         </div> -->
 
       <div class="w-full flex flex-col gap-3 h-full">
+
+
+        
+        <!-- inter view details tab -->
+        <div v-if="interview_started" class=" py-3 flex justify-between items-center">
+          <div class=" flex gap-3 justify-center items-center">
+            <UAvatar size="lg"/>
+            <div class=" flex flex-col">
+              <span>Student Visa Interview - USA</span>
+              <div class=" flex gap-3 items-center">
+                <small>Inteview in progress</small>
+                <span class=" bg-blue-500/20 text-blue-500 px-2 rounded-full flex items-center gap-1"><UIcon name="hugeicons:clock-04"/> 00:00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class=" flex gap-3 items-center">
+            <UButton icon="hugeicons:volume-high" variant="ghost" color="blue"/>
+            <UButton icon="hugeicons:message-multiple-01" variant="ghost" color="blue"/>
+          </div>
+
+        </div>
+        
         <!-- CHAT CONTAINER -->
-        <div class="w-full overflow-y-auto flex flex-col gap-3 h-full" ref="messagesContainer">
+        <div class="w-full overflow-y-auto flex flex-col gap-3 h-full bg-slate-500/5 p-3" ref="messagesContainer">
           <!-- default message -->
-          <div v-if="messages.length == 0" class="flex-1 flex flex-col gap-3 justify-center items-center p-5">
+          <div v-if="messages.length == 0 && !interview_started" class="flex-1 flex flex-col gap-3 justify-center items-center p-5">
             <div class=" flex flex-col-reverse justify-center items-center text-center">
               <span class=" text-4xl">{{ greeting() }}, {{ user?.name }}</span>
               <span class=" font-bold text-3xl">Welcome Back!</span>
             </div>
-
+            <div class=" flex gap-3 w-full">
+              <UAlert title="Reminder" description="Your Visa interview is scheduled for...."
+                icon="hugeicons:calendar-minus-02" :ui="{
+                  icon: 'size-11'
+                }" />
+              <UAlert title="Tips of the day!" description="Your Visa interview is scheduled for...."
+                icon="hugeicons:checkmark-badge-04" :ui="{
+                  icon: 'size-11'
+                }" />
+            </div>
             <div class=" flex justify-center items-center text-center w-full rounded-lg p-5">
               <!-- <span>You have a confidence score of 70%</span> -->
               <UButton
@@ -58,24 +90,12 @@
               @click="getNextQuestion()"
               />
             </div>
-           
-            <div class=" flex gap-3 w-full" v-for="item in 2">
-              <UAlert title="Reminder" description="Your Visa interview is scheduled for...."
-                icon="hugeicons:calendar-minus-02" :ui="{
-                  icon: 'size-11'
-                }" />
-              <UAlert title="Tips of the day!" description="Your Visa interview is scheduled for...."
-                icon="hugeicons:checkmark-badge-04" :ui="{
-                  icon: 'size-11'
-                }" />
-            </div>
           </div>
 
           <!-- MESSAGES -->
-          <div v-for="chat in messages" class="p-3 rounded-md max-w-[65%] bg-slate-500 w-fit" :class="chat.sender == 'bot'
-              ? 'bg-opacity-10 self-start'
-              : ' bg-opacity-30 self-end'
-            ">
+          <div v-for="chat in messages"
+            class=" p-3 rounded-md max-w-[65%] bg-blue-500 w-fit shadow-sm"
+            :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' text-white self-end'">
             <span>{{ chat.message }}</span>
           </div>
 
@@ -105,8 +125,12 @@
           <!-- TYPING AREA/BOX -->
           <!-- Q&A AREA -->
           <div class="flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500">
-            <UAlert v-if="user?.settings?.expert_suggestions && expert_suggestion" color="primary" variant="soft" title="Expert Suggestion"
-              :description="expert_suggestion" icon="heroicons:sparkles-16-solid" />
+            <!-- <UAlert v-if="user?.settings?.expert_suggestions && expert_suggestion" color="primary" variant="soft" title="Expert Suggestion"
+              :description="expert_suggestion" icon="heroicons:sparkles-16-solid" /> -->
+            <div class=" flex overflow-x-auto">
+              <span @click="[userAnswer = expert_suggestion]" v-if="expert_suggestion" class=" rounded-full bg-blue-500/10 py-2 px-3 cursor-pointer text-nowrap truncate">{{expert_suggestion}}</span>
+            </div>
+
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
               <audio v-if="!loading_q && audioSrc && user?.settings.voice_over" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
               <!-- <div class="flex gap-3"> -->
@@ -188,12 +212,14 @@ const getNextQuestion = async () => {
     audioSrc.value = null;
     scrollToBottom();
 
-    // add to messages array...
-    let chat = {
-      message: userAnswer.value,
-      sender: "user",
-    };
-    messages.value.push(chat);
+   // add to messages array...
+   if(messages.value.length > 0){
+      let chat = {
+        message: userAnswer.value,
+        sender: 'user'
+      };
+      messages.value.push(chat);
+    }
 
     const res = await useNuxtApp().$apiFetch("/visa/user_question", {
       method: "POST",

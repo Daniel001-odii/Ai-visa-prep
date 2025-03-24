@@ -21,7 +21,10 @@
                 :options="countryList" value-attribute="name" option-attribute="name" disabled />
             </UFormGroup>
             <UFormGroup label="Target country" class=" flex-1">
-              <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
+              <!-- <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
+                placeholder="Select country" v-model="questions.country_applying_to" :options="countryList"
+                value-attribute="name" option-attribute="name" /> -->
+              <USelectMenu class="!w-full lg:w-48"
                 placeholder="Select country" v-model="questions.country_applying_to" :options="countryList"
                 value-attribute="name" option-attribute="name" />
             </UFormGroup>
@@ -127,7 +130,29 @@
           <UButton icon="heroicons:speaker-wave-solid" class=" w-fit" v-if="audioSrc" label="play audio" @click="playAudio" />
       </div> -->
 
+    
       <div class=" w-full flex flex-col gap-3 h-full ">
+
+        <!-- inter view details tab -->
+        <div class=" py-3 flex justify-between items-center">
+          <div class=" flex gap-3 justify-center items-center">
+            <UAvatar size="lg"/>
+            <div class=" flex flex-col">
+              <span>Student Visa Interview - USA</span>
+              <div class=" flex gap-3 items-center">
+                <small>Inteview in progress</small>
+                <span class=" bg-blue-500/20 text-blue-500 px-2 rounded-full flex items-center gap-1"><UIcon name="hugeicons:clock-04"/> 00:00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class=" flex gap-3 items-center">
+            <UButton icon="hugeicons:volume-high" variant="ghost" color="blue"/>
+            <UButton icon="hugeicons:message-multiple-01" variant="ghost" color="blue"/>
+          </div>
+
+        </div>
+        <!-- <UDivider/> -->
 
         <!-- CHAT CONTAINER -->
         <div class=" w-full  overflow-y-auto flex flex-col gap-3 h-full" ref="messagesContainer">
@@ -135,7 +160,7 @@
           <!-- default message -->
           <div v-if="messages.length == 0 && !completed_intro_questions"
             class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
-            <div class=" w-[200px]">
+            <div class=" w-[150px]">
               <img src="../../assets/images/woman.png" />
             </div>
             <h1 class=" font-bold text-2xl">Hold up!</h1>
@@ -146,7 +171,7 @@
           </div>
 
           <!-- completed intro questions -->
-          <div v-if="completed_intro_questions && messages.length == 0"
+          <div v-if="completed_intro_questions && !interview_started"
             class=" flex-1 flex flex-col gap-3 justify-center items-center rounded-xl text-center p-5">
             <div class=" w-[200px]">
               <img src="../../assets/images/complete.png" />
@@ -172,8 +197,8 @@
 
           <!-- MESSAGES -->
           <div v-if="settings.show_prev_msg" v-for="chat in messages"
-            class=" p-3 rounded-md max-w-[65%] bg-slate-500 w-fit"
-            :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' bg-opacity-30 self-end'">
+            class=" p-3 rounded-md max-w-[65%] bg-blue-500 w-fit shadow-sm"
+            :class="chat.sender == 'bot' ? 'bg-opacity-10 self-start' : ' text-white self-end'">
             <span>{{ chat.message }}</span>
           </div>
 
@@ -206,8 +231,11 @@
           <!-- TYPING AREA/BOX -->
           <!-- Q&A AREA -->
           <div class=" flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500 ">
-            <UAlert v-if="expert_suggestion" color="primary" variant="soft" title="Expert Suggestion"
-              :description="expert_suggestion" icon="heroicons:sparkles-16-solid" />
+            <!-- <UAlert  color="primary" variant="soft" title="Expert Suggestion"
+              :description="expert_suggestion" icon="heroicons:sparkles-16-solid" /> -->
+            <div class=" flex overflow-x-auto">
+              <span @click="[userAnswer = expert_suggestion]" v-if="expert_suggestion" class=" rounded-full bg-blue-500/10 py-2 px-3 cursor-pointer text-nowrap truncate">{{expert_suggestion}}</span>
+            </div>
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
               <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
               <!-- <div class="flex gap-3"> -->
@@ -400,11 +428,14 @@ const getNextQuestion = async () => {
 
 
     // add to messages array...
-    let chat = {
-      message: userAnswer.value,
-      sender: 'user'
-    };
-    messages.value.push(chat);
+    if(messages.value.length > 0){
+      let chat = {
+        message: userAnswer.value,
+        sender: 'user'
+      };
+      messages.value.push(chat);
+    }
+    
 
     const res = await useNuxtApp().$apiFetch('/visa/question', {
       method: 'POST',
