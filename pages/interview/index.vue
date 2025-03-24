@@ -163,11 +163,20 @@
             <div class=" w-[150px]">
               <img src="../../assets/images/woman.png" />
             </div>
-            <h1 class=" font-bold text-2xl">Hold up!</h1>
-            <p>Before we begin the interview, please fill out the following form with your personal and visa-related
-              information. This will help us tailor the interview process to your specific needs and ensure a smooth
-              experience.</p>
-            <UButton label="Continue" color="yellow" @click="openIntroQuestions" />
+            
+            <div v-if="hasTriedDemo()" class="flex flex-col justify-center items-center gap-3">
+              <h1 class=" font-bold text-2xl">Hold up!</h1>
+                <p>You have already tried the free demo. Please sign in to continue enjoying the full experience.</p>
+              <UButton label="Sign In" color="green" class="w-fit" @click="navigateTo('/login')" />
+            </div>
+            <div v-else class="flex flex-col justify-center items-center gap-3">
+              <h1 class=" font-bold text-2xl">Hold up!</h1>
+              <p>Before we begin the interview, please fill out the following form with your personal and visa-related
+                information. This will help us tailor the interview process to your specific needs and ensure a smooth
+                experience.</p>
+              <UButton label="Continue" class="w-fit" color="blue" @click="openIntroQuestions" />
+            </div>
+
           </div>
 
           <!-- completed intro questions -->
@@ -314,6 +323,10 @@ const settings = reactive({
 const completed_intro_questions = ref(false);
 const openIntroQuestions = () => {
   intro_questions.value = true
+}
+
+const hasTriedDemo =()=>{
+  return localStorage.getItem('demo')
 }
 
 const interview_started = ref(false);
@@ -468,6 +481,7 @@ const getNextQuestion = async () => {
 
     if (res.isFinal) {
       visa_status_modal.value = true;
+      localStorage.setItem('demo', true);
     }
 
   } catch (err) {

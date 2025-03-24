@@ -63,7 +63,7 @@
         </div>
         
         <!-- CHAT CONTAINER -->
-        <div class="w-full overflow-y-auto flex flex-col gap-3 h-full bg-slate-500/5 p-3" ref="messagesContainer">
+        <div class="w-full overflow-y-auto flex flex-col gap-3 h-full  p-3" ref="messagesContainer">
           <!-- default message -->
           <div v-if="messages.length == 0 && !interview_started" class="flex-1 flex flex-col gap-3 justify-center items-center p-5">
             <div class=" flex flex-col-reverse justify-center items-center text-center">
@@ -128,7 +128,7 @@
             <!-- <UAlert v-if="user?.settings?.expert_suggestions && expert_suggestion" color="primary" variant="soft" title="Expert Suggestion"
               :description="expert_suggestion" icon="heroicons:sparkles-16-solid" /> -->
             <div class=" flex overflow-x-auto">
-              <span @click="[userAnswer = expert_suggestion]" v-if="expert_suggestion" class=" rounded-full bg-blue-500/10 py-2 px-3 cursor-pointer text-nowrap truncate">{{expert_suggestion}}</span>
+              <span @click="[userAnswer = expert_suggestion]" v-if="expert_suggestion" class=" rounded-full bg-slate-50 py-2 px-3 cursor-pointer text-nowrap truncate">{{expert_suggestion}}</span>
             </div>
 
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
