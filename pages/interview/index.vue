@@ -17,7 +17,7 @@
           <div class=" flex gap-3 flex-1">
             <UFormGroup label="Nationality" class=" flex-1">
               <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
-                placeholder="Select country" v-model="questions.nationality" model-value="Nigeria"
+                placeholder="Select country" v-model="questions.nationality" model-value="United States"
                 :options="countryList" value-attribute="name" option-attribute="name" />
             </UFormGroup>
             <UFormGroup label="Target country" class=" flex-1">
@@ -30,7 +30,7 @@
             </UFormGroup>
           </div>
           <UFormGroup label="Visa type">
-            <USelectMenu searchable searchable-placeholder="Search a visa type" class=" !w-full lg:w-48"
+            <USelectMenu searchable-placeholder="Search a visa type" class=" !w-full lg:w-48"
               placeholder="Select visa type" v-model="questions.visa_type" :options="visaTypes" />
           </UFormGroup>
         </div>
