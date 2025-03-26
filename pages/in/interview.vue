@@ -99,6 +99,19 @@
             <span>{{ chat.message }}</span>
           </div>
 
+          <!-- EXPERT SUGGESTION -->
+          <div v-if="expert_suggestion" class=" p-3 rounded-md max-w-[65%] border-dashed border w-fit shadow-sm text-blue-500 bg-blue-500/5 border-blue-500 self-end flex gap-3">
+            <UIcon name="heroicons:sparkles-16-solid" class=" flex-1"/>
+            <div class=" flex flex-col">
+              <span class=" font-bold">Expert Suggestion</span>
+              <span class="">{{expert_suggestion}}</span>
+              <div class=" flex gap-3 justify-end items-end">
+                <UButton @click="acceptExpertSuggestion()" label="Accept" icon="heroicons:check-20-solid" size="sm" variant="soft" color="green"/>
+                <UButton @click="expert_suggestion = null" label="Cancel" icon="heroicons:x-mark-20-solid" size="sm" variant="soft" color="red"/>
+              </div>
+            </div>
+          </div>
+
           <!-- typing status -->
           <div v-if="loading_q" class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
@@ -125,11 +138,9 @@
           <!-- TYPING AREA/BOX -->
           <!-- Q&A AREA -->
           <div class="flex flex-col gap-3 min-w-full max-w-2xl md:w-[400px] mx-auto !border-red-500">
-            <!-- <UAlert v-if="user?.settings?.expert_suggestions && expert_suggestion" color="primary" variant="soft" title="Expert Suggestion"
-              :description="expert_suggestion" icon="heroicons:sparkles-16-solid" /> -->
-            <div class=" flex overflow-x-auto">
+            <!-- <div class=" flex overflow-x-auto">
               <span @click="[userAnswer = expert_suggestion]" v-if="expert_suggestion" class=" rounded-full bg-slate-50 py-2 px-3 cursor-pointer text-nowrap truncate">{{expert_suggestion}}</span>
-            </div>
+            </div> -->
 
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
               <audio v-if="!loading_q && audioSrc && user?.settings.voice_over" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
@@ -203,6 +214,10 @@ const scrollToBottom = async () => {
   }
 };
 
+const acceptExpertSuggestion =()=>{
+  userAnswer.value = expert_suggestion.value;
+  getNextQuestion();
+}
 
 const getNextQuestion = async () => {
   interview_started.value = true;
