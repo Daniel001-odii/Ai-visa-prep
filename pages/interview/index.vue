@@ -18,7 +18,7 @@
             <UFormGroup label="Nationality" class=" flex-1">
               <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
                 placeholder="Select country" v-model="questions.nationality" model-value="Nigeria"
-                :options="countryList" value-attribute="name" option-attribute="name" disabled />
+                :options="countryList" value-attribute="name" option-attribute="name" />
             </UFormGroup>
             <UFormGroup label="Target country" class=" flex-1">
               <!-- <USelectMenu searchable searchable-placeholder="Search a country..." class="!w-full lg:w-48"
