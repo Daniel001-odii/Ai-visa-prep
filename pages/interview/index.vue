@@ -524,12 +524,12 @@ const resetInterview = () => {
   previousAnswers.value = [];
   isFinal.value = false;
   decision.value = null;
-  currentQuestion.value = '';
-  userAnswer.value = '';
-  audioSrc.value = '';
+  currentQuestion.value = "";
+  userAnswer.value = "";
+  audioSrc.value = "";
 
-  messages.value = []
-  getNextQuestion();
+  messages.value = [];
+  // getNextQuestion();
 };
 
 const toggleSpeech = () => {
