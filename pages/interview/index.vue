@@ -243,7 +243,7 @@
             <!-- <UAlert  color="primary" variant="soft" title="Expert Suggestion"
               :description="expert_suggestion" icon="heroicons:sparkles-16-solid" /> -->
             <div class=" flex overflow-x-auto">
-              <span @click="[userAnswer = expert_suggestion]" v-if="expert_suggestion" class=" rounded-full bg-slate-50 py-2 px-3 cursor-pointer text-nowrap truncate">{{expert_suggestion}}</span>
+              <span @click="[userAnswer = expert_suggestion]" v-if="expert_suggestion" class=" rounded-full bg-slate-50/20 py-2 px-3 cursor-pointer text-nowrap truncate">{{expert_suggestion}}</span>
             </div>
             <div class="flex flex-col gap-3 w-full mx-auto p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl">
               <audio v-if="!loading_q && audioSrc" controls ref="audio" :src="audioSrc" autoplay class="hidden"></audio>
