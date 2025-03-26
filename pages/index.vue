@@ -3,8 +3,8 @@
 
     <div class="flex flex-col justify-center items-center mt-[100px] gap-6">
       <span
-        class=" text-black dark:text-white text-opacity-50 text-sm border rounded-3xl bg-white dark:bg-slate-700 px-4 py-2">Currently
-        for Nigerian based immigrants
+        class=" text-black dark:text-white text-opacity-50 text-sm border rounded-3xl bg-white dark:bg-slate-700 px-4 py-2">
+        Empowering Immigrants Worldwide
       </span>
       <h1 class="text-5xl text-center">Master Your Visa Interview<br /> with AI-Powered Precision</h1>
       <p class="text-lg text-center mt-2 max-w-[650px]">Preparing for a visa interview can be stressful, but with
@@ -164,7 +164,7 @@
             </ul>
 
             <UButton color="blue" label="Start Free Trial" @click="useRouter().push('/Interview?modal=true')"
-              class="mt-auto" />
+              class="mt-auto w-fit" />
           </div>
 
           <!-- Standard Plan -->
@@ -196,7 +196,7 @@
               </li>
             </ul>
 
-            <UButton color="blue" label="Get Standard" class="mt-auto" />
+            <UButton color="blue" label="Get Standard" class="mt-auto w-fit" />
           </div>
 
           <!-- Premium Plan -->
