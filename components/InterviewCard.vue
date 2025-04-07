@@ -31,15 +31,15 @@
                 : 'lucide:circle-x'
               " size="sm" color="green" variant="outline">{{ interview?.status }}</UBadge>
           </span>
-          <div class="flex flex-wrap space-x-3">
+          <div class="flex flex-wrap space-x-3 text-sm">
             <span>
-              <UIcon name="lucide:plane-takeoff" class="mr-1" />
-              {{ interview?.country }}
+              <UIcon name="lucide:timer-reset" class="mr-1" />
+              {{ formattedTime(interview?.duration) }}
             </span>
 
             <span>
-              <UIcon name="lucide:calendar-fold" class="mr-1" />
-              {{ new Date(interview.createdAt).toLocaleDateString() }}
+              <UIcon name="lucide:calendar-clock" class="mr-1" />
+              {{ new Date(interview.createdAt).toLocaleDateString() }} - {{ new Date(interview.createdAt).toLocaleTimeString() }}
             </span>
           </div>
         </div>
@@ -49,7 +49,6 @@
           color="blue" size="xs" />
         <UButton @click="return" icon="lucide:cloud-download" variant="ghost" class="w-fit" color="black" size="xs" />
 
-        <!-- @click="deleteInterview(interview._id)" -->
         <UButton 
         @click="delete_interview = !delete_interview" 
         :icon="deleting_ ? 'svg-spinners:bars-rotate-fade':'lucide:trash-2'"
@@ -89,6 +88,13 @@ const deleteInterview = async (id) => {
   deleting_.value = false
 };
 
+const formattedTime = (time) => {
+  const minutes = Math.floor(time / 60)
+    .toString()
+    .padStart(2, '0')
+  const seconds = (time % 60).toString().padStart(2, '0')
+  return `${minutes}:${seconds}`
+};
 
 
 </script>

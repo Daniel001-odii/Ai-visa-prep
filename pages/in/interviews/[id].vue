@@ -1,4 +1,29 @@
 <template>
+    <UModal v-model="exit_interview_modal">
+    <UCard>
+      <template #header>
+        <b>Exit Interview?</b>
+      </template>
+      <div class=" flex flex-col">
+        <div class=" flex flex-col ">
+          <p class="font-bold text-lg ">Are you sure you want to exit this interview session?</p>
+          <small>Exiting this interview session will automatically clear both the interview and the chats, this cannot be undone.</small>
+        </div>
+       
+        <div class=" flex items-end justify-end gap-4 mt-6">
+          <UButton @click="exit_interview_modal = !exit_interview_modal" label="Continue" variant="soft" color="blue" />
+          <UButton 
+          :disabled="deleting_"
+          @click="deleteInterview(useRoute().params.id)" 
+          label="Exit" 
+          variant="solid" 
+          color="red"
+          class=" !text-white" />
+        </div>
+      </div>
+    </UCard>
+  </UModal>
+
   <!-- VISA STATUS -->
   <UModal
     v-model="visa_status_modal"
@@ -38,8 +63,8 @@
         <span>{{ decision.reason }}</span>
         <UButton
           color="green"
-          @click="resetInterview()"
-          label="Start New Interview"
+          @click="navigateTo('/in/interviews')"
+          label="Continue"
           class="w-fit"
         />
       </div>
@@ -49,7 +74,7 @@
   <div
     class="flex flex-col h-[100dvh] max-h-[100dvh] bg-inherit dark:bg-inherit font-sans"
   >
-    <TheNavbar />
+    <!-- <TheNavbar /> -->
 
     <div
       class="h-[90%] container mx-auto flex flex-col justify-center items-center p-2"
@@ -78,6 +103,8 @@
                     variant="outline"
                     >{{ interview?.status }}</UBadge
                   >
+                  <span v-if="!interviewAlreadyExist">{{ formattedTime }}</span>
+                  <span v-else>{{ formattedDuration(interview?.duration) }}</span>
               </div>
             </div>
           </div>
@@ -87,12 +114,15 @@
               icon="hugeicons:volume-high"
               variant="ghost"
               color="blue"
+              :disabled="interviewAlreadyExist"
             />
             <UButton
-              icon="hugeicons:message-multiple-01"
+              icon="heroicons:arrow-right-on-rectangle"
               variant="ghost"
-              color="blue"
-              :disabled="interviewAlreadyExist"
+              color="red"
+              @click="[
+                interviewAlreadyExist ? (navigateTo('/in/interviews')) : (exit_interview_modal = true)
+              ]"
             />
           </div>
         </div>
@@ -152,12 +182,12 @@
             <div class="flex flex-col">
               <span class="font-bold">Expert Suggestion</span>
               <span class="">{{ expert_suggestion }}</span>
-              <div class="flex gap-3 justify-end items-end">
+              <div class="flex gap-3 justify-end items-end mt-4">
                 <UButton
                   @click="acceptExpertSuggestion()"
                   label="Accept"
                   icon="heroicons:check-20-solid"
-                  size="sm"
+                  size="xs"
                   variant="soft"
                   color="green"
                 />
@@ -165,7 +195,7 @@
                   @click="expert_suggestion = null"
                   label="Cancel"
                   icon="heroicons:x-mark-20-solid"
-                  size="sm"
+                  size="xs"
                   variant="soft"
                   color="red"
                 />
@@ -319,6 +349,41 @@ const interview_started = ref(false);
 const user = ref(null);
 const visa_progress = ref(10);
 
+const exit_interview_modal = ref(false);
+
+const time = ref(0);
+let timer = null
+const formattedTime = computed(() => {
+  const minutes = Math.floor(time.value / 60)
+    .toString()
+    .padStart(2, '0')
+  const seconds = (time.value % 60).toString().padStart(2, '0')
+  return `${minutes}:${seconds}`
+})
+
+function start() {
+  timer = setInterval(() => {
+    time.value++
+  }, 1000)
+}
+
+function stop() {
+  clearInterval(timer)
+}
+function reset() {
+  stop()
+  time.value = 0
+}
+
+const formattedDuration = (time) => {
+  const minutes = Math.floor(time / 60)
+    .toString()
+    .padStart(2, '0')
+  const seconds = (time % 60).toString().padStart(2, '0')
+  return `${minutes}:${seconds}`
+};
+
+
 // Methods
 const scrollToBottom = async () => {
   await nextTick();
@@ -362,6 +427,7 @@ const getNextQuestion = async () => {
           questionCount: questionCount.value,
           previousQuestions: previousQuestions.value,
           previousAnswers: previousAnswers.value,
+          current_time: time.value,
         },
       }
     );
@@ -385,6 +451,7 @@ const getNextQuestion = async () => {
 
     if (res.isFinal) {
       visa_status_modal.value = true;
+      reset();
     }
   } catch (err) {
     console.error("error getting questions: ", err);
@@ -484,13 +551,29 @@ const getInterviewMessages = async () => {
     interview.status = res.interview.status;
     interview.duration = res.interview.duration;
     interview.createdAt = res.interview.createdAt;
+
+   
   } catch (err) {
     console.error("error getting messages: ", err);
   }
 };
 getInterviewMessages();
 
+const deleteInterview = async (id) => {
+  const res = await useNuxtApp().$apiFetch(`/visa/${id}/delete`, {
+    method: "DELETE",
+  });
+  console.log("deleted interview: ", res);
+  navigateTo("/in/interviews")
+};
+
 onMounted(async () => {
+  if(interviewAlreadyExist.value == true){
+    reset();
+  } else {
+    start();
+  }
+ 
   // Initialize SpeechRecognition
   await useUserStore().fetchUser();
   user.value = useUserStore().user;

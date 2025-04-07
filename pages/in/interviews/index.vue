@@ -84,7 +84,7 @@ const handleDeleteInterview = async () => {
 onMounted(async () => {
   loading.value = true;
   await useInterviewStore().getInterviews();
-  interviews.value = useInterviewStore()?.interviews?.interviews;
+  interviews.value = useInterviewStore()?.interviews?.interviews.reverse();
   loading.value = false;
 });
 </script>
