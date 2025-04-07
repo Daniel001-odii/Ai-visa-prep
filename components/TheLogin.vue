@@ -97,7 +97,7 @@ const handleSubmit = async () => {
 
     const token = useCookie("vy_token");
     token.value = res.token;
-    useRouter().push("/in/account");
+    useRouter().push("/in/dashboard");
 
     console.log("from res: ", res);
   } catch (err) {

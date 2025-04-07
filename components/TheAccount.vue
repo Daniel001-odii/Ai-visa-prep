@@ -20,7 +20,7 @@
           class="bg-green-500 bg-opacity-10 rounded-md p-3 my-3 flex flex-wrap justify-between items-center"
         >
           <span class="font-bold text-green-500"
-            >Complete your profile to start a new interview session</span
+            >Complete your profile to start an interview session</span
           >
         </div>
         <div class="md:col-span-2">

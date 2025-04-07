@@ -8,11 +8,6 @@
                 <USkeleton class="w-[50%] h-4 rounded-full " />
                 <USkeleton class="w-[80%] h-4 rounded-full " />
             </div>
-            
-            <UButton
-            class=" w-fit"
-            label="Login"
-            />
         </div>
     </div>
 </template>

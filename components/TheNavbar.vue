@@ -82,11 +82,11 @@
       </NuxtLink>
 
       <div class=" flex items-center justify-center gap-3">
-        <UButton 
+       <!--  <UButton 
         :disabled="profileIsComplete"
         @click="navigateTo('/in/interview')"
         icon="hugeicons:comment-add-01" 
-        variant="outline" label="New" color="blue" />
+        variant="outline" label="New" color="blue" /> -->
 
         <!-- USER PROFILE -->
         <UDropdown
@@ -99,8 +99,8 @@
           :popper="{ placement: 'bottom-start' }"
         >
           <UAvatar
-            :alt="!user?.profile_img ? user?.name : ''"
-            :src="user?.profile_img ? user?.profile_img : ''"
+            :src="user?.profile_img || undefined"
+            :alt="user?.name"
             :ui="{ avatar: { slots: { root: 'rounded-full !bg-inherit' } } }"
           />
 
@@ -225,13 +225,23 @@ const items = [
     },
   ],
   [
-    /* {
-        label: 'New Interview',
-        icon: 'hugeicons:mirroring-screen',
+    {
+        label: 'Dashboard',
+        icon: 'heroicons:rectangle-stack',
         click: () => {
-            navigateTo('/interview')
+            navigateTo('/in/dashboard');
         }
-    }, */
+    },
+    {
+      label: "My Interviews",
+      icon: "heroicons:chat-bubble-oval-left-ellipsis",
+      click: () => {
+        navigateTo("/in/interviews");
+      },
+      /* click: () => {
+        prev_tests_modal.value = true;
+      }, */
+    },
     {
       label: "Settings",
       icon: "heroicons:user-circle",
@@ -239,13 +249,7 @@ const items = [
         navigateTo("/in/account");
       },
     },
-    {
-      label: "Previous Tests",
-      icon: "heroicons:chat-bubble-oval-left-ellipsis",
-      click: () => {
-        prev_tests_modal.value = true;
-      },
-    },
+   
     {
       label: "Switch Theme",
       icon: "iconoir:fill-color",

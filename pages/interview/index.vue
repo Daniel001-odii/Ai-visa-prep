@@ -96,7 +96,10 @@
             later.</span>
         </div>
         <span>{{ decision.reason }}</span>
-        <UButton color="green" @click="resetInterview()" label="Start New Interview" class="w-fit" />
+        <NuxtLink to="/login" class="">
+          <UButton color="green" label="Login to continue" class="w-fit" />
+        </NuxtLink>
+        
       </div>
     </UCard>
   </UModal>
@@ -341,7 +344,7 @@ const openIntroQuestions = () => {
 }
 
 const hasTriedDemo =()=>{
-  return localStorage.getItem('demo')
+  return window?.localStorage.getItem('demo')
 }
 
 const interview_started = ref(false);
@@ -371,7 +374,7 @@ const nextSlide =()=>{
     completed_intro_questions.value = true
     intro_questions.value = false;
     
-    storeTempUserData()
+    // storeTempUserData()
     slide_error.value = null
   }
 }
@@ -441,10 +444,10 @@ const visaFundOptions = [
   { value: "combination", label: "Combination of Multiple Sources" }
 ];
 
-const storeTempUserData =()=>{
+/* const storeTempUserData =()=>{
   localStorage.setItem('anon_user_data', JSON.stringify(questions));
   console.log("anon user data stored...")
-}
+} */
 const yes_no_options = ["yes", "no"];
 
 
@@ -499,7 +502,7 @@ const getNextQuestion = async () => {
 
     if (res.isFinal) {
       visa_status_modal.value = true;
-      localStorage.setItem('demo', true);
+      window?.localStorage.setItem('demo', true);
     }
 
   } catch (err) {
