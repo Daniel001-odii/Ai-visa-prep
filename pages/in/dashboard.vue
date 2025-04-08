@@ -37,27 +37,46 @@
       </UCard>
     </div>
 
-    <div class="mt-12 flex flex-col gap-6">
-      
-      <UCard>
+    <div class="mt-12 flex flex-col gap-3 w-full">
+      <UCard class=" flex-1">
         <template #header>
-          <h1 class="font-bold text-lg">Daily Visa Interview Tips</h1>
-          <span>Improve your chances of success with these helpful tips.</span>
+          <div class="relative">
+            <h1 class="font-bold text-lg">Daily Visa Interview Tips</h1>
+            <span
+              >Improve your chances of success with these helpful tips.</span
+            >
+
+           
+          </div>
         </template>
         <div class="p-4 flex flex-col gap-4">
-          <p>
-            Research the company and the role you are applying for. This will
-            help you tailor your answers to the specific job and show your
-            interest in the company.
-          </p>
-          <p>
-            Always maintain eye contact with the interviewer to show confidence
-            and honesty.
-          </p>
+        <!--   <div
+            v-if="loading_tips"
+            v-for="item in 2"
+            class="flex flex-col gap-2 mt-3"
+          >
+            <USkeleton class="h-[15px] w-full" />
+            <USkeleton class="h-[15px] w-[50%]" />
+          </div>
+         -->
+
+          <div v-if="!loading_tips && visa_tips.length > 0">
+            <p v-for="tip in visa_tips" class="mt-3">"{{ tip }}"</p>
+          </div>
+          <div v-else class="text-center flex flex-col gap-3 justify-center items-center">
+            <span>Click the refresh button to get new tip!</span>
+            <UButton
+              :icon="loading_tips ? 'svg-spinners:bars-rotate-fade':'lucide:refresh-cw'"
+              variant="outline"
+              :disabled="loading_tips"
+              class=" rounded-full"
+              @click="getVisaTips()"
+            />
+          </div>
         </div>
       </UCard>
 
-      <UCard>
+      <UCard class=" flex-1">
         <template #header>
           <h1 class="font-bold text-lg">Your Recent Interviews</h1>
           <span>Review how you performed in your most recent interviews</span>
@@ -72,7 +91,6 @@
           />
         </div>
       </UCard>
-      
     </div>
   </div>
 </template>
@@ -143,6 +161,27 @@ const getDashboardData = async () => {
   } catch (err) {
     console.log("err getting dashboard data: ", err);
   }
+};
+
+const loading_tips = ref(false);
+const visa_tips = ref([]);
+const getVisaTips = async () => {
+  loading_tips.value = true;
+  try {
+    const res = await useNuxtApp().$apiFetch("/user/visa_tips");
+    console.log("visa tips: ", res);
+    visa_tips.value = res.tips;
+  } catch (error) {
+    console.log("err getting tip: ", error);
+  }
+  loading_tips.value = false;
+};
+
+const handleDeleteInterview = async () => {
+  loading.value = true;
+  await useInterviewStore().getInterviews();
+  interviews.value = useInterviewStore()?.interviews?.interviews;
+  loading.value = false;
 };
 
 getDashboardData();

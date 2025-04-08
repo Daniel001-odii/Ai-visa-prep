@@ -13,7 +13,6 @@
         <div class=" flex items-end justify-end gap-4 mt-6">
           <UButton @click="exit_interview_modal = !exit_interview_modal" label="Continue" variant="soft" color="blue" />
           <UButton 
-          :disabled="deleting_"
           @click="deleteInterview(useRoute().params.id)" 
           label="Exit" 
           variant="solid" 
@@ -45,7 +44,7 @@
           v-if="decision.status == 'APPROVED'"
           class="flex flex-col justify-center items-center"
         >
-          <img src="../../assets/images/ok.png" class="size-[150px]" />
+          <img src="../../../assets/images/ok.png" class="size-[150px]" />
           <span class="font-bold text-md text-green-500">VISA APPROVED</span>
           <span class="text-gray-500"
             >Your visa application has been approved. You will receive an email
@@ -53,7 +52,7 @@
           >
         </div>
         <div v-else class="flex flex-col justify-center items-center">
-          <img src="../../assets/images/cancel.png" class="size-[150px]" />
+          <img src="../../../assets/images/cancel.png" class="size-[150px]" />
           <span class="font-bold text-md text-red-500">VISA DENIED</span>
           <span class="text-gray-500"
             >Your visa application has been denied. Please review the reason
@@ -77,7 +76,7 @@
     <!-- <TheNavbar /> -->
 
     <div
-      class="h-[90%] container mx-auto flex flex-col justify-center items-center p-2"
+      class="h-[90%] flex-1 container mx-auto flex flex-col justify-center items-center p-2"
     >
       <div class="w-full flex flex-col gap-3 h-full">
         <!-- inter view details tab -->
@@ -163,6 +162,31 @@
           <!-- MESSAGES -->
           <div
             v-for="chat in messages"
+            class="flex gap-3 items-start  md:max-w-[65%] max-w-[80%]"
+            :class="
+              [chat.sender == 'bot'
+                ? 'self-start'
+                : 'self-end', chat.sender == 'bot'
+                ? 'flex-row'
+                : 'flex-row-reverse' ]"
+          >
+            <UAvatar :text="chat.sender == 'bot' ? 'VO' : null" 
+            :src="chat.sender == 'bot' ? null : user?.profile_img"
+            :alt="user?.name ? user?.name[0] : 'VO'" size="md"/>
+            <div
+            class="p-3 rounded-md bg-blue-500 w-fit shadow-sm"
+            :class="
+              chat.sender == 'bot'
+                ? 'bg-opacity-10'
+                : ' text-white'
+            "
+          >
+            <span>{{ chat.message }}</span>
+          </div>
+
+          </div>
+          <!-- <div
+            v-for="chat in messages"
             class="p-3 rounded-md max-w-[65%] bg-blue-500 w-fit shadow-sm"
             :class="
               chat.sender == 'bot'
@@ -172,10 +196,11 @@
           >
             <span>{{ chat.message }}</span>
           </div>
+ -->
 
           <!-- EXPERT SUGGESTION -->
           <div
-            v-if="expert_suggestion"
+            v-if="expert_suggestion && user?.settings?.expert_suggestions"
             class="p-3 rounded-md max-w-[65%] border-dashed border w-fit shadow-sm text-blue-500 bg-blue-500/5 border-blue-500 self-end flex gap-3"
           >
             <UIcon name="heroicons:sparkles-16-solid" class="flex-1" />

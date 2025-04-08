@@ -21,15 +21,13 @@
   </UModal>
 
 
-  <UCard>
-    <div class="flex justify-between items-center flex-wrap">
+  <UCard class=" relative">
+    <div class="flex justify-between items-center flex-wrap group ">
       <div class="flex gap-3 items-center justify-start">
         <div class="flex flex-col gap-3">
           <span class="font-bold text-lg">{{ interview?.visa_type }}
-            <UBadge :icon="interview?.status == 'approved'
-                ? 'lucide:circle-check'
-                : 'lucide:circle-x'
-              " size="sm" color="green" variant="outline">{{ interview?.status }}</UBadge>
+            <UBadge size="xs" 
+              :color="interview?.status == 'approved' ? 'green':'red'" variant="solid">{{ interview?.status }}</UBadge>
           </span>
           <div class="flex flex-wrap space-x-3 text-sm">
             <span>
@@ -44,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-wrap gap-3 items-end mt-4 md:m-0 self-end">
+      <div class=" flex-wrap gap-3 items-end mt-4 md:m-0 hidden group-hover:flex bg-inherit absolute right-5 top-5">
         <UButton @click="navigateTo(`/in/interviews/${interview._id}`)" icon="lucide:eye" variant="ghost" class="w-fit"
           color="blue" size="xs" />
         <UButton @click="return" icon="lucide:cloud-download" variant="ghost" class="w-fit" color="black" size="xs" />
