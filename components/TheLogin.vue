@@ -3,35 +3,52 @@
     <!-- <UCard class="max-w-md w-full space-y-6 animate-fade-in-up"> -->
     <!-- Logo and Header -->
     <div class="">
-      <h2 class="mb-6 text-3xl font-bold ">
-        Sign in
-      </h2>
+      <h2 class="mb-6 text-3xl font-bold">Sign in</h2>
     </div>
 
     <!-- Login Form -->
     <UForm :state="form" @submit="handleSubmit" class="space-y-6 w-[300px]">
       <UFormGroup label="Email" name="email">
-        <UInput v-model="form.email" type="email" autocomplete="email" placeholder="your@email.com"
-          class="animate-fade-in transition-all duration-300 hover:ring-1 hover:ring-blue-500" />
+        <UInput
+          v-model="form.email"
+          type="email"
+          autocomplete="email"
+          placeholder="your@email.com"
+          class="animate-fade-in transition-all duration-300 hover:ring-1 hover:ring-blue-500"
+        />
       </UFormGroup>
 
       <UFormGroup label="Password" name="password">
-        <UInput v-model="form.password" type="password" autocomplete="current-password" placeholder="••••••••"
-          class="animate-fade-in transition-all duration-300 hover:ring-1 hover:ring-blue-500" />
+        <UInput
+          v-model="form.password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="••••••••"
+          class="animate-fade-in transition-all duration-300 hover:ring-1 hover:ring-blue-500"
+        />
       </UFormGroup>
 
       <div class="flex items-center justify-between">
-
-        <NuxtLink to="/request_reset"
-          class="text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors duration-300">
+        <NuxtLink
+          to="/request_reset"
+          class="text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors duration-300"
+        >
           Forgot your password?
         </NuxtLink>
       </div>
 
-      <UButton type="submit" block color="blue"
-        :icon="isLoading ? 'svg-spinners:bars-rotate-fade' : 'i-heroicons-lock-closed'"
-        class="animate-pulse-on-hover transition-all duration-300" 
-        :disabled="isLoading || form.email == '' || form.password == ''">
+      <UButton
+        type="submit"
+        block
+        color="blue"
+        :icon="
+          isLoading
+            ? 'svg-spinners:bars-rotate-fade'
+            : 'i-heroicons-lock-closed'
+        "
+        class="animate-pulse-on-hover transition-all duration-300"
+        :disabled="isLoading || form.email == '' || form.password == ''"
+      >
         Sign in
       </UButton>
 
@@ -41,20 +58,23 @@
           <div class="w-full border-t border-gray-300"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-slate-50 dark:bg-slate-900 text-gray-500">OR</span>
+          <span class="px-2 bg-slate-50 dark:bg-slate-900 text-gray-500"
+            >OR</span
+          >
         </div>
       </div>
 
       <!-- Google Login Button -->
       <GoogleLogin />
-
     </UForm>
 
     <!-- Sign in link -->
     <div class="text-center mt-4">
       <span class="text-sm text-gray-600">Dont have an account yet?</span>
-      <NuxtLink to="/register"
-        class="ml-1 text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors duration-300">
+      <NuxtLink
+        to="/register"
+        class="ml-1 text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors duration-300"
+      >
         Sign Up
       </NuxtLink>
     </div>
@@ -63,16 +83,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
-import GoogleLogin from './GoogleLogin.vue';
+import { ref, reactive } from "vue";
+import GoogleLogin from "./GoogleLogin.vue";
 const toast = useToast();
-
 
 // Form state
 const form = reactive({
-  email: '',
-  password: '',
-  rememberMe: false
+  email: "",
+  password: "",
+  rememberMe: false,
 });
 
 const isLoading = ref(false);
@@ -92,27 +111,31 @@ const handleSubmit = async () => {
 
     toast.add({
       description: "Login Successful!",
-      color: 'green',
+      color: "green",
     });
+
+    console.log("from res: ", res);
+
+    if (res.user.onboarding_complete) {
+      useRouter().push("/in/dashboard");
+    } else {
+      useRouter().push("/in/onboard");
+    }
 
     const token = useCookie("vy_token");
     token.value = res.token;
     useRouter().push("/in/dashboard");
-
-    console.log("from res: ", res);
   } catch (err) {
     console.log("res from signup: ", err);
 
     toast.add({
       title: "Error in Login",
       description: err._data.message,
-      color: 'red',
-    })
+      color: "red",
+    });
   }
   isLoading.value = false;
 };
-
-
 </script>
 
 <style>

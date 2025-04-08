@@ -95,13 +95,11 @@
                 <div class="grid md:grid-cols-2 gap-4">
                   <UFormGroup label="Country of Origin">
                     <USelectMenu
-                      disabled
                       searchable
                       searchable-placeholder="Search a country..."
                       class="!w-full lg:w-48"
                       placeholder="Select country"
                       v-model="user.nationality"
-                      model-value="Nigeria"
                       :options="countryList"
                       value-attribute="name"
                       option-attribute="name"
@@ -199,18 +197,18 @@
 
                 <UDivider/>
                 <span class=" font-bold">V.O Settings</span>
-                <div class=" flex flex-wrap gap-3 flex-1 ">
-                    <UFormGroup label="Visa Officer Gender" class=" flex-1">
+                <div class=" flex flex-col md:flex-row gap-3 flex-1 justify-center items-start">
+                    <UFormGroup label="Visa Officer Gender" class=" flex-1 w-full">
                         <USelect
                         model-value="female"
                         v-model="user.settings.vo_gender"
                         :options="gender_options"
                         placeholder="Select visa type"
-                        @change="updateProfile()"
+                        @change="[updateProfile(),  getAllVoices()]"
                     />
                     </UFormGroup>
 
-                    <UFormGroup label="Visa Officer Voice" class=" flex-1">
+                    <UFormGroup label="Visa Officer Voice" class=" flex-1 w-full">
                     <USelectMenu
                         searchable
                         v-model="user.settings.vo_voice"
@@ -219,19 +217,27 @@
                         :options="all_voices"
                         placeholder="Select Officer Voice"
                         @change="updateProfile()"
+                        :loading="loading_voices"
+                        loading-icon="svg-spinners:bars-rotate-fade"
+                        :disabled="loading_voices"
                     />
                     </UFormGroup>
                 </div>
                 <div class=" flex flex-col gap-3">
-                    <span>Toughness Level</span>
-                    <div class=" md:w-[50%] flex gap-3">
+                    <span>Select Difficulty Level <UBadge color="orange" size="xs">coming soon</UBadge></span>
+                    <InterviewLevel/>
+                    <!-- <div class=" md:w-[50%] flex gap-3">
                         <UButton v-for="item in vo_levels" :label="item" variant="ghost" color="blue" size="lg"/>
-                    </div>
+                    </div> -->
                 </div>
                 
             </form>
           </div>
         </UCard>
+      </template>
+
+      <template #subscription="{ item }">
+        <SubscriptionPage/>
       </template>
     </UTabs>
   </div>
@@ -299,7 +305,6 @@ const items = [
     label: "Subscription",
     slot: "subscription",
     icon: "i-heroicons-credit-card",
-    disabled: true,
   },
 ];
 const yes_no_options = ["yes", "no"];
@@ -315,13 +320,10 @@ const settings = reactive({
 // Options for selects
 const botLevels = ["Easy", "Medium", "Hard"];
 const visaTypes = [
-  "Tourist Visa",
-  "Work Visa",
-  "Student Visa",
-  "Transit Visa",
-  "Business Visa",
-  "Immigrant Visa",
-  "Visitor Visa",
+"Student Visa (F-1)",
+"Work Visa (H-1B)",
+"Tourist Visa (B-2)",
+"Family Visa"
 ];
 
 const visaFundOptions = [
@@ -382,6 +384,7 @@ const updateProfile = async () => {
       description: "Profile updated successfully!",
       color: "green",
     });
+   
   } catch (err) {
     console.log("err profile update: ", err);
     toast.add({
@@ -391,14 +394,18 @@ const updateProfile = async () => {
   }
   updating_profile.value = false;
 };
+
+const loading_voices = ref(false)
 const getAllVoices = async()=>{
+  loading_voices.value = true;
     try{
-        const voices = await useNuxtApp().$apiFetch('/user/ai/voices');
+        const voices = await useNuxtApp().$apiFetch(`/user/ai/voices?gender=${user?.settings?.vo_gender}`);
         console.log("ai voices: ", voices);
         all_voices.value = voices.voices;
     }catch(err){
         console.log("err getting voics: ", err);
     }
+    loading_voices.value = false;
 }
 getAllVoices();
 // Load settings from localStorage on component mount

@@ -45,7 +45,7 @@
       <div class=" flex-wrap gap-3 items-end mt-4 md:m-0 hidden group-hover:flex bg-inherit absolute right-5 top-5">
         <UButton @click="navigateTo(`/in/interviews/${interview._id}`)" icon="lucide:eye" variant="ghost" class="w-fit"
           color="blue" size="xs" />
-        <UButton @click="return" icon="lucide:cloud-download" variant="ghost" class="w-fit" color="black" size="xs" />
+        <UButton @click="return" icon="lucide:share-2" variant="ghost" class="w-fit" color="black" size="xs" />
 
         <UButton 
         @click="delete_interview = !delete_interview" 

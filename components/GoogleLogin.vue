@@ -19,7 +19,13 @@
   
           const token = useCookie("vy_token");
           token.value = res.token;
-          useRouter().push("/in/dashboard");
+
+          if(res.user.onboarding_complete){
+            useRouter().push("/in/dashboard");
+          } else {
+            useRouter().push("/in/onboard");
+          }
+         
   
           console.log("code verified: ", res)
       } catch (err) {
