@@ -2,7 +2,7 @@
   <div class="container mx-auto py-8 px-4 min-h-screen">
     <!-- Account Header -->
     <div class="mb-10">
-      <h1 class="text-3xl font-bold mb-2">My Account</h1>
+      <h1 class="text-3xl mb-2">My Account</h1>
       <p class="text-gray-500 dark:text-gray-400">
         Manage your profile and preferences
       </p>
@@ -29,21 +29,7 @@
             <template #header>
               <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold">Profile</h2>
-                <UBadge
-                  v-if="userSubscription === 'premium'"
-                  color="blue"
-                  variant="soft"
-                >
-                  Premium</UBadge
-                >
-                <UBadge
-                  v-else-if="userSubscription === 'standard'"
-                  color="green"
-                  variant="soft"
-                >
-                  Standard
-                </UBadge>
-                <UBadge v-else color="orange" variant="soft">Free Trial</UBadge>
+                <UBadge :color="user?.subscription == 'free' ? 'orange':'green'" variant="solid">{{ user?.subscription }} user</UBadge>
               </div>
             </template>
 
@@ -411,6 +397,7 @@ getAllVoices();
 // Load settings from localStorage on component mount
 onMounted(async () => {
   await useUserStore().fetchUser();
+  user.subscription = useUserStore().user.subscription;
   user.email = useUserStore().user.email;
   user.interview_date = useUserStore().user.interview_date;
   user.name = useUserStore().user.name;
