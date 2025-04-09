@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col p-5 min-h-screen justify-center items-center">
     <div class="flex justify-center items-center flex-col">
-      <span class="text-3xl">Welcome back, John!</span>
+      <span class="text-3xl">Welcome back, {{ user?.name }}!</span>
       <span class="">Here's your visa interview preparation status.</span>
       <!-- <UButton @click="navigateTo('/in/interviews/new')" :loading="loading" :disabled="loading" loading-icon="svg-spinners:bars-rotate-fade" label="Start New Practice" class=" w-fit mt-6" color="blue"/> -->
       <UButton
@@ -102,6 +102,7 @@ import { ref, onMounted, nextTick, watch } from "vue";
 import { useUserStore } from "#imports";
 
 const userStore = useUserStore();
+const user = userStore().user;
 const user_Stats = reactive([
   {
     label: "Completed Interviews",
