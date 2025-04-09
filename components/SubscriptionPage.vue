@@ -119,10 +119,10 @@
           <a :href="payment_link" target="_blank">
             <UButton
               :disabled="loading_link"
-              :variant="user?.subscription == 'premiun' ? 'outline' : 'solid'"
-              :color="user?.subscription == 'premiun' ? 'white' : 'blue'"
+              :variant="user?.subscription != 'free' ? 'outline' : 'solid'"
+              :color="user?.subscription != 'free' ? 'white' : 'blue'"
               :label="
-                user?.subscription == 'premiun' ? 'Current Plan' : 'Upgrade Now'
+                user?.subscription != 'free' ? 'Current Plan' : 'Upgrade Now'
               "
               @click=""
               class="p-3 w-full flex justify-center items-center"
