@@ -25,13 +25,19 @@
             @click="navigateTo('/#features')"
           />
           <UButton
-            label="Pricing"
+            label="How it Works"
             variant="link"
             color="black"
             @click="gotToPricing"
           />
           <UButton
-            label="FAQ"
+            label="Pricing"
+            variant="link"
+            color="black"
+            @click="navigateTo('/#FAQ')"
+          />
+          <UButton
+            label="Testimonials"
             variant="link"
             color="black"
             @click="navigateTo('/#FAQ')"
@@ -88,7 +94,9 @@
         icon="hugeicons:comment-add-01" 
         variant="outline" label="New" color="blue" /> -->
 
-        <UBadge :color="user?.subscription == 'free' ? 'orange':'green'" variant="soft">{{ user?.subscription }} user</UBadge>
+        <NuxtLink to="/in/subscription">
+          <UBadge :color="user?.subscription == 'free' ? 'orange':'green'" variant="soft">{{ user?.subscription }} user</UBadge>
+        </NuxtLink>
         <!-- USER PROFILE -->
         <UDropdown
           class=""

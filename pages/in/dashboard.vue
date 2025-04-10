@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col p-5 min-h-screen justify-center items-center">
+  <div class="flex flex-col p-5 min-h-screen justify-center items-center mt-20">
     <div class="flex justify-center items-center flex-col">
       <span class="text-3xl">Welcome back, {{ user?.name }}!</span>
       <span class="">Here's your visa interview preparation status.</span>
