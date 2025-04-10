@@ -88,6 +88,7 @@
         icon="hugeicons:comment-add-01" 
         variant="outline" label="New" color="blue" /> -->
 
+        <UBadge :color="user?.subscription == 'free' ? 'orange':'green'" variant="soft">{{ user?.subscription }} user</UBadge>
         <!-- USER PROFILE -->
         <UDropdown
           class=""

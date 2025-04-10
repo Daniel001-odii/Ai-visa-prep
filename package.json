@@ -27,7 +27,8 @@
     "vue-router": "latest",
     "vue3-google-signin": "^2.1.1",
     "vue3-lottie": "^3.3.1",
-    "wavesurfer.js": "^7.9.1"
+    "wavesurfer.js": "^7.9.1",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@iconify-json/hugeicons": "^1.2.4"

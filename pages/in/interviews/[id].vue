@@ -145,7 +145,7 @@
             <div
               class="flex justify-center items-center text-center w-full rounded-lg p-5"
             >
-              <!-- <span>You have a confidence score of 70%</span> -->
+              
               <UButton
                 label="Start Now"
                 class="w-fit"

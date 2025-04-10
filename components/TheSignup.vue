@@ -72,7 +72,9 @@
         type="submit"
         block
         color="blue"
-        :icon="isLoading ? 'svg-spinners:bars-rotate-fade':'i-heroicons-user-plus'"
+        :icon="
+          isLoading ? 'svg-spinners:bars-rotate-fade' : 'i-heroicons-user-plus'
+        "
         class="animate-pulse-on-hover transition-all duration-300"
         :disabled="isLoading"
       >
@@ -85,12 +87,14 @@
           <div class="w-full border-t border-gray-300"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-slate-50 dark:bg-slate-900 text-gray-500">OR</span>
+          <span class="px-2 bg-slate-50 dark:bg-slate-900 text-gray-500"
+            >OR</span
+          >
         </div>
       </div>
 
-       <!-- Google Login Button -->
-       <GoogleLogin/>
+      <!-- Google Login Button -->
+      <GoogleLogin />
 
       <!-- Sign in link -->
       <div class="text-center mt-4">
@@ -129,8 +133,8 @@ const handleSubmit = async () => {
   if (!form.termsAccepted) {
     toast.add({
       description: "Please accept the terms and conditions",
-      color: 'red',
-    })
+      color: "red",
+    });
     isLoading.value = false;
     return;
   }
@@ -146,22 +150,29 @@ const handleSubmit = async () => {
     });
     toast.add({
       description: "Sign Up Successful!",
-      color: 'green',
+      color: "green",
     });
 
-    console.log("from res: ", res)
+    console.log("from res: ", res);
+
+    const token = useCookie("vy_token");
+    token.value = res.token;
+    if (res.user.onboarding_complete) {
+      useRouter().push("/in/dashboard");
+    } else {
+      useRouter().push("/in/onboard");
+    }
   } catch (err) {
     toast.add({
       title: "Error in Sign Up",
       description: err._data.message,
-      color: 'red',
-    })
-    console.log("res from signup: ",err._data.message);
+      color: "red",
+    });
+    console.log("res from signup: ", err._data.message);
   }
 
-
+  isLoading.value = false;
 };
-
 </script>
 
 <style>

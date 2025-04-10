@@ -9,7 +9,7 @@
       </p>
 
       <!-- Billing toggle -->
-     <!--  <div class="mt-8 inline-flex items-center p-1 rounded-lg">
+      <!--  <div class="mt-8 inline-flex items-center p-1 rounded-lg">
         <button
           @click="billing = 'monthly'"
           class="px-4 py-2 rounded-md text-sm font-medium transition-colors"
@@ -47,12 +47,13 @@
               {{ user?.subscription == 'free' ? 'Current Plan' : 'Choose Plan' }}
             </button> -->
           <UButton
-            :disabled="loading_link"
+            :disabled="loading_link || user?.subscription == 'free'"
             :variant="user?.subscription == 'free' ? 'outline' : 'solid'"
             :color="user?.subscription == 'free' ? 'white' : 'blue'"
             :label="
               user?.subscription == 'free' ? 'Current Plan' : 'Choose plan'
             "
+            @click="user?.subscription == 'free' ? null : cancelSubscription"
             class="p-3 w-full flex justify-center items-center"
             size="xl"
           />
@@ -61,22 +62,11 @@
         <div class="border-t border-slate-700/20 p-6">
           <h3 class="font-medium mb-4">What's included:</h3>
           <ul class="space-y-3">
-            <li class="flex items-start">
+            <li v-for="features in freeFeatures" class="flex items-start">
               <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm">Basic visa requirements checklist</span>
+              <span class="text-sm">{{ features }}</span>
             </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm">1 beginner practice interview</span>
-            </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm">Document templates (limited)</span>
-            </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm">Basic application status tracking</span>
-            </li>
+            
           </ul>
         </div>
       </UCard>
@@ -116,58 +106,28 @@
             class="w-full py-2.5 px-4 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors">
               Upgrade Now
             </button> -->
-          <a :href="payment_link" target="_blank">
-            <UButton
-              :disabled="loading_link"
-              :variant="user?.subscription != 'free' ? 'outline' : 'solid'"
-              :color="user?.subscription != 'free' ? 'white' : 'blue'"
-              :label="
-                user?.subscription != 'free' ? 'Current Plan' : 'Upgrade Now'
-              "
-              @click=""
-              class="p-3 w-full flex justify-center items-center"
-              size="xl"
-            />
-          </a>
+
+          <UButton
+            :disabled="loading_link || user?.subscription == 'premium'"
+            :variant="user?.subscription == 'premium' ? 'outline' : 'solid'"
+            :color="user?.subscription == 'premium' ? 'white' : 'blue'"
+            :label="
+              user?.subscription == 'premium' ? 'Current Plan' : 'Upgrade Now'
+            "
+            @click="user?.subscription == 'premium' ? null : openPaymentPage()"
+            class="p-3 w-full flex justify-center items-center"
+            size="xl"
+          />
         </div>
 
         <div class="border-t border-slate-700/20 p-6">
           <h3 class="font-medium mb-4">Everything in Free, plus:</h3>
           <ul class="space-y-3">
-            <li class="flex items-start">
+            <li v-for="features in premiumFeatures" class="flex items-start">
               <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm"
-                >Unlimited AI interview practice sessions</span
-              >
+              <span class="text-sm">{{ features }}</span>
             </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm"
-                >All difficulty levels (Beginner, Standard, Advanced)</span
-              >
-            </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm"
-                >Personalized feedback and improvement tips</span
-              >
-            </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm">Document review by AI assistant</span>
-            </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm">Priority support</span>
-            </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm">Interview recordings and transcripts</span>
-            </li>
-            <li class="flex items-start">
-              <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
-              <span class="text-sm">Country-specific visa guides</span>
-            </li>
+            
           </ul>
         </div>
       </UCard>
@@ -296,6 +256,38 @@ const getPaymentLink = async () => {
   }
   loading_link.value = false;
 };
+
+const openPaymentPage = () => {
+  window.open(payment_link.value, "_blank");
+};
+
+const cancelSubscription =()=> {
+  return null
+}
+
+const freeFeatures = [
+  "Daily visa tips",
+  "1 AI interview practice session",
+  "Expert-suggested answers",
+  "Question audio playback",
+  "Speech-to-Text (Voice Input)",
+];
+
+
+const premiumFeatures = [
+  "Daily visa tips",
+  "AI interview practice sessions (Unlimited)",
+  "Expert-suggested answers",
+  "Confidence score",
+  "Question audio playback",
+  "Speech-to-Text (Voice Input)",
+  "Review & share previous interviews (beta)",
+  "Interview difficulty levels (beta)",
+  "AI document review (beta)",
+  "PDF export of reports (beta)",
+  "Interview reminder tracker (beta)",
+];
+
 
 onMounted(async () => {
   await useUserStore().fetchUser();

@@ -30,7 +30,7 @@
 
       <div class="flex items-center justify-between">
         <NuxtLink
-          to="/request_reset"
+          to="/password"
           class="text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors duration-300"
         >
           Forgot your password?

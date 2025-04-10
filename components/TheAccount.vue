@@ -13,23 +13,17 @@
       orientation="horizontal"
       :items="items"
       class="w-full"
+      size="xs"
     >
       <template #profile="{ item }">
-        <div
-          v-if="!profileIsComplete"
-          class="bg-green-500 bg-opacity-10 rounded-md p-3 my-3 flex flex-wrap justify-between items-center"
-        >
-          <span class="font-bold text-green-500"
-            >Complete your profile to start an interview session</span
-          >
-        </div>
+    
         <div class="md:col-span-2">
           <!-- Profile Section -->
           <UCard class="mb-8">
             <template #header>
               <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold">Profile</h2>
-                <UBadge :color="user?.subscription == 'free' ? 'orange':'green'" variant="solid">{{ user?.subscription }} user</UBadge>
+                <UBadge :color="user?.subscription == 'free' ? 'orange':'green'" variant="soft">{{ user?.subscription }} user</UBadge>
               </div>
             </template>
 
@@ -70,13 +64,14 @@
                 </UFormGroup>
                 <!-- </div> -->
 
-                <UFormGroup label="Email">
+                <!-- <UFormGroup label="Email">
                   <UInput
                     v-model="user.email"
                     type="email"
                     placeholder="Email"
+                    disabled
                   />
-                </UFormGroup>
+                </UFormGroup> -->
 
                 <div class="grid md:grid-cols-2 gap-4">
                   <UFormGroup label="Country of Origin">
@@ -177,7 +172,7 @@
                 </div>
 
                 <div class=" flex items-center justify-between">
-                    <span>Send daily interview visa tips email</span>
+                    <span>Send Email Alerts</span>
                     <UCheckbox :model-value="user.settings.daily_tips_mail" v-model="user.settings.daily_tips_mail" @change="updateProfile()" />
                 </div>
 

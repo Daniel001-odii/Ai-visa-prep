@@ -6,8 +6,8 @@
       <!-- <UButton @click="navigateTo('/in/interviews/new')" :loading="loading" :disabled="loading" loading-icon="svg-spinners:bars-rotate-fade" label="Start New Practice" class=" w-fit mt-6" color="blue"/> -->
       <UButton
         @click="newInterview()"
-        :loading="loading"
-        :disabled="loading"
+        :loading="loading_interview"
+        :disabled="loading_interview"
         loading-icon="svg-spinners:bars-rotate-fade"
         label="Start New Practice"
         class="w-fit mt-6"
@@ -20,6 +20,7 @@
         v-for="(stat, index) in user_Stats"
         :key="index"
         class="w-full md:w-fit min-w-[250px]"
+        :class="(stat.id === 3 && user?.subscription == 'free') ? ' !opacity-50':''"
       >
         <div class="flex gap-4 items-center">
           <span
@@ -30,27 +31,40 @@
           </span>
 
           <div class="flex flex-col">
-            <span>{{ stat.label }}</span>
-            <span class="font-bold text-xl">{{ stat.value }}</span>
+            <div class="flex gap-3 items-center">
+              <span>{{ stat.label }}</span>
+              <UTooltip arrow :text="stat.info_text">
+                <UButton icon="lucide:info" color="neutral" variant="subtle" />
+              </UTooltip>
+            </div>
+           
+            <div class="flex items-center font-bold text-xl">
+              <span v-if="stat.id != 3">{{ stat.value }}</span>
+               <UBadge
+            v-if="stat.id === 3 && user?.subscription == 'free'"
+            label="premium"
+            size="xs"
+            variant="soft"
+            color="blue"
+            /></div>
+            
           </div>
         </div>
       </UCard>
     </div>
 
     <div class="mt-12 flex flex-col gap-3 w-full">
-      <UCard class=" flex-1">
+      <UCard class="flex-1">
         <template #header>
           <div class="relative">
             <h1 class="font-bold text-lg">Daily Visa Interview Tips</h1>
             <span
               >Improve your chances of success with these helpful tips.</span
             >
-
-           
           </div>
         </template>
         <div class="p-4 flex flex-col gap-4">
-        <!--   <div
+          <!--   <div
             v-if="loading_tips"
             v-for="item in 2"
             class="flex flex-col gap-2 mt-3"
@@ -60,23 +74,30 @@
           </div>
          -->
 
-          <div v-if="!loading_tips && visa_tips.length > 0">
-            <p v-for="tip in visa_tips" class="mt-3">"{{ tip }}"</p>
+          <div class=" flex flex-col gap-6" v-if="!loading_tips && visa_tips.length > 0">
+            <p v-for="tip in visa_tips">"{{ tip }}"</p>
           </div>
-          <div v-else class="text-center flex flex-col gap-3 justify-center items-center">
+          <div
+            v-else
+            class="text-center flex flex-col gap-3 justify-center items-center"
+          >
             <span>Click the refresh button to get new tip!</span>
             <UButton
-              :icon="loading_tips ? 'svg-spinners:bars-rotate-fade':'lucide:refresh-cw'"
+              :icon="
+                loading_tips
+                  ? 'svg-spinners:bars-rotate-fade'
+                  : 'lucide:refresh-cw'
+              "
               variant="outline"
               :disabled="loading_tips"
-              class=" rounded-full"
+              class="rounded-full"
               @click="getVisaTips()"
             />
           </div>
         </div>
       </UCard>
 
-      <UCard class=" flex-1">
+      <UCard class="flex-1">
         <template #header>
           <h1 class="font-bold text-lg">Your Recent Interviews</h1>
           <span>Review how you performed in your most recent interviews</span>
@@ -100,36 +121,43 @@ definePageMeta({
 });
 import { ref, onMounted, nextTick, watch } from "vue";
 import { useUserStore } from "#imports";
-
+const toast = useToast();
 const userStore = useUserStore();
-const user = userStore().user;
+const user = ref(null);
 const user_Stats = reactive([
   {
+    id: 1,
     label: "Completed Interviews",
     icon: "lucide:circle-check-big",
     value: 0,
     color: "green",
+    info_text: "Total number of interviews you have completed"
   },
   {
+    id: 2,
     label: "Total Practice Time",
     icon: "lucide:timer-reset",
     value: "0h 0m",
     color: "blue",
+    info_text: "Total practice time for al interviews."
   },
   {
+    id: 3,
     label: "Confidence Score",
     icon: "lucide:activity",
     value: 0,
     color: "yellow",
+    info_text: "Total number of times in minutes spent in all interview against a certain threshold"
   },
 ]);
 
 const interviews = ref([]);
 
 const loading = ref(false);
+const loading_interview = ref(false);
 
 const newInterview = async () => {
-  loading.value = true;
+  loading_interview.value = true;
   try {
     const res = await useNuxtApp().$apiFetch("/visa/new_interview", {
       method: "POST",
@@ -139,8 +167,24 @@ const newInterview = async () => {
     console.log("new interview res: ", res);
   } catch (err) {
     console.log("err starting interview: ", err);
+    toast.add({
+      title: "Error",
+      icon: 'lucide:circle-x',
+      orientation: "vertical",
+      description: err._data.message,
+      color: "red",
+      actions: [{
+      // icon: 'i-lucide-refresh-cw',
+      label: 'Subscribe',
+      color: 'blue',
+      variant: 'soft',
+      onClick: (e) => {
+        navigateTo("/in/account")
+      }
+    }]
+    })
   }
-  loading.value = false;
+  loading_interview.value = false;
 };
 
 const getDashboardData = async () => {
@@ -177,6 +221,7 @@ const getVisaTips = async () => {
   }
   loading_tips.value = false;
 };
+getVisaTips();
 
 const handleDeleteInterview = async () => {
   loading.value = true;
@@ -188,6 +233,8 @@ const handleDeleteInterview = async () => {
 getDashboardData();
 
 onMounted(async () => {
+  await useUserStore().fetchUser();
+  user.value = useUserStore().user;
   await useInterviewStore().getInterviews();
   interviews.value = useInterviewStore()
     ?.interviews?.interviews.reverse()
