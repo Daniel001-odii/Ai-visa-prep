@@ -87,22 +87,31 @@
         </div>
       </NuxtLink>
 
-      <div class=" flex items-center justify-center gap-3">
-       <!--  <UButton 
+      <div class="flex items-center justify-center gap-3">
+        <!--  <UButton 
         :disabled="profileIsComplete"
         @click="navigateTo('/in/interview')"
         icon="hugeicons:comment-add-01" 
         variant="outline" label="New" color="blue" /> -->
 
-        <NuxtLink to="/in/subscription">
-          <UBadge :color="user?.subscription == 'free' ? 'orange':'green'" variant="soft">{{ user?.subscription }} user</UBadge>
+        <NuxtLink to="/in/account?tab=subscription">
+          <UBadge
+            :color="user?.subscription == 'free' ? 'orange' : 'green'"
+            variant="soft"
+            >{{ user?.subscription }} user</UBadge
+          >
         </NuxtLink>
         <!-- USER PROFILE -->
         <UDropdown
           class=""
           :items="items"
+          :content="{
+            align: 'start',
+            side: 'bottom',
+            sideOffset: 8,
+          }"
           :ui="{
-            item: { disabled: 'cursor-text select-text' },
+            // item: { disabled: 'cursor-text select-text' },
             background: 'bg-white dark:bg-slate-900',
           }"
           :popper="{ placement: 'bottom-start' }"
@@ -113,22 +122,22 @@
             :ui="{ avatar: { slots: { root: 'rounded-full !bg-inherit' } } }"
           />
 
-          <template #account="{ item }">
+          <!-- <template #account="{ item }">
             <div class="text-left">
               <p>Signed in as</p>
               <p class="truncate font-medium text-gray-900 dark:text-white">
                 {{ user?.email }}
               </p>
             </div>
-          </template>
+          </template> -->
 
           <template #item="{ item }">
             <span class="truncate">{{ item.label }}</span>
 
-            <UIcon
+           <!--  <UIcon
               :name="item.icon"
               class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
-            />
+            /> -->
           </template>
         </UDropdown>
       </div>
@@ -226,20 +235,20 @@ const isDark = computed({
 });
 
 const items = [
-  [
+/*   [
     {
       label: "johndoe@example.com",
       slot: "account",
       disabled: true,
     },
-  ],
+  ], */
   [
     {
-        label: 'Dashboard',
-        icon: 'heroicons:rectangle-stack',
-        click: () => {
-            navigateTo('/in/dashboard');
-        }
+      label: "Dashboard",
+      icon: "heroicons:rectangle-stack",
+      click: () => {
+        navigateTo("/in/dashboard");
+      },
     },
     {
       label: "My Interviews",
@@ -258,14 +267,14 @@ const items = [
         navigateTo("/in/account");
       },
     },
-   
-    {
+
+   /*  {
       label: "Switch Theme",
       icon: "iconoir:fill-color",
       click: () => {
         isDark.value = !isDark.value;
       },
-    },
+    }, */
   ],
   [
     {
@@ -285,14 +294,14 @@ const user = ref(null);
 
 const profileIsComplete = computed(() => {
   const isComplete = !!(
-    user && 
-    user.target_country && 
-    user.visa_type && 
-    user.travelled_before && 
-    user.visa_refused_before && 
+    user &&
+    user.target_country &&
+    user.visa_type &&
+    user.travelled_before &&
+    user.visa_refused_before &&
     user.interview_date
   );
-  console.log('Profile complete:', isComplete, user);
+  console.log("Profile complete:", isComplete, user);
   return isComplete;
 });
 

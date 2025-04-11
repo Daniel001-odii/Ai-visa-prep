@@ -15,6 +15,8 @@
       />
     </div>
 
+    <TheStreak :percentage="75" label="Weekly Progress" />
+
     <div class="flex flex-wrap gap-3 mt-12">
       <UCard
         v-for="(stat, index) in user_Stats"
@@ -39,7 +41,7 @@
             </div>
            
             <div class="flex items-center font-bold text-xl">
-              <span v-if="stat.id != 3">{{ stat.value }}</span>
+              <span v-if="user?.subscription == 'premium'">{{ stat.value }}</span>
                <UBadge
             v-if="stat.id === 3 && user?.subscription == 'free'"
             label="premium"
@@ -54,6 +56,7 @@
     </div>
 
     <div class="mt-12 flex flex-col gap-3 w-full">
+      <!-- {{ user }} -->
       <UCard class="flex-1">
         <template #header>
           <div class="relative">
@@ -64,7 +67,7 @@
           </div>
         </template>
         <div class="p-4 flex flex-col gap-4">
-          <!--   <div
+            <div
             v-if="loading_tips"
             v-for="item in 2"
             class="flex flex-col gap-2 mt-3"
@@ -72,17 +75,17 @@
             <USkeleton class="h-[15px] w-full" />
             <USkeleton class="h-[15px] w-[50%]" />
           </div>
-         -->
+        
 
           <div class=" flex flex-col gap-6" v-if="!loading_tips && visa_tips.length > 0">
-            <p v-for="tip in visa_tips">"{{ tip }}"</p>
+            <p v-for="tip in user?.visa_tip?.tips">"{{ tip }}"</p>
           </div>
           <div
             v-else
             class="text-center flex flex-col gap-3 justify-center items-center"
           >
-            <span>Click the refresh button to get new tip!</span>
-            <UButton
+            <span>Tips not available today</span>
+            <!-- <UButton
               :icon="
                 loading_tips
                   ? 'svg-spinners:bars-rotate-fade'
@@ -92,7 +95,7 @@
               :disabled="loading_tips"
               class="rounded-full"
               @click="getVisaTips()"
-            />
+            /> -->
           </div>
         </div>
       </UCard>
@@ -103,6 +106,7 @@
           <span>Review how you performed in your most recent interviews</span>
         </template>
         <div class="flex flex-col gap-4">
+          <span v-if="interviews.length == 0 || !interviews">No interviews yet</span>
           <InterviewCard
             v-if="!loading && interviews.length > 0"
             v-for="(interview, index) in interviews"

@@ -14,6 +14,7 @@
       :items="items"
       class="w-full"
       size="xs"
+      v-model="active_tab"
     >
       <template #profile="{ item }">
     
@@ -160,7 +161,9 @@
           </template>
 
           <div>
-            <form @submit.prevent="updateProfile" class="space-y-4 flex-col flex gap-3">
+            <span>Select Theme</span>
+            <ModeSelector/>
+            <form @submit.prevent="updateProfile" class="space-y-4 flex-col flex gap-3 mt-6">
                 <div class=" flex items-center justify-between">
                     <span>Voice Audio playback</span>
                     <UCheckbox :model-value="user.settings.voice_over" v-model="user.settings.voice_over" @change="updateProfile()" />
@@ -258,6 +261,8 @@ const user = reactive({
 const voice_over = ref(true);
 const expert_suggestion = ref(true);
 const daily_tips_mail = ref(true);
+
+const active_tab  = ref(0);
 
 const all_voices = ref([]);
 
@@ -408,6 +413,16 @@ onMounted(async () => {
   user.settings.voice_over = useUserStore().user.settings.voice_over;
   user.settings.expert_suggestions = useUserStore().user.settings.expert_suggestions;
   user.settings.daily_tips_mail = useUserStore().user.settings.daily_tips_mail;
+
+
+  const route = useRoute()
+  if(route.query.tab == "profile"){
+    active_tab.value = 0
+  } else if (route.query.tab == "preferences"){
+    active_tab.value = 1
+  } else if(route.query.tab == "subscription"){
+    active_tab.value = 2
+  }
     
     
 });

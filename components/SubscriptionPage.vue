@@ -96,7 +96,7 @@
     </div>
 
     <!-- Testimonial -->
-    <UCard class="max-w-3xl mx-auto mt-16 bg-slate-80/5 rounded-xl">
+    <UCard class="max-w-3xl mx-auto mt-16  rounded-xl">
       <div class="flex items-start">
         <div class="flex-shrink-0 mr-4">
           <div
