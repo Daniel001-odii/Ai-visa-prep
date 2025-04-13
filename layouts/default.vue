@@ -1,5 +1,5 @@
 <template>
-  <div class=" flex flex-col bg-slate-100 dark:bg-slate-900">
+  <div class=" flex flex-col dark:bg-slate-900">
     <TheNavbar/>
     <div class="container mx-auto h-full">
       <slot />

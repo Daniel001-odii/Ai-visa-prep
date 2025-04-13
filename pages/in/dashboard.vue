@@ -15,7 +15,7 @@
       />
     </div>
 
-    <TheStreak :percentage="75" label="Weekly Progress" />
+    <!-- <TheStreak :percentage="75" label="Weekly Progress" /> -->
 
     <div class="flex flex-wrap gap-3 mt-12">
       <UCard
