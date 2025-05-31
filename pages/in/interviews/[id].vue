@@ -137,12 +137,13 @@
             class="flex-1 flex flex-col gap-3 justify-center items-center p-5"
           >
             <div
-              class="flex flex-col-reverse justify-center items-center text-center"
+              class="flex flex-col justify-center items-center text-center"
             >
               <span class="font-bold text-3xl">Welcome Back!</span>
+              <span>Loading new interview...</span>
             </div>
 
-            <div
+           <!--  <div
               class="flex justify-center items-center text-center w-full rounded-lg p-5"
             >
               
@@ -156,7 +157,7 @@
                 :loading="loading"
                 @click="newInterview()"
               />
-            </div>
+            </div> -->
           </div>
 
           <!-- MESSAGES -->
