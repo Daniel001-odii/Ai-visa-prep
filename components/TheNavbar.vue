@@ -88,11 +88,15 @@
       </NuxtLink>
 
       <div class="flex items-center justify-center gap-3">
+        <!-- Feedback Button -->
+        
+        
         <!--  <UButton 
         :disabled="profileIsComplete"
         @click="navigateTo('/in/interview')"
         icon="hugeicons:comment-add-01" 
         variant="outline" label="New" color="blue" /> -->
+        <!-- <span>{{ user }}</span> -->
 
         <NuxtLink to="/in/account?tab=subscription">
           <UBadge
@@ -134,10 +138,10 @@
           <template #item="{ item }">
             <span class="truncate">{{ item.label }}</span>
 
-           <!--  <UIcon
+            <UIcon
               :name="item.icon"
               class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
-            /> -->
+            />
           </template>
         </UDropdown>
       </div>
@@ -199,6 +203,77 @@
       <ThePreviousTest />
     </UCard>
   </UModal>
+
+  <!-- FEEDBACK MODAL -->
+  <UModal v-model="feedback_modal" prevent-close>
+    <UCard
+      :ui="{
+        ring: '',
+        divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+      }"
+    >
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h3
+            class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
+          >
+            Share Your Feedback
+          </h3>
+          <UButton
+            color="gray"
+            variant="ghost"
+            icon="i-heroicons-x-mark-20-solid"
+            class="-my-1"
+            @click="feedback_modal = false"
+          />
+        </div>
+      </template>
+
+      <div class="p-4">
+        <form @submit.prevent="submitFeedback">
+          <div class="space-y-4">
+            <UFormGroup label="Feedback Type">
+              <USelect
+                v-model="feedback.type"
+                :options="[
+                  { label: 'Bug Report', value: 'bug' },
+                  { label: 'Feature Request', value: 'feature' },
+                  { label: 'General Feedback', value: 'other' }
+                ]"
+                placeholder="Select feedback type"
+              />
+            </UFormGroup>
+
+            <UFormGroup label="Your Feedback">
+              <UTextarea
+                v-model="feedback.message"
+                placeholder="Please share your thoughts..."
+              />
+            </UFormGroup>
+
+            <UFormGroup v-if="!token" label="Email (optional)">
+              <UInput
+                v-model="feedback.email"
+                type="email"
+                placeholder="your@email.com"
+              />
+            </UFormGroup>
+
+            <div class="flex justify-end">
+              <UButton
+                type="submit"
+                color="blue"
+                :loading="submitting"
+                :disabled="!feedback.message"
+              >
+                Submit Feedback
+              </UButton>
+            </div>
+          </div>
+        </form>
+      </div>
+    </UCard>
+  </UModal>
 </template>
 
 <script setup>
@@ -245,14 +320,14 @@ const items = [
   [
     {
       label: "Dashboard",
-      icon: "heroicons:rectangle-stack",
+      icon: "heroicons:bars-3-bottom-right",
       click: () => {
         navigateTo("/in/dashboard");
       },
     },
     {
       label: "My Interviews",
-      icon: "heroicons:chat-bubble-oval-left-ellipsis",
+      icon: "heroicons:rectangle-stack",
       click: () => {
         navigateTo("/in/interviews");
       },
@@ -262,11 +337,18 @@ const items = [
     },
     {
       label: "Settings",
-      icon: "heroicons:user-circle",
+      icon: "heroicons:cog-6-tooth",
       click: () => {
         navigateTo("/in/account");
       },
     },
+    {
+      label: "Send Feedback",
+      icon: "heroicons:chat-bubble-left-right",
+      click: () => {
+        feedback_modal.value = true;
+      }
+    }
 
    /*  {
       label: "Switch Theme",
@@ -304,6 +386,52 @@ const profileIsComplete = computed(() => {
   console.log("Profile complete:", isComplete, user);
   return isComplete;
 });
+
+const feedback_modal = ref(false);
+const submitting = ref(false);
+const feedback = reactive({
+  type: '',
+  message: '',
+  email: ''
+});
+
+const submitFeedback = async () => {
+  submitting.value = true;
+  try {
+    // Here you would typically make an API call to save the feedback
+    // For now, we'll just show a success message
+    useToast().add({
+      title: 'Thank you!',
+      description: 'Your feedback has been submitted successfully.',
+      color: 'green'
+    });
+    feedback_modal.value = false;
+
+    console.log("submitted: ", feedback)
+
+    const res = await useNuxtApp().$apiFetch("/feedback", {
+      method: "POST",
+      body: {
+        comment: feedback.message || "test test",
+        category: feedback.type,
+        email: user?.email,
+      }
+    })
+    console.log("res from feedback: ", res);
+    // Reset form
+    feedback.type = "";
+    feedback.message = "";
+  } catch (error) {
+    useToast().add({
+      title: 'Error',
+      description: 'Failed to submit feedback. Please try again.',
+      color: 'red'
+    });
+    console.log("feedback error; ", error);
+  } finally {
+    submitting.value = false;
+  }
+};
 
 onMounted(async () => {
   await useUserStore().fetchUser();

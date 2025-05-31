@@ -444,7 +444,7 @@ const getNextQuestion = async () => {
     // previousQuestions.value.push(currentQuestion.value);
 
     const res = await useNuxtApp().$apiFetch(
-      `/visa/${useRoute().params.id}/user_question`,
+      `/visa/interview/${useRoute().params.id}/start`,
       {
         method: "POST",
         body: {
@@ -551,7 +551,7 @@ const interview = reactive({
 const getInterviewMessages = async () => {
   try {
     const res = await useNuxtApp().$apiFetch(
-      `/visa/${useRoute().params.id}/interview_messages`,
+      `/visa/interview/${useRoute().params.id}/messages`,
       {
         method: "GET",
       }
@@ -585,7 +585,7 @@ const getInterviewMessages = async () => {
 getInterviewMessages();
 
 const deleteInterview = async (id) => {
-  const res = await useNuxtApp().$apiFetch(`/visa/${id}/delete`, {
+  const res = await useNuxtApp().$apiFetch(`/visa/interview/${id}/delete`, {
     method: "DELETE",
   });
   console.log("deleted interview: ", res);

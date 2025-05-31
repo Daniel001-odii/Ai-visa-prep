@@ -163,7 +163,7 @@ const loading_interview = ref(false);
 const newInterview = async () => {
   loading_interview.value = true;
   try {
-    const res = await useNuxtApp().$apiFetch("/visa/new_interview", {
+    const res = await useNuxtApp().$apiFetch("/visa/create-interview", {
       method: "POST",
     });
 
@@ -193,7 +193,7 @@ const newInterview = async () => {
 
 const getDashboardData = async () => {
   try {
-    const res = await useNuxtApp().$apiFetch("/user/dashboard_data");
+    const res = await useNuxtApp().$apiFetch("/user/dashboard");
     console.log("dashboard: ", res);
     user_Stats[0].value = res.completed_interviews;
     user_Stats[2].value = `${res.confidence_score}%`;
@@ -217,7 +217,7 @@ const visa_tips = ref([]);
 const getVisaTips = async () => {
   loading_tips.value = true;
   try {
-    const res = await useNuxtApp().$apiFetch("/user/visa_tips");
+    const res = await useNuxtApp().$apiFetch("/user/visa-tips");
     console.log("visa tips: ", res);
     visa_tips.value = res.tips;
   } catch (error) {

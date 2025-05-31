@@ -74,7 +74,7 @@ const deleting_ = ref(false);
 
 const deleteInterview = async (id) => {
   deleting_.value = true
-  const res = await useNuxtApp().$apiFetch(`/visa/${id}/delete`, {
+  const res = await useNuxtApp().$apiFetch(`/visa/interview/${id}/delete`, {
     method: "DELETE",
   });
 

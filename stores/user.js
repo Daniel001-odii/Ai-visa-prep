@@ -8,7 +8,7 @@ export const useUserStore = defineStore('user', {
     async fetchUser() {
       try {
         const { $apiFetch } = useNuxtApp();
-        const data = await $apiFetch('/user/');
+        const data = await $apiFetch('/user/profile');
         this.user = data; // Store in Pinia
         useState('user').value = data; // Persist in Nuxt state
         console.log("User data fetched:", this.user);

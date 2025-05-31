@@ -61,7 +61,7 @@ const interviews = ref([]);
 const newInterview = async () => {
   loading_new_interview.value = true;
   try{
-    const res = await useNuxtApp().$apiFetch("/visa/new_interview", {
+    const res = await useNuxtApp().$apiFetch("/visa/create-interview", {
       method: "POST",
     });
 
