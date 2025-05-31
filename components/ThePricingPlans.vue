@@ -78,7 +78,7 @@
 
         <div v-if="user">
           <UButton
-            :disabled="loading_link || user?.subscription == 'premium'"
+            :disabled="loading_link"
             :variant="user?.subscription == 'premium' ? 'outline' : 'solid'"
             :color="user?.subscription == 'premium' ? 'red' : 'blue'"
             :label="
@@ -143,6 +143,9 @@ const cancelSubscription = async () => {
   try {
     const res = await useNuxtApp().$apiFetch("/paystack/cancel-subscription");
     console.log("cancel res: ", res);
+
+    // refresh app...
+    window.location.reload()
     // payment_link.value = res.paymentLink;
   } catch (err) {
     console.log("err cenceling sub: ", err);

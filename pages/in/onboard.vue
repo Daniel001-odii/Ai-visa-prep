@@ -394,8 +394,8 @@ const updating_profile = ref(false);
 const updateProfile = async () => {
   updating_profile.value = true;
   try {
-    const res = await useNuxtApp().$apiFetch("/user/", {
-      method: "PATCH",
+    const res = await useNuxtApp().$apiFetch("/user/profile", {
+      method: "PUT",
       body: formData,
     });
 
