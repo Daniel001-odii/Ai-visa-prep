@@ -155,13 +155,8 @@ const getPaymentLink = async () => {
   loading_link.value = false;
 };
 
-const openPaymentPage = () => {
-  window.open(payment_link.value, "_blank");
-};
 
-const cancelSubscription =()=> {
-  return null
-}
+
 
 const freeFeatures = [
   "Daily visa tips",

@@ -16,7 +16,7 @@
           :variant="user?.subscription == 'free' ? 'outline' : 'solid'"
           :color="user?.subscription == 'free' ? 'white' : 'blue'"
           :label="user?.subscription == 'free' ? 'Current Plan' : 'Choose plan'"
-          @click="user?.subscription == 'free' ? null : cancelSubscription"
+          @click="user?.subscription == 'free' ? null : cancelSubscription()"
           class="p-3 w-full flex justify-center items-center"
           size="xl"
         />
@@ -134,6 +134,19 @@ const getPaymentLink = async () => {
     payment_link.value = res.paymentLink;
   } catch (err) {
     console.log("err creatin gpay link: ", err);
+  }
+  loading_link.value = false;
+};
+
+
+const cancelSubscription = async () => {
+  loading_link.value = true;
+  try {
+    const res = await useNuxtApp().$apiFetch("/paystack/cancel-subscription");
+    console.log("cancel res: ", res);
+    // payment_link.value = res.paymentLink;
+  } catch (err) {
+    console.log("err cenceling sub: ", err);
   }
   loading_link.value = false;
 };
