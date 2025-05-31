@@ -57,11 +57,9 @@
         <p class="text-sm mb-6">Advanced features for serious applicants</p>
 
         <div class="mb-6">
-            <div class="text-3xl font-bold">
-           $9.99
-            <span class="text-sm font-normal text-slate-400">
-              /month
-            </span>
+          <div class="text-3xl font-bold">
+            $9.99
+            <span class="text-sm font-normal text-slate-400"> /month </span>
           </div>
           <!-- <div class="text-3xl font-bold">
             {{ billing === "monthly" ? "$9.99" : "$95.88" }}
@@ -69,7 +67,7 @@
               /{{ billing === "monthly" ? "month" : "year" }}
             </span>
           </div> -->
-         <!--  <div class="text-slate-400 text-sm">
+          <!--  <div class="text-slate-400 text-sm">
             {{
               billing === "yearly"
                 ? "That's just $7.99/month, billed annually"
@@ -78,18 +76,20 @@
           </div> -->
         </div>
 
-        <UButton
-          v-if="user"
-          :disabled="loading_link || user?.subscription == 'premium'"
-          :variant="user?.subscription == 'premium' ? 'outline' : 'solid'"
-          :color="user?.subscription == 'premium' ? 'white' : 'blue'"
-          :label="
-            user?.subscription == 'premium' ? 'Current Plan' : 'Upgrade Now'
-          "
-          @click="user?.subscription == 'premium' ? null : openPaymentPage()"
-          class="p-3 w-full flex justify-center items-center"
-          size="xl"
-        />
+        <div v-if="user">
+          <UButton
+            :disabled="loading_link || user?.subscription == 'premium'"
+            :variant="user?.subscription == 'premium' ? 'outline' : 'solid'"
+            :color="user?.subscription == 'premium' ? 'red' : 'blue'"
+            :label="
+              user?.subscription == 'premium' ? 'Cancel Plan' : 'Upgrade Now'
+            "
+            @click="user?.subscription == 'premium' ? cancelSubscription() : openPaymentPage()"
+            class="p-3 w-full flex justify-center items-center"
+            size="xl"
+          />
+
+        </div>
         <UButton
           v-else
           block
@@ -138,7 +138,6 @@ const getPaymentLink = async () => {
   loading_link.value = false;
 };
 
-
 const cancelSubscription = async () => {
   loading_link.value = true;
   try {
@@ -170,7 +169,6 @@ const openPaymentPage = () => {
 ];
  */
 const premiumFeatures = [
-  
   "AI interview practice sessions (Unlimited)",
   "Confidence score",
   "Review & share previous interviews (beta)",
