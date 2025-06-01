@@ -115,6 +115,9 @@
 
 <script setup>
 import { CheckCircle, ChevronDown, Quote } from "lucide-vue-next";
+import { useUserStore } from "#imports";
+
+
 const freeFeatures = [
   "Daily visa tips",
   "1 AI interview practice session",
@@ -145,7 +148,7 @@ const cancelSubscription = async () => {
     console.log("cancel res: ", res);
 
     // refresh app...
-    window.location.reload()
+    useUserStore().fetchUser();
     // payment_link.value = res.paymentLink;
   } catch (err) {
     console.log("err cenceling sub: ", err);
