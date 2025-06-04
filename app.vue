@@ -24,6 +24,28 @@ onMounted( async ()=>{
   // await user.fetchUser();
 })
 
+useHead({
+  script: [
+    {
+      async: true,
+      src: "https://www.googletagmanager.com/gtag/js?id=G-BSVF3MPQR6"
+    },
+    {
+      innerHTML: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-BSVF3MPQR6');
+      `,
+      type: "text/javascript"
+    }
+  ],
+  __dangerouslyDisableSanitizersByTagID: {
+    'google-analytics': ['innerHTML']
+  }
+});
+
+
 </script>
 <style>
 </style>
