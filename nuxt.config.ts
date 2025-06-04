@@ -2,9 +2,15 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
-  modules: ["@nuxt/ui", "nuxt-vue3-google-signin", "@pinia/nuxt"],
+  modules: ["@nuxt/ui", "nuxt-vue3-google-signin", "@pinia/nuxt", "nuxt-gtag"],
   googleSignIn: {
     clientId: '877367357708-su3kiqq7ql133589gg4vj3dh6e968mjp.apps.googleusercontent.com',
+  },
+  gtag: {
+    id: "G-PYH5MP3NR5",
+    config: {
+      
+    }
   },
   css: ["@/assets/css/style.css"],
 
