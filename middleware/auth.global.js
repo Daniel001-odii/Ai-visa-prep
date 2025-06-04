@@ -11,8 +11,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (!token && (
       to.path === '/in/dashboard' 
       || to.path === '/in/interview'
-      || to.path === '/in/account')) {
-      return navigateTo('/'); // Redirect to the login page
+      || to.path === '/in/account'
+      || to.path === '/')) {
+      return navigateTo('/login'); // Redirect to the login page
     }
   
   });

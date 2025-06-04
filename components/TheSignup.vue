@@ -76,7 +76,9 @@
           isLoading ? 'svg-spinners:bars-rotate-fade' : 'i-heroicons-user-plus'
         "
         class="animate-pulse-on-hover transition-all duration-300"
-        :disabled="isLoading"
+        :disabled="
+        isLoading || !form.confirmPassword || !form.email || !form.password || !form.username || !form.termsAccepted
+        "
       >
         Create Account
       </UButton>
@@ -163,6 +165,8 @@ const handleSubmit = async () => {
       useRouter().push("/in/onboard");
     }
   } catch (err) {
+     isLoading.value = false;
+     
     toast.add({
       title: "Error in Sign Up",
       description: err._data.message,
