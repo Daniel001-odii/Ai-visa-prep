@@ -198,7 +198,7 @@ const cancelSubscription = async () => {
     console.log("cancel res: ", res);
 
     // refresh app...
-    useUserStore().fetchUser();
+    window.location.reload();
   } catch (err) {
     console.log("err cenceling sub: ", err);
   }
