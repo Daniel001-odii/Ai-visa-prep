@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="flex gap-3 flex-wrap justify-center">
     <!-- Free plan -->
     <UCard class="overflow-hidden">
       <div class="p-6">
@@ -42,7 +42,7 @@
     </UCard>
 
     <!-- Premium plan -->
-    <UCard class="overflow-hidden border-blue-500 relative">
+    <UCard class="overflow-hidden border border-blue-500 relative">
       <!-- Popular badge -->
       <div class="absolute top-0 right-0">
         <div
@@ -84,7 +84,56 @@
             :label="
               user?.subscription == 'premium' ? 'Cancel Plan' : 'Upgrade Now'
             "
-            @click="user?.subscription == 'premium' ? cancelSubscription() : openPaymentPage()"
+            @click="user?.subscription == 'premium' ? cancelSubscription() : getPaymentLink()"
+            class="p-3 w-full flex justify-center items-center"
+            size="xl"
+          />
+
+        </div>
+        <UButton
+          v-else
+          block
+          color="blue"
+          label="Get Started"
+          size="xl"
+          @click="navigateTo('/login')"
+        />
+      </div>
+
+      <div class="border-t border-slate-700/20 p-6">
+        <h3 class="font-medium mb-4">Everything in Free, plus:</h3>
+        <ul class="space-y-3">
+          <li v-for="features in premiumFeatures" class="flex items-start">
+            <CheckCircle class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
+            <span class="text-sm">{{ features }}</span>
+          </li>
+        </ul>
+      </div>
+    </UCard>
+
+    <!-- Lifet time plan -->
+    <UCard class="overflow-hidden relative">
+
+      <div class="p-6">
+        <h2 class="text-xl font-semibold mb-2">Life-time Access</h2>
+        <p class="text-sm mb-6">Pay once, use forever</p>
+
+        <div class="mb-6">
+          <div class="text-3xl font-bold">
+            $99.99
+            <span class="text-sm font-normal text-slate-400"> /month </span>
+          </div>
+        </div>
+
+        <div v-if="user">
+          <UButton
+            disabled
+            :variant="user?.subscription == 'premium' ? 'outline' : 'solid'"
+            :color="user?.subscription == 'premium' ? 'red' : 'blue'"
+            :label="
+              user?.subscription == 'premium' ? 'Cancel Plan' : 'Upgrade Now'
+            "
+            @click="user?.subscription == 'premium' ? cancelSubscription() : getPaymentLink()"
             class="p-3 w-full flex justify-center items-center"
             size="xl"
           />
@@ -135,6 +184,7 @@ const getPaymentLink = async () => {
     const res = await useNuxtApp().$apiFetch("/paystack/create-payment-link");
     console.log("pay link res: ", res);
     payment_link.value = res.paymentLink;
+    window.open(res.paymentLink);
   } catch (err) {
     console.log("err creatin gpay link: ", err);
   }
@@ -149,7 +199,6 @@ const cancelSubscription = async () => {
 
     // refresh app...
     useUserStore().fetchUser();
-    // payment_link.value = res.paymentLink;
   } catch (err) {
     console.log("err cenceling sub: ", err);
   }
@@ -187,7 +236,7 @@ const premiumFeatures = [
 onMounted(async () => {
   await useUserStore().fetchUser();
   user.value = useUserStore().user;
-  getPaymentLink();
+  // getPaymentLink();
 });
 </script>
 
