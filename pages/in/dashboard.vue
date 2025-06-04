@@ -41,7 +41,7 @@
             </div>
            
             <div class="flex items-center font-bold text-xl">
-              <span v-if="stat.id !== 3 && user?.subscription != 'premium'">{{ stat.value }}</span>
+              <span v-if="stat.id !== 3 || user?.subscription === 'premium'">{{ stat.value }}</span>
                <UBadge
             v-if="stat.id === 3 && user?.subscription == 'free'"
             label="premium"
