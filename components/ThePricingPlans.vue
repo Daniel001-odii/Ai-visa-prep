@@ -7,7 +7,7 @@
         <p class="text-sm mb-6">Basic features for visa preparation</p>
 
         <div class="mb-6">
-          <div class="text-3xl font-bold">$0</div>
+          <div class="text-3xl font-bold">₦0</div>
           <div class="text-slate-400 text-sm">Forever free</div>
         </div>
         <UButton
@@ -58,7 +58,7 @@
 
         <div class="mb-6">
           <div class="text-3xl font-bold">
-            $9.99
+            ₦4,999
             <span class="text-sm font-normal text-slate-400"> /month </span>
           </div>
           <!-- <div class="text-3xl font-bold">
@@ -120,7 +120,7 @@
 
         <div class="mb-6">
           <div class="text-3xl font-bold">
-            $99.99
+            ₦49,999
             <span class="text-sm font-normal text-slate-400"> /month </span>
           </div>
         </div>
