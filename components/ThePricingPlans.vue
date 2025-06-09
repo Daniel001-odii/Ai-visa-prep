@@ -169,7 +169,7 @@ import { useUserStore } from "#imports";
 
 const freeFeatures = [
   "Daily visa tips",
-  "1 AI interview practice session",
+  "2 AI interview practice sessions",
   "Expert-suggested answers",
   "Question audio playback",
   "Speech-to-Text (Voice Input)",
